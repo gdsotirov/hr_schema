@@ -6,6 +6,9 @@
 
   PRIMARY KEY (`id`),
 
+  INDEX `idx_division_name`       (`name`         ASC),
+  INDEX `fk_division_location_id` (`location_id`  ASC),
+
   CONSTRAINT `fk_division_location_id`
     FOREIGN KEY (`location_id`)
     REFERENCES `locations` (`id`)
@@ -14,6 +17,3 @@
 )
 ENGINE = InnoDB
 COMMENT = 'Company\'s divisions';
-
-CREATE INDEX `idx_division_name`       ON `divisions` (`name` ASC);
-CREATE INDEX `fk_division_location_id` ON `divisions` (`location_id` ASC);

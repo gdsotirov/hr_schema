@@ -6,6 +6,9 @@
 
   PRIMARY KEY (`id`),
 
+  INDEX `idx_cntry_name`  (`name`       ASC),
+  INDEX `fk_region_id`    (`region_id`  ASC),
+
   CONSTRAINT `fk_region_id`
     FOREIGN KEY (`region_id`)
     REFERENCES `regions` (`id`)
@@ -14,6 +17,3 @@
 )
 ENGINE = InnoDB
 COMMENT = 'List of coutries where the company has activities';
-
-CREATE INDEX `idx_cntry_name` ON countries (`name` ASC);
-CREATE INDEX `fk_region_id`   ON countries (`region_id` ASC);

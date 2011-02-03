@@ -5,6 +5,9 @@
 
   PRIMARY KEY (`id`),
 
+  INDEX `idx_location_name` (`name`       ASC),
+  INDEX `fk_country_id`     (`country_id` ASC),
+
   CONSTRAINT `fk_country_id`
     FOREIGN KEY (`country_id`)
     REFERENCES `countries` (`id`)
@@ -13,6 +16,3 @@
 )
 ENGINE = InnoDB
 COMMENT = 'Locations of company\'s offices, wharehouses, etc.';
-
-CREATE INDEX `idx_location_name` ON `locations` (`name` ASC);
-CREATE INDEX `fk_country_id`     ON `locations` (`country_id` ASC);
