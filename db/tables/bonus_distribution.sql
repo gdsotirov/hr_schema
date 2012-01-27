@@ -1,31 +1,31 @@
-﻿CREATE TABLE bonus_distribution (
-  `id`            INT(11)       NOT NULL  AUTO_INCREMENT,
-  `bonus_id`      INT(11)       NOT NULL,
-  `employee_id`   INT(11)       NOT NULL,
-  `amount`        DECIMAL(12,2) NOT NULL  COMMENT 'Amount in GROSS',
-  `granted_date`  DATE          NOT NULL,
-  `granted_by`    INT(11)       NOT NULL,
-  `approved_date` DATE          NULL,
-  `approved_by`   INT(11)       NULL,
-  `details`       VARCHAR(256)  NULL,
+﻿CREATE TABLE `bonus_distribution` (
+  `id`          INT(11)       NOT NULL AUTO_INCREMENT,
+  `bonus_id`    INT(11)       NOT NULL,
+  `employee_id` INT(11)       NOT NULL,
+  `amount`      DECIMAL(12,2) NOT NULL COMMENT 'Amount in GROSS',
+  `granted_on`  DATE          NOT NULL,
+  `granted_by`  INT(11)       NOT NULL,
+  `approved_on` DATE          DEFAULT NULL,
+  `approved_by` INT(11)       DEFAULT NULL,
+  `details`     VARCHAR(256)  DEFAULT NULL,
 
   PRIMARY KEY (`id`),
 
-  INDEX `fk_bondtl_bonus`     (`bonus_id`       ASC),
-  INDEX `fk_bondtl_employee`  (`employee_id`    ASC),
-  INDEX `idx_granted_date`    (`granted_date`   ASC),
-  INDEX `fk_bondtl_granted`   (`granted_by`     ASC),
-  INDEX `idx_approved_date`   (`approved_date`  ASC),
-  INDEX `fk_bondtl_approved`  (`approved_by`    ASC),
+  KEY `fk_bondtl_employee`  (`employee_id`),
+  KEY `fk_bondtl_bonus`     (`bonus_id`),
+  KEY `idx_granted_date`    (`granted_on`),
+  KEY `fk_bondtl_granted`   (`granted_by`),
+  KEY `fk_bondtl_approved`  (`approved_by`),
+  KEY `idx_approved_date`   (`approved_on`),
 
-  CONSTRAINT `fk_bondtl_bonus`
-    FOREIGN KEY (`bonus_id`)
-    REFERENCES `bonuses` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_employee`
     FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_bonus`
+    FOREIGN KEY (`bonus_id`)
+    REFERENCES `bonuses` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_granted`
@@ -39,5 +39,6 @@
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
-ENGINE = InnoDB
-COMMENT = 'Bonueses history';
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COMMENT='Bonueses history';

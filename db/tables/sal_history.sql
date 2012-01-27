@@ -1,17 +1,34 @@
-﻿CREATE TABLE sal_history (
+﻿CREATE TABLE `sal_history` (
   `id`          INT(11)       NOT NULL  AUTO_INCREMENT,
   `employee_id` INT(11)       NOT NULL,
   `from_date`   DATE          NOT NULL,
   `salary`      DECIMAL(12,2) NOT NULL,
+  `granted_on`  DATE          DEFAULT NULL,
+  `granted_by`  INT(11)       NOT NULL,
+  `approved_on` DATE          DEFAULT NULL,
+  `approved_by` INT(11)       NOT NULL,
 
   PRIMARY KEY (`id`),
 
-  INDEX `fk_sal_hist_employee`  (`employee_id`  ASC),
+  KEY `fk_salhist_employee` (`employee_id`),
+  KEY `fk_salhist_granted`  (`granted_by`),
+  KEY `fk_salhist_approved` (`approved_by`),
 
-  CONSTRAINT `fk_sal_hist_employee`
+  CONSTRAINT `fk_salhist_employee`
     FOREIGN KEY (`employee_id`)
+    REFERENCES `employees` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_salhist_granted`
+    FOREIGN KEY (`granted_by`)
+    REFERENCES `employees` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_salhist_approved`
+    FOREIGN KEY (`approved_by`)
     REFERENCES `employees` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
-ENGINE = InnoDB;
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8;

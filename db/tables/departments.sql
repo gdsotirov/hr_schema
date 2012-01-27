@@ -1,11 +1,13 @@
-﻿CREATE TABLE departments (
-  `id`          INT(11)     NOT NULL AUTO_INCREMENT,
+﻿CREATE TABLE `departments` (
+  `id`          INT(11)     NOT NULL  AUTO_INCREMENT,
   `name`        VARCHAR(64) NOT NULL,
-  `size`        INT(11)     NULL COMMENT 'Number of persons into department',
+  `established` DATE        DEFAULT NULL  COMMENT 'Date on which the department was created',
+  `size`        INT(11)     DEFAULT NULL  COMMENT 'Current number of employees working in the department',
   `manager_id`  INT(11)     NOT NULL,
 
   PRIMARY KEY (`id`),
 
-  INDEX `idx_department_name` (`name` ASC)
+  KEY `idx_department_name` (`name`)
 )
-ENGINE = InnoDB;
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8;

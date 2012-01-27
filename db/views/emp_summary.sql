@@ -1,17 +1,25 @@
-﻿CREATE VIEW EmpSummary AS
-SELECT CONCAT(EMP.last_name, ', ', EMP.first_name) fullname,
+﻿CREATE VIEW emp_summary AS
+SELECT CONCAT(PER.last_name, ', ', PER.first_name) fullname,
        POS.title position,
        EMP.contract_date contracted,
        EMP.hire_date hired,
        utl_getDateDiffStr(EMP.hire_date, CURDATE()) service_length,
-       utl_getDateDiffStr(EMP.birth_date, CURDATE()) age,
+       utl_getDateDiffStr(PER.birth_date, CURDATE()) age,
        (SELECT MAX(JH.from_date)
           FROM job_history JH
          WHERE JH.employee_id = EMP.id
-           AND JH.salary != EMP.salary
-       ) last_annex,
+           AND JH.job_id = EMP.job_id
+       ) last_job_change,
+       (SELECT MAX(SH.from_date)
+          FROM sal_history SH
+         WHERE SH.employee_id = EMP.id
+           AND SH.salary = EMP.salary
+       ) last_sal_change,
        EMP.salary salary
   FROM employees   EMP,
-       jobs POS
+       persons     PER,
+       jobs        POS
  WHERE POS.id = EMP.job_id
+   AND EMP.person_id = PER.id
+   AND EMP.leave_date IS NULL
  ORDER BY hired DESC, fullname ASC;

@@ -1,38 +1,39 @@
-﻿CREATE TABLE job_candidates (
-  `id`                INT(11)     NOT NULL AUTO_INCREMENT,
-  `first_name`        VARCHAR(64) NOT NULL,
-  `middle_name`       VARCHAR(64) NULL,
-  `last_name`         VARCHAR(64) NOT NULL,
-  `sex`               ENUM('male','female')
-                                  NULL,
-  `birth_date`        DATE        NOT NULL,
-  `cv_doc`            BLOB        NULL,
-  `job_id`            INT(11)     NOT NULL,
-  `first_interview`   DATE        NOT NULL,
-  `second_interview`  DATE        NULL,
-  `third_interview`   DATE        NULL,
-  `status`            ENUM('Approved','Rejected', 'Pending')
-                                  NULL,
-  `employee_id`       INT(11)     NULL,
+﻿CREATE TABLE `job_candidates` (
+  `id`                INT(11) NOT NULL  AUTO_INCREMENT,
+  `person_id`         INT(11) NOT NULL,
+  `cv_doc`            BLOB    COMMENT 'Curriculum Vitae document',
+  `cl_doc`            BLOB    COMMENT 'Cover Letter document',
+  `job_id`            INT(11) NOT NULL,
+  `first_interview`   DATE    NOT NULL,
+  `second_interview`  DATE    DEFAULT NULL,
+  `third_interview`   DATE    DEFAULT NULL,
+  `status`            ENUM('Approved','Rejected','Pending')
+                              DEFAULT NULL,
+  `employee_id`       INT(11) DEFAULT NULL,
 
   PRIMARY KEY (`id`),
 
-  INDEX `idx_candidate_names`       (`first_name`       ASC,
-                                     `last_name`        ASC),
-  INDEX `idx_candidate_interviewed` (`first_interview`  ASC),
-  INDEX `fk_candidate_job`          (`job_id`           ASC),
-  INDEX `fk_candidate_employee`     (`employee_id`      ASC),
+  KEY `fk_candidate_employee`     (`employee_id`),
+  KEY `fk_candidate_person`       (`person_id`),
+  KEY `fk_candidate_job`          (`job_id`),
+  KEY `idx_candidate_interviewed` (`first_interview`),
 
+  CONSTRAINT `fk_candidate_person`
+    FOREIGN KEY (`person_id`)
+    REFERENCES `persons` (`id`)
+    ON UPDATE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_job`
     FOREIGN KEY (`job_id`)
     REFERENCES `jobs` (`id`)
-    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_employee`
     FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
-    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
     ON UPDATE CASCADE
 )
-ENGINE = InnoDB
-COMMENT = 'Catalog of job candidates';
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COMMENT='Catalog of job candidates';

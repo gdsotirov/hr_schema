@@ -1,19 +1,23 @@
-﻿CREATE TABLE absences (
-  `id`            INT(11)   NOT NULL  AUTO_INCREMENT,
+﻿CREATE TABLE `absences` (
+  `id`            INT(11)   NOT NULL AUTO_INCREMENT,
   `employee_id`   INT(11)   NOT NULL,
   `from_date`     DATETIME  NOT NULL,
-  `to_date`       DATETIME  NULL,
+  `to_date`       DATETIME  DEFAULT NULL,
   `type`          INT(11)   NOT NULL,
+  `for_year`      INT(11)   DEFAULT NULL  COMMENT 'In case of paid leave, for which year is valid',
+  `description`   TEXT                    COMMENT 'Additional information about the absence',
   `authorized_by` INT(11)   NOT NULL,
-  `deputy_id`     INT(11)   NULL,
+  `deputy_id`     INT(11)   DEFAULT NULL,
+  `status`        ENUM('Requested','Authorized','Unauthorized','Cancelled')
+                            NOT NULL,
 
   PRIMARY KEY (`id`),
 
-  INDEX `fk_absence_employee`   (`employee_id`    ASC),
-  INDEX `idx_vacation_date`     (`from_date`      ASC),
-  INDEX `fk_absence_type`       (`type`           ASC),
-  INDEX `fk_absence_authorized` (`authorized_by`  ASC),
-  INDEX `fk_absence_deputy`     (`deputy_id`      ASC),
+  KEY `fk_absence_employee`   (`employee_id`),
+  KEY `idx_vacation_date`     (`from_date`),
+  KEY `fk_absence_type`       (`type`),
+  KEY `fk_absence_authorized` (`authorized_by`),
+  KEY `fk_absence_deputy`     (`deputy_id`),
 
   CONSTRAINT `fk_absence_employee`
     FOREIGN KEY (`employee_id`)
@@ -36,5 +40,6 @@
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
-ENGINE = InnoDB
-COMMENT = 'Emplooyees vacations registry';
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COMMENT='Emplooyees vacations registry';
