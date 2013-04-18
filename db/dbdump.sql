@@ -4,7 +4,7 @@ USE `hr_schema`;
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	5.5.24
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -134,15 +134,6 @@ CREATE TABLE `appraisal_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `appraisal_types`
---
-
-LOCK TABLES `appraisal_types` WRITE;
-/*!40000 ALTER TABLE `appraisal_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `appraisal_types` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `memos`
 --
 
@@ -179,15 +170,6 @@ CREATE TABLE `appraisal_period_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `appraisal_period_types`
---
-
-LOCK TABLES `appraisal_period_types` WRITE;
-/*!40000 ALTER TABLE `appraisal_period_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `appraisal_period_types` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `absences`
@@ -319,14 +301,6 @@ CREATE TABLE `regions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `regions`
---
-
-LOCK TABLES `regions` WRITE;
-/*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` (`id`, `name`) VALUES (1,'Africa'),(4,'Asia'),(5,'Europe'),(2,'North America'),(6,'Oceania'),(7,'Polar'),(3,'South America');
-/*!40000 ALTER TABLE `regions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sal_history`
@@ -457,16 +431,6 @@ CREATE TABLE `jobs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `jobs`
---
-
-LOCK TABLES `jobs` WRITE;
-/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` (`id`, `title`, `description`, `min_salary`, `max_salary`) VALUES (1,'Administrative Director',NULL,NULL,NULL),(2,'Business Analyst',NULL,NULL,NULL),(3,'Chief Communications Officer (CCO)',NULL,NULL,NULL),(4,'Chief Executive Officer (CEO)',NULL,NULL,NULL),(5,'Chief Financial Officer (CFO)',NULL,NULL,NULL),(6,'Chief Information Officer (CIO)',NULL,NULL,NULL),(7,'Chief Operating Officer (COO)',NULL,NULL,NULL),(8,'Chief Security Officer (CSO)',NULL,NULL,NULL),(9,'Chief Technical Officer (CTO)',NULL,NULL,NULL),(10,'General Administration Manager',NULL,NULL,NULL),(11,'General Manager',NULL,NULL,NULL),(12,'Human Resources Manager',NULL,NULL,NULL),(13,'Legal Advisor',NULL,NULL,NULL),(14,'Managing Director',NULL,NULL,NULL),(15,'Project Coordinator',NULL,NULL,NULL),(16,'Project Director',NULL,NULL,NULL),(17,'QA Manager',NULL,NULL,NULL),(18,'QA Specialist',NULL,NULL,NULL),(19,'Supervisor',NULL,NULL,NULL),(20,'Quality Manager',NULL,NULL,NULL),(21,'Regional Coordinator',NULL,NULL,NULL),(22,'Senior Business & System Concept Manager',NULL,NULL,NULL),(23,'Software Developer',NULL,NULL,NULL),(24,'Team Leader',NULL,NULL,NULL),(25,'Technical Director',NULL,NULL,NULL),(26,'System Administator',NULL,NULL,NULL),(27,'Translator/Interpretator',NULL,NULL,NULL),(28,'Technical Assitant',NULL,NULL,NULL),(29,'Software Configuration Specialist',NULL,NULL,NULL),(30,'Administrative Assitant',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `person_relation_types`
 --
 
@@ -484,15 +448,6 @@ CREATE TABLE `person_relation_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `person_relation_types`
---
-
-LOCK TABLES `person_relation_types` WRITE;
-/*!40000 ALTER TABLE `person_relation_types` DISABLE KEYS */;
-INSERT INTO `person_relation_types` (`id`, `title`, `reverse_id`) VALUES ('aunt','Aunt','niece'),('b-in-law','Brother-in-law',NULL),('child','Child','parent'),('concestor','Last Common Ancestor (LCA)',NULL),('cousin','Cousin',NULL),('f-in-law','Father-in-law',NULL),('grandchild','Grandchild','grandparent'),('grandparent','Grandparent','grandchild'),('m-in-law','Mother-in-law',NULL),('nephew','Nephew','uncle'),('niece','Niece','aunt'),('parent','Parent','child'),('s-in-law','Sister-in-law',NULL),('sibling','Sigling',NULL),('spouse','Spouse',NULL),('uncle','Uncle','nephew');
-/*!40000 ALTER TABLE `person_relation_types` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `job_offers`
 --
@@ -510,15 +465,6 @@ CREATE TABLE `job_offers` (
   CONSTRAINT `fk_job_offer_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `job_offers`
---
-
-LOCK TABLES `job_offers` WRITE;
-/*!40000 ALTER TABLE `job_offers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_offers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `persons`
@@ -577,15 +523,6 @@ CREATE TABLE `absence_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `absence_types`
---
-
-LOCK TABLES `absence_types` WRITE;
-/*!40000 ALTER TABLE `absence_types` DISABLE KEYS */;
-INSERT INTO `absence_types` (`id`, `title`, `description`) VALUES (1,'Paid leave',NULL),(2,'Unpaid leave with auth',NULL),(3,'Unpaid leave w/o auth',NULL),(4,'Others, with certificate','Please, specify type and number of the legal document'),(5,'Business trip',NULL),(6,'Work from home',NULL),(7,'Sick leave','Please, specify the details of the medical document'),(8,'Maternity leave',NULL),(9,'Parternity leave',NULL),(10,'Compensation','Compensations (hours minus/hours plus) for short absences from office'),(11,'Planned paid leave','Planning');
-/*!40000 ALTER TABLE `absence_types` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `job_history`
@@ -897,8 +834,6 @@ CREATE TABLE `job_candidates` (
   CONSTRAINT `fk_candidate_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Catalog of job candidates';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
 
 --
 -- Table structure for table `departments`
@@ -1511,4 +1446,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-26 20:06:29
+-- Dump completed on 2013-04-18 10:53:46
