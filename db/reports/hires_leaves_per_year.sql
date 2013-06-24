@@ -1,4 +1,4 @@
-SELECT H.yr `Year`, hires `Hires`, IFNULL(lefts, 0) `Leaves`
+SELECT H.yr `Year`, hires `Hires`, IFNULL(lefts, 0) `Leaves`, hires - IFNULL(lefts, 0) balance
   FROM (SELECT YEAR(hire_date) yr, count(*) hires
           FROM employees
          GROUP BY YEAR(hire_date)
