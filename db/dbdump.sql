@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `hr_schema`;
--- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	5.5.28
+-- Server version	5.5.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -179,12 +179,12 @@ DROP TABLE IF EXISTS `comp_balance`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `comp_balance` (
-  `Number` int(11),
-  `Name` varchar(129),
-  `Until` varchar(7),
-  `HPlus` varchar(23),
-  `HMinus` varchar(23),
-  `Balance` varchar(23)
+  `Number` tinyint NOT NULL,
+  `Name` tinyint NOT NULL,
+  `Until` tinyint NOT NULL,
+  `HPlus` tinyint NOT NULL,
+  `HMinus` tinyint NOT NULL,
+  `Balance` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -197,13 +197,13 @@ DROP TABLE IF EXISTS `comp_list`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `comp_list` (
-  `Name` varchar(129),
-  `Day` varchar(10),
-  `Start` varchar(10),
-  `End` varchar(10),
-  `Total` time,
-  `Projects` mediumtext,
-  `Tasks` mediumtext
+  `Name` tinyint NOT NULL,
+  `Day` tinyint NOT NULL,
+  `Start` tinyint NOT NULL,
+  `End` tinyint NOT NULL,
+  `Total` tinyint NOT NULL,
+  `Projects` tinyint NOT NULL,
+  `Tasks` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -253,15 +253,15 @@ DROP TABLE IF EXISTS `current_absences`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `current_absences` (
-  `name` varchar(64),
-  `emp_name` varchar(130),
-  `job_title` varchar(64),
-  `abs_type` varchar(64),
-  `from_date` datetime,
-  `to_date` datetime,
-  `days_left` int(7),
-  `deputy` varchar(130),
-  `auth_by` varchar(130)
+  `name` tinyint NOT NULL,
+  `emp_name` tinyint NOT NULL,
+  `job_title` tinyint NOT NULL,
+  `abs_type` tinyint NOT NULL,
+  `from_date` tinyint NOT NULL,
+  `to_date` tinyint NOT NULL,
+  `days_left` tinyint NOT NULL,
+  `deputy` tinyint NOT NULL,
+  `auth_by` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -312,16 +312,16 @@ DROP TABLE IF EXISTS `emp_absences`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `emp_absences` (
-  `emp_id` int(11),
-  `emp_name` varchar(130),
-  `abs_type` varchar(64),
-  `from_date` datetime,
-  `to_date` datetime,
-  `for_year` int(11),
-  `dur_days` decimal(5,1),
-  `deputy` varchar(130),
-  `auth_by` varchar(130),
-  `status` enum('Requested','Authorized','Unauthorized','Cancelled')
+  `emp_id` tinyint NOT NULL,
+  `emp_name` tinyint NOT NULL,
+  `abs_type` tinyint NOT NULL,
+  `from_date` tinyint NOT NULL,
+  `to_date` tinyint NOT NULL,
+  `for_year` tinyint NOT NULL,
+  `dur_days` tinyint NOT NULL,
+  `deputy` tinyint NOT NULL,
+  `auth_by` tinyint NOT NULL,
+  `status` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -334,8 +334,8 @@ DROP TABLE IF EXISTS `emp_fullname`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `emp_fullname` (
-  `full_name` varchar(256),
-  `emp_id` int(11)
+  `full_name` tinyint NOT NULL,
+  `emp_id` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -348,14 +348,14 @@ DROP TABLE IF EXISTS `emp_history`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `emp_history` (
-  `emp_id` int(11),
-  `name` varchar(130),
-  `date` date,
-  `type` varchar(10),
-  `what` varchar(129),
-  `detail` varchar(64),
-  `status` varchar(8),
-  `who` varchar(130)
+  `emp_id` tinyint NOT NULL,
+  `name` tinyint NOT NULL,
+  `date` tinyint NOT NULL,
+  `type` tinyint NOT NULL,
+  `what` tinyint NOT NULL,
+  `detail` tinyint NOT NULL,
+  `status` tinyint NOT NULL,
+  `who` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -368,15 +368,15 @@ DROP TABLE IF EXISTS `emp_resigned`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `emp_resigned` (
-  `fullname` varchar(130),
-  `last_position` varchar(64),
-  `last_department` varchar(64),
-  `last_division` varchar(64),
-  `hired` date,
-  `resigned` date,
-  `reason` text,
-  `service_length` varchar(30),
-  `age_at_leave` varchar(30)
+  `fullname` tinyint NOT NULL,
+  `last_position` tinyint NOT NULL,
+  `last_department` tinyint NOT NULL,
+  `last_division` tinyint NOT NULL,
+  `hired` tinyint NOT NULL,
+  `resigned` tinyint NOT NULL,
+  `reason` tinyint NOT NULL,
+  `service_length` tinyint NOT NULL,
+  `age_at_leave` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -389,15 +389,15 @@ DROP TABLE IF EXISTS `emp_summary`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `emp_summary` (
-  `fullname` varchar(130),
-  `position` varchar(64),
-  `contracted` date,
-  `hired` date,
-  `service_length` varchar(30),
-  `age` varchar(30),
-  `last_job_change` date,
-  `last_sal_change` date,
-  `salary` decimal(12,2)
+  `fullname` tinyint NOT NULL,
+  `position` tinyint NOT NULL,
+  `contracted` tinyint NOT NULL,
+  `hired` tinyint NOT NULL,
+  `service_length` tinyint NOT NULL,
+  `age` tinyint NOT NULL,
+  `last_job_change` tinyint NOT NULL,
+  `last_sal_change` tinyint NOT NULL,
+  `salary` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -619,12 +619,12 @@ DROP TABLE IF EXISTS `leaves_plan`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `leaves_plan` (
-  `emp_name` varchar(129),
-  `for_year` int(11),
-  `MONTH(AB.from_date)` int(2),
-  `from_date` datetime,
-  `to_date` datetime,
-  `dur_days` int(8)
+  `emp_name` tinyint NOT NULL,
+  `for_year` tinyint NOT NULL,
+  `MONTH(AB.from_date)` tinyint NOT NULL,
+  `from_date` tinyint NOT NULL,
+  `to_date` tinyint NOT NULL,
+  `dur_days` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -678,15 +678,15 @@ DROP TABLE IF EXISTS `pending_absences`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `pending_absences` (
-  `name` varchar(64),
-  `emp_name` varchar(130),
-  `job_title` varchar(64),
-  `abs_type` varchar(64),
-  `from_date` datetime,
-  `to_date` datetime,
-  `dur_days` decimal(5,1),
-  `deputy` varchar(130),
-  `auth_by` varchar(130)
+  `name` tinyint NOT NULL,
+  `emp_name` tinyint NOT NULL,
+  `job_title` tinyint NOT NULL,
+  `abs_type` tinyint NOT NULL,
+  `from_date` tinyint NOT NULL,
+  `to_date` tinyint NOT NULL,
+  `dur_days` tinyint NOT NULL,
+  `deputy` tinyint NOT NULL,
+  `auth_by` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -699,10 +699,10 @@ DROP TABLE IF EXISTS `per_relations_list`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `per_relations_list` (
-  `p1_name` varchar(130),
-  `relation` varchar(70),
-  `p2_name` varchar(130),
-  `since` varchar(52)
+  `p1_name` tinyint NOT NULL,
+  `relation` tinyint NOT NULL,
+  `p2_name` tinyint NOT NULL,
+  `since` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -796,15 +796,15 @@ DROP TABLE IF EXISTS `requested_absences`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `requested_absences` (
-  `name` varchar(64),
-  `emp_name` varchar(130),
-  `job_title` varchar(64),
-  `abs_type` varchar(64),
-  `from_date` datetime,
-  `to_date` datetime,
-  `dur_days` decimal(5,1),
-  `deputy` varchar(130),
-  `auth_by` varchar(130)
+  `name` tinyint NOT NULL,
+  `emp_name` tinyint NOT NULL,
+  `job_title` tinyint NOT NULL,
+  `abs_type` tinyint NOT NULL,
+  `from_date` tinyint NOT NULL,
+  `to_date` tinyint NOT NULL,
+  `dur_days` tinyint NOT NULL,
+  `deputy` tinyint NOT NULL,
+  `auth_by` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -879,7 +879,7 @@ CREATE TABLE `team_change` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `calcNetSalaryBG`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBG`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
 BEGIN
   DECLARE dBaseSal    DECIMAL(10,2);
   DECLARE dSPIAmt     DECIMAL(10,2);
@@ -928,7 +928,7 @@ BEGIN
   SET dNetSalary = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt - dIncomeTax, 2);
 
   RETURN dNetSalary;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -944,7 +944,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `emp_getFullName`(EmpID INTEGER) RETURNS varchar(256) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getFullName`(EmpID INTEGER) RETURNS varchar(256) CHARSET utf8
     READS SQL DATA
 BEGIN
   DECLARE vcResult VARCHAR(256) DEFAULT NULL;
@@ -977,7 +977,7 @@ BEGIN
   END IF;
 
   RETURN vcResult;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -993,7 +993,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `emp_getServiceLength`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getServiceLength`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
     READS SQL DATA
 BEGIN
   DECLARE vcResult VARCHAR(20) DEFAULT NULL;
@@ -1013,7 +1013,7 @@ BEGIN
   SET vcResult := utl_getDateDiffStr(dEmpHireDate, dEmpLeaveDate);
 
   RETURN vcResult;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1029,7 +1029,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `emp_getTimeCurPosition`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getTimeCurPosition`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
     READS SQL DATA
 BEGIN
   DECLARE vcResult VARCHAR(20) DEFAULT NULL;
@@ -1064,7 +1064,7 @@ BEGIN
   END IF;
 
   RETURN vcResult;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1080,7 +1080,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `utl_calcVacDays`(VacId INTEGER) RETURNS decimal(5,1)
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_calcVacDays`(VacId INTEGER) RETURNS decimal(5,1)
 BEGIN
   DECLARE dStartDate DATETIME DEFAULT NULL;
   DECLARE dEndDate   DATETIME DEFAULT NULL;
@@ -1114,7 +1114,7 @@ BEGIN
   END IF;
 
   RETURN NULL;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1130,7 +1130,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `utl_getDateDiffStr`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_getDateDiffStr`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET utf8
     NO SQL
     DETERMINISTIC
 BEGIN
@@ -1146,7 +1146,7 @@ BEGIN
   SET days := TIMESTAMPDIFF(DAY, DATE_ADD(date1, INTERVAL years * 12 + months MONTH), date2);
 
   RETURN CONCAT(years, 'y ', months, 'm ', days, 'd');
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1162,7 +1162,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `mgmt_promote`(IN iEmpID INTEGER,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `mgmt_promote`(IN iEmpID INTEGER,
                               IN dBeginDate DATE,
                               IN iNewJobID INTEGER,
                               IN nNewSalary DECIMAL)
@@ -1197,7 +1197,7 @@ BEGIN
        SET salary = nNewSalary
      WHERE id = iEmpID;
   END IF;
-END */;;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1441,4 +1441,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-06-05 15:34:41
+-- Dump completed on 2013-09-30 11:04:24
