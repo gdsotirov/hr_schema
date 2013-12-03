@@ -4,7 +4,7 @@ USE `hr_schema`;
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	5.5.34
+-- Server version	5.6.14-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -165,8 +165,12 @@ DROP TABLE IF EXISTS `bonuses`;
 CREATE TABLE `bonuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
+  `granted_on` date NOT NULL,
+  `granted_by` int(11) DEFAULT NULL,
   `amount` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_bonus_granted_by_idx` (`granted_by`),
+  CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1441,4 +1445,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-09-30 11:04:24
+-- Dump completed on 2013-12-03 16:38:49
