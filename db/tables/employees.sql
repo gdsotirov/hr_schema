@@ -13,11 +13,11 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_emp_person_id`      (`person_id`),
-  KEY `fk_emp_job_id`         (`job_id`),
-  KEY `fk_emp_manager_id`     (`manager_id`),
-  KEY `fk_emp_department_id`  (`department_id`),
-  KEY `fk_emp_division_id`    (`division_id`),
+  KEY `fk_emp_person_id_idx`      (`person_id`),
+  KEY `fk_emp_job_id_idx`         (`job_id`),
+  KEY `fk_emp_manager_id_idx`     (`manager_id`),
+  KEY `fk_emp_department_id_idx`  (`department_id`),
+  KEY `fk_emp_division_id_idx`    (`division_id`),
 
   CONSTRAINT `fk_emp_person_id`
     FOREIGN KEY (`person_id`)

@@ -2,6 +2,7 @@
   `id`          INT(11)     NOT NULL  AUTO_INCREMENT,
   `name`        VARCHAR(64) NOT NULL,
   `established` DATE        DEFAULT NULL  COMMENT 'Date on which the department was created',
+  `closed`      DATE        DEFAULT NULL  COMMENT 'Date on which the department was closed or disbanded',
   `size`        INT(11)     DEFAULT NULL  COMMENT 'Current number of employees working in the department',
   `manager_id`  INT(11)     NOT NULL,
 

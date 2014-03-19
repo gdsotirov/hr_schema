@@ -9,9 +9,9 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_memo_employee` (`employee_id`),
-  KEY `idx_memo_from`    (`from_date`),
-  KEY `fk_memo_written`  (`written_by`),
+  KEY `fk_memo_employee_idx`  (`employee_id`),
+  KEY `idx_memo_from`         (`from_date`),
+  KEY `fk_memo_written_idx`   (`written_by`),
 
   CONSTRAINT `fk_memo_employee`
     FOREIGN KEY (`employee_id`)

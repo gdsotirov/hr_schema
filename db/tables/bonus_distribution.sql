@@ -11,12 +11,12 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_bondtl_employee`  (`employee_id`),
-  KEY `fk_bondtl_bonus`     (`bonus_id`),
-  KEY `idx_granted_date`    (`granted_on`),
-  KEY `fk_bondtl_granted`   (`granted_by`),
-  KEY `fk_bondtl_approved`  (`approved_by`),
-  KEY `idx_approved_date`   (`approved_on`),
+  KEY `fk_bondtl_employee_idx`  (`employee_id`),
+  KEY `fk_bondtl_bonus_idx`     (`bonus_id`),
+  KEY `idx_granted_date`        (`granted_on`),
+  KEY `fk_bondtl_granted_idx`   (`granted_by`),
+  KEY `fk_bondtl_approved_idx`  (`approved_by`),
+  KEY `idx_approved_date`       (`approved_on`),
 
   CONSTRAINT `fk_bondtl_employee`
     FOREIGN KEY (`employee_id`)

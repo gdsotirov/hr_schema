@@ -10,10 +10,10 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_jobhist_employee` (`employee_id`),
-  KEY `fk_jobhist_job`      (`job_id`),
-  KEY `fk_jobhist_granted`  (`granted_by`),
-  KEY `fk_jobhist_approved` (`approved_by`),
+  KEY `fk_jobhist_employee_idx` (`employee_id`),
+  KEY `fk_jobhist_job_idx`      (`job_id`),
+  KEY `fk_jobhist_granted_idx`  (`granted_by`),
+  KEY `fk_jobhist_approved_idx` (`approved_by`),
 
   CONSTRAINT `fk_jobhist_employee`
     FOREIGN KEY (`employee_id`)

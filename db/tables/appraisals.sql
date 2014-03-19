@@ -12,11 +12,11 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_appraisal_employee`     (`employee_id`),
-  KEY `fk_appraisal_period_type`  (`period_type`),
-  KEY `fk_appraisal_type`         (`type`),
-  KEY `idx_appraisal_date`        (`interview_date`),
-  KEY `fk_appraisal_appriser`     (`appriser`),
+  KEY `fk_appraisal_employee_idx`     (`employee_id`),
+  KEY `fk_appraisal_period_type_idx`  (`period_type`),
+  KEY `fk_appraisal_type_idx`         (`type`),
+  KEY `idx_appraisal_date`            (`interview_date`),
+  KEY `fk_appraisal_appriser_idx`     (`appriser`),
 
   CONSTRAINT `fk_appraisal_employee`
     FOREIGN KEY (`employee_id`)

@@ -20,12 +20,12 @@
 
   PRIMARY KEY (`id`),
 
-  UNIQUE KEY  `idx_iso_num3`    (`iso_num3`),
-  UNIQUE KEY  `idx_iso_code2`   (`iso_code2`),
-  UNIQUE KEY  `idx_iso_code3`   (`iso_code3`),
-  KEY         `idx_name_en`     (`name_en`),
-  UNIQUE KEY  `idx_tld`         (`tld`),
-  KEY         `fk_ctry_region`  (`region_id`),
+  UNIQUE KEY  `idx_iso_num3`        (`iso_num3`),
+  UNIQUE KEY  `idx_iso_code2`       (`iso_code2`),
+  UNIQUE KEY  `idx_iso_code3`       (`iso_code3`),
+  KEY         `idx_name_en`         (`name_en`),
+  UNIQUE KEY  `idx_tld`             (`tld`),
+  KEY         `fk_ctry_region_idx`  (`region_id`),
 
   CONSTRAINT `fk_ctry_region`
     FOREIGN KEY (`region_id`)

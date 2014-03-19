@@ -10,10 +10,10 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_tmchng_employee`    (`employee_id`),
-  KEY `fk_tmchng_department`  (`department`),
-  KEY `fk_tmchng_granted`     (`granted_by`),
-  KEY `fk_tmchng_approved`    (`approved_by`),
+  KEY `fk_tmchng_employee_idx`    (`employee_id`),
+  KEY `fk_tmchng_department_idx`  (`department`),
+  KEY `fk_tmchng_granted_idx`     (`granted_by`),
+  KEY `fk_tmchng_approved_idx`    (`approved_by`),
 
   CONSTRAINT `fk_tmchng_employee`
     FOREIGN KEY (`employee_id`)

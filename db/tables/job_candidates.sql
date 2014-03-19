@@ -13,9 +13,9 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_candidate_employee`     (`employee_id`),
-  KEY `fk_candidate_person`       (`person_id`),
-  KEY `fk_candidate_job`          (`job_id`),
+  KEY `fk_candidate_employee_idx` (`employee_id`),
+  KEY `fk_candidate_person_idx`   (`person_id`),
+  KEY `fk_candidate_job_idx`      (`job_id`),
   KEY `idx_candidate_interviewed` (`first_interview`),
 
   CONSTRAINT `fk_candidate_person`

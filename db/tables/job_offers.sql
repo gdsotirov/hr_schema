@@ -6,7 +6,7 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_job_offer_job_id` (`job_id`),
+  KEY `fk_job_offer_job_id_idx` (`job_id`),
 
   CONSTRAINT `fk_job_offer_job_id`
     FOREIGN KEY (`job_id`)

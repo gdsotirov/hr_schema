@@ -7,8 +7,8 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `idx_division_name`     (`name`),
-  KEY `fk_division_location`  (`location_id`),
+  KEY `idx_division_name`         (`name`),
+  KEY `fk_division_location_idx`  (`location_id`),
 
   CONSTRAINT `fk_division_location`
     FOREIGN KEY (`location_id`)

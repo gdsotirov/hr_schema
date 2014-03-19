@@ -10,9 +10,9 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_salhist_employee` (`employee_id`),
-  KEY `fk_salhist_granted`  (`granted_by`),
-  KEY `fk_salhist_approved` (`approved_by`),
+  KEY `fk_salhist_employee_idx` (`employee_id`),
+  KEY `fk_salhist_granted_idx`  (`granted_by`),
+  KEY `fk_salhist_approved_idx` (`approved_by`),
 
   CONSTRAINT `fk_salhist_employee`
     FOREIGN KEY (`employee_id`)

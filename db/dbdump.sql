@@ -51,11 +51,11 @@ CREATE TABLE `absences` (
   `deputy_id` int(11) DEFAULT NULL,
   `status` enum('Requested','Authorized','Unauthorized','Cancelled') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_absence_employee` (`employee_id`),
-  KEY `fk_absence_deputy` (`deputy_id`),
-  KEY `fk_absence_type` (`type`),
-  KEY `fk_absence_authorized` (`authorized_by`),
   KEY `idx_vacation_date` (`from_date`),
+  KEY `fk_absence_employee_idx` (`employee_id`),
+  KEY `fk_absence_deputy_idx` (`deputy_id`),
+  KEY `fk_absence_type_idx` (`type`),
+  KEY `fk_absence_authorized_idx` (`authorized_by`),
   CONSTRAINT `fk_absence_authorized` FOREIGN KEY (`authorized_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_absence_deputy` FOREIGN KEY (`deputy_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_absence_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
@@ -113,10 +113,10 @@ CREATE TABLE `appraisals` (
   `document` blob,
   PRIMARY KEY (`id`),
   KEY `idx_appraisal_date` (`interview_date`),
-  KEY `fk_appraisal_employee` (`employee_id`),
-  KEY `fk_appraisal_appriser` (`appriser`),
-  KEY `fk_appraisal_period_type` (`period_type`),
-  KEY `fk_appraisal_type` (`type`),
+  KEY `fk_appraisal_employee_idx` (`employee_id`),
+  KEY `fk_appraisal_appriser_idx` (`appriser`),
+  KEY `fk_appraisal_period_type_idx` (`period_type`),
+  KEY `fk_appraisal_type_idx` (`type`),
   CONSTRAINT `fk_appraisal_appriser` FOREIGN KEY (`appriser`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_appraisal_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_appraisal_period_type` FOREIGN KEY (`period_type`) REFERENCES `appraisal_period_types` (`id`) ON UPDATE CASCADE,
@@ -142,13 +142,13 @@ CREATE TABLE `bonus_distribution` (
   `approved_by` int(11) DEFAULT NULL,
   `details` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_bondtl_employee` (`employee_id`),
-  KEY `fk_bondtl_granted` (`granted_by`),
-  KEY `fk_bondtl_approved` (`approved_by`),
   KEY `idx_granted_date` (`granted_on`),
   KEY `idx_approved_date` (`approved_on`),
-  KEY `fk_bondtl_bonus` (`bonus_id`),
-  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  KEY `fk_bondtl_employee_idx` (`employee_id`),
+  KEY `fk_bondtl_granted_idx` (`granted_by`),
+  KEY `fk_bondtl_approved_idx` (`approved_by`),
+  KEY `fk_bondtl_bonus_idx` (`bonus_id`),
+  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_bonus` FOREIGN KEY (`bonus_id`) REFERENCES `bonuses` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
@@ -165,12 +165,7 @@ DROP TABLE IF EXISTS `bonuses`;
 CREATE TABLE `bonuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
-  `granted_on` date NOT NULL,
-  `granted_by` int(11) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_bonus_granted_by_idx` (`granted_by`),
-  CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -242,8 +237,8 @@ CREATE TABLE `countries` (
   UNIQUE KEY `idx_iso_code2` (`iso_code2`),
   UNIQUE KEY `idx_iso_code3` (`iso_code3`),
   UNIQUE KEY `idx_tld` (`tld`),
-  KEY `fk_ctry_region` (`region_id`),
   KEY `idx_name_en` (`name_en`),
+  KEY `fk_ctry_region_idx` (`region_id`),
   CONSTRAINT `fk_ctry_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of coutries where the company has activities';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -280,6 +275,7 @@ CREATE TABLE `departments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `established` date DEFAULT NULL COMMENT 'Date on which the department was created',
+  `closed` date DEFAULT NULL COMMENT 'Date on which the department was closed or disbanded',
   `size` int(11) DEFAULT NULL COMMENT 'Current number of employees working in the department',
   `manager_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -302,7 +298,7 @@ CREATE TABLE `divisions` (
   `location_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_division_name` (`name`),
-  KEY `fk_division_location` (`location_id`),
+  KEY `fk_division_location_idx` (`location_id`),
   CONSTRAINT `fk_division_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Company''s divisions';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -425,11 +421,11 @@ CREATE TABLE `employees` (
   `division_id` int(11) NOT NULL COMMENT 'Current division',
   `salary` decimal(12,2) DEFAULT NULL COMMENT 'Current GROSS salary',
   PRIMARY KEY (`id`),
-  KEY `fk_emp_job_id` (`job_id`),
-  KEY `fk_emp_manager_id` (`manager_id`),
-  KEY `fk_emp_department_id` (`department_id`),
-  KEY `fk_emp_division_id` (`division_id`),
-  KEY `fk_emp_person_id` (`person_id`),
+  KEY `fk_emp_job_id_idx` (`job_id`),
+  KEY `fk_emp_manager_id_idx` (`manager_id`),
+  KEY `fk_emp_department_id_idx` (`department_id`),
+  KEY `fk_emp_division_id_idx` (`division_id`),
+  KEY `fk_emp_person_id_idx` (`person_id`),
   CONSTRAINT `fk_emp_department_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_emp_division_id` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_emp_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
@@ -541,9 +537,9 @@ CREATE TABLE `job_candidates` (
   `employee_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_candidate_interviewed` (`first_interview`),
-  KEY `fk_candidate_employee` (`employee_id`),
-  KEY `fk_candidate_job` (`job_id`),
-  KEY `fk_candidate_person` (`person_id`),
+  KEY `fk_candidate_employee_idx` (`employee_id`),
+  KEY `fk_candidate_job_idx` (`job_id`),
+  KEY `fk_candidate_person_idx` (`person_id`),
   CONSTRAINT `fk_candidate_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
@@ -567,10 +563,10 @@ CREATE TABLE `job_history` (
   `approved_on` date DEFAULT NULL,
   `approved_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_jobhist_employee` (`employee_id`),
-  KEY `fk_jobhist_job` (`job_id`),
-  KEY `fk_jobhist_approved` (`approved_by`),
-  KEY `fk_jobhist_granted` (`granted_by`),
+  KEY `fk_jobhist_employee_idx` (`employee_id`),
+  KEY `fk_jobhist_job_idx` (`job_id`),
+  KEY `fk_jobhist_approved_idx` (`approved_by`),
+  KEY `fk_jobhist_granted_idx` (`granted_by`),
   CONSTRAINT `fk_jobhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
@@ -591,7 +587,7 @@ CREATE TABLE `job_offers` (
   `description` blob NOT NULL,
   `job_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_job_offer_job_id` (`job_id`),
+  KEY `fk_job_offer_job_id_idx` (`job_id`),
   CONSTRAINT `fk_job_offer_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -645,7 +641,7 @@ CREATE TABLE `locations` (
   `country_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_location_name` (`name`),
-  KEY `fk_loc_country` (`country_id`),
+  KEY `fk_loc_country_idx` (`country_id`),
   CONSTRAINT `fk_loc_country` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Locations of company''s offices, wharehouses, etc.';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -666,8 +662,8 @@ CREATE TABLE `memos` (
   `written_by` int(11) NOT NULL COMMENT 'The author of the memo/note',
   PRIMARY KEY (`id`),
   KEY `idx_memo_from` (`from_date`),
-  KEY `fk_memo_employee` (`employee_id`),
-  KEY `fk_memo_written` (`written_by`),
+  KEY `fk_memo_employee_idx` (`employee_id`),
+  KEY `fk_memo_written_idx` (`written_by`),
   CONSTRAINT `fk_memo_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_memo_written` FOREIGN KEY (`written_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Notes on employees''s behviour, attitude, problematics, etc.';
@@ -722,7 +718,7 @@ CREATE TABLE `person_relation_types` (
   `title` varchar(64) NOT NULL,
   `reverse_id` varchar(16) DEFAULT NULL COMMENT 'Used to define the reverse relation',
   PRIMARY KEY (`id`),
-  KEY `fk_prel_type_rev` (`id`),
+  KEY `fk_prel_type_rev_idx` (`id`),
   CONSTRAINT `fk_prel_type_rev` FOREIGN KEY (`id`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -741,9 +737,9 @@ CREATE TABLE `person_relations` (
   `person2` int(11) NOT NULL,
   `from_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_prel_person1` (`person1`),
-  KEY `fk_prel_type` (`type`),
-  KEY `fk_prel_person2` (`person2`),
+  KEY `fk_prel_person1_idx` (`person1`),
+  KEY `fk_prel_type_idx` (`type`),
+  KEY `fk_prel_person2_idx` (`person2`),
   CONSTRAINT `fk_prel_person1` FOREIGN KEY (`person1`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prel_person2` FOREIGN KEY (`person2`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prel_type` FOREIGN KEY (`type`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
@@ -829,9 +825,9 @@ CREATE TABLE `sal_history` (
   `approved_on` date DEFAULT NULL,
   `approved_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_salhist_employee` (`employee_id`),
-  KEY `fk_salhist_approved` (`approved_by`),
-  KEY `fk_salhist_granted` (`granted_by`),
+  KEY `fk_salhist_employee_idx` (`employee_id`),
+  KEY `fk_salhist_approved_idx` (`approved_by`),
+  KEY `fk_salhist_granted_idx` (`granted_by`),
   CONSTRAINT `fk_salhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_salhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_salhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
@@ -855,14 +851,28 @@ CREATE TABLE `team_change` (
   `approved_on` date DEFAULT NULL,
   `approved_by` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_tmchng_employee` (`employee_id`),
-  KEY `fk_tmchng_department` (`department`),
-  KEY `fk_tmchng_granted` (`granted_by`),
-  KEY `fk_tmchng_approved` (`approved_by`),
+  KEY `fk_tmchng_employee_idx` (`employee_id`),
+  KEY `fk_tmchng_department_idx` (`department`),
+  KEY `fk_tmchng_granted_idx` (`granted_by`),
+  KEY `fk_tmchng_approved_idx` (`approved_by`),
   CONSTRAINT `fk_tmchng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tmp_leaves`
+--
+
+DROP TABLE IF EXISTS `tmp_leaves`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tmp_leaves` (
+  `name` varchar(128) NOT NULL,
+  `dpt` varchar(32) NOT NULL,
+  `leave_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1445,4 +1455,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-12-03 16:38:49
+-- Dump completed on 2014-03-19 15:17:04

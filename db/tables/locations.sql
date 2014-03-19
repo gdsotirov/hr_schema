@@ -5,8 +5,8 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `idx_location_name` (`name`),
-  KEY `fk_loc_country`    (`country_id`),
+  KEY `idx_location_name`   (`name`),
+  KEY `fk_loc_country_idx`  (`country_id`),
 
   CONSTRAINT `fk_loc_country`
     FOREIGN KEY (`country_id`)

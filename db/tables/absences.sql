@@ -13,11 +13,11 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_absence_employee`   (`employee_id`),
-  KEY `idx_vacation_date`     (`from_date`),
-  KEY `fk_absence_type`       (`type`),
-  KEY `fk_absence_authorized` (`authorized_by`),
-  KEY `fk_absence_deputy`     (`deputy_id`),
+  KEY `fk_absence_employee_idx`   (`employee_id`),
+  KEY `idx_vacation_date`         (`from_date`),
+  KEY `fk_absence_type_idx`       (`type`),
+  KEY `fk_absence_authorized_idx` (`authorized_by`),
+  KEY `fk_absence_deputy_idx`     (`deputy_id`),
 
   CONSTRAINT `fk_absence_employee`
     FOREIGN KEY (`employee_id`)

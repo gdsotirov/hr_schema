@@ -7,9 +7,9 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_prel_person1` (`person1`),
-  KEY `fk_prel_type`    (`type`),
-  KEY `fk_prel_person2` (`person2`),
+  KEY `fk_prel_person1_idx` (`person1`),
+  KEY `fk_prel_type_idx`    (`type`),
+  KEY `fk_prel_person2_idx` (`person2`),
 
   CONSTRAINT `fk_prel_person1`
     FOREIGN KEY (`person1`)
