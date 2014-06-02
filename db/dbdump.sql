@@ -165,7 +165,12 @@ DROP TABLE IF EXISTS `bonuses`;
 CREATE TABLE `bonuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`)
+  `granted_on` date NOT NULL,
+  `granted_by` int(11) DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_bonus_granted_by_idx` (`granted_by`),
+  CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -863,20 +868,6 @@ CREATE TABLE `team_change` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tmp_leaves`
---
-
-DROP TABLE IF EXISTS `tmp_leaves`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tmp_leaves` (
-  `name` varchar(128) NOT NULL,
-  `dpt` varchar(32) NOT NULL,
-  `leave_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping events for database 'hr_schema'
 --
 
@@ -1094,7 +1085,48 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `utl_calcVacDays`(VacId INTEGER) RETURNS decimal(5,1)
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_calcVacDays`(dStartDate DATETIME, dEndDate DATETIME) RETURNS decimal(5,1)
+BEGIN
+  DECLARE tInterval  TIME DEFAULT NULL;
+
+  /* Whole days */
+  IF DATE_FORMAT(dStartDate, '%H:%i') = '00:00'
+     AND DATE_FORMAT(dEndDate, '%H:%i') = '00:00'
+  THEN
+    RETURN DATEDIFF(dEndDate, dStartDate) + 1;
+  END IF;
+
+  /* half day */
+  IF DATE_FORMAT(dStartDate, '%H:%i') != '00:00'
+     AND DATE_FORMAT(dEndDate, '%H:%i') != '00:00'
+     AND DATEDIFF(dEndDate, dStartDate) = 0
+  THEN
+    SET tInterval := TIMEDIFF(dEndDate, dStartDate);
+    IF TIME_FORMAT(tInterval, '%H:%i') = '04:00' THEN
+      RETURN 0.5;
+    ELSE
+      RETURN NULL;
+    END IF;
+  END IF;
+
+  RETURN NULL;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `utl_calcVacDaysId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_calcVacDaysId`(VacId INTEGER) RETURNS decimal(5,1)
 BEGIN
   DECLARE dStartDate DATETIME DEFAULT NULL;
   DECLARE dEndDate   DATETIME DEFAULT NULL;
@@ -1455,4 +1487,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-19 15:17:04
+-- Dump completed on 2014-06-02 19:17:44

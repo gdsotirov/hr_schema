@@ -1,9 +1,18 @@
 DELIMITER //
 
-CREATE FUNCTION utl_calcVacDays(dStartDate DATETIME, dEndDate DATETIME)
+CREATE FUNCTION utl_calcVacDaysId(VacId INTEGER)
 RETURNS DECIMAL(5,1)
 BEGIN
+  DECLARE dStartDate DATETIME DEFAULT NULL;
+  DECLARE dEndDate   DATETIME DEFAULT NULL;
   DECLARE tInterval  TIME DEFAULT NULL;
+
+  SELECT from_date,
+         to_date
+    INTO dStartDate,
+         dEndDate
+    FROM absences
+   WHERE id = VacId;
 
   /* Whole days */
   IF DATE_FORMAT(dStartDate, '%H:%i') = '00:00'
