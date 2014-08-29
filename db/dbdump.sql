@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `hr_schema`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
@@ -148,10 +148,10 @@ CREATE TABLE `bonus_distribution` (
   KEY `fk_bondtl_granted_idx` (`granted_by`),
   KEY `fk_bondtl_approved_idx` (`approved_by`),
   KEY `fk_bondtl_bonus_idx` (`bonus_id`),
-  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_bonus` FOREIGN KEY (`bonus_id`) REFERENCES `bonuses` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Bonueses history';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,9 +165,9 @@ DROP TABLE IF EXISTS `bonuses`;
 CREATE TABLE `bonuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
-  `granted_on` date NOT NULL,
+  `granted_on` date DEFAULT NULL,
   `granted_by` int(11) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
+  `amount` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bonus_granted_by_idx` (`granted_by`),
   CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
@@ -895,8 +895,8 @@ BEGIN
   DECLARE dNetSalary  DECIMAL(10,2);
 
   /* Determine the base */
-  IF dGrossSalary > 2000.0 THEN
-    SET dBaseSal = 2000.0;
+  IF dGrossSalary > 2400.0 THEN
+    SET dBaseSal = 2400.0;
   ELSE
     SET dBaseSal = dGrossSalary;
   END IF;
@@ -1139,27 +1139,7 @@ BEGIN
     FROM absences
    WHERE id = VacId;
 
-  /* Whole days */
-  IF DATE_FORMAT(dStartDate, '%H:%i') = '00:00'
-     AND DATE_FORMAT(dEndDate, '%H:%i') = '00:00'
-  THEN
-    RETURN DATEDIFF(dEndDate, dStartDate) + 1;
-  END IF;
-
-  /* half day */
-  IF DATE_FORMAT(dStartDate, '%H:%i') != '00:00'
-     AND DATE_FORMAT(dEndDate, '%H:%i') != '00:00'
-     AND DATEDIFF(dEndDate, dStartDate) = 0
-  THEN
-    SET tInterval := TIMEDIFF(dEndDate, dStartDate);
-    IF TIME_FORMAT(tInterval, '%H:%i') = '04:00' THEN
-      RETURN 0.5;
-    ELSE
-      RETURN NULL;
-    END IF;
-  END IF;
-
-  RETURN NULL;
+  RETURN utl_calcVacDays(dStartDate, dEndDate);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1487,4 +1467,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-02 19:17:44
+-- Dump completed on 2014-08-29 14:13:16

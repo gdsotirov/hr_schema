@@ -11,8 +11,8 @@ BEGIN
   DECLARE dNetSalary  DECIMAL(10,2);
 
   /* Determine the base */
-  IF dGrossSalary > 2000.0 THEN
-    SET dBaseSal = 2000.0;
+  IF dGrossSalary > 2400.0 THEN
+    SET dBaseSal = 2400.0;
   ELSE
     SET dBaseSal = dGrossSalary;
   END IF;

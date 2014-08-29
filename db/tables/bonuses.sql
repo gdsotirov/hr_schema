@@ -1,9 +1,9 @@
 ﻿CREATE TABLE `bonuses` (
   `id`          INT(11)       NOT NULL AUTO_INCREMENT,
   `title`       VARCHAR(64)   NOT NULL,
-  `granted_on`  DATE          NOT NULL,
+  `granted_on`  DATE          DEFAULT NULL,
   `granted_by`  INT(11)       DEFAULT NULL,
-  `amount`      DECIMAL(10,2) NOT NULL,
+  `amount`      DECIMAL(12,2) DEFAULT NULL,
 
   PRIMARY KEY (`id`)
 
