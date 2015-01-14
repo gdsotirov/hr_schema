@@ -5,7 +5,7 @@ SELECT EMP.id            `emp_id`,
        EMP.contract_date `date`,
        'Employment'      `type`,
        JOB.title         `what`,
-       CONCAT('Salary: ', FORMAT(SH.salary, 2))
+       CONCAT('Salary: ', FORMAT(SH.amount, 2))
                          `detail`,
        'Hired'           `status`,
        CONCAT(APP.last_name, ', ', APP.first_name)
@@ -108,7 +108,7 @@ SELECT EMP.id            `emp_id`,
        SH.from_date      `date`,
        'Salary'          `type`,
        'Adjustment'      `what`,
-       CONCAT('Amount: ', FORMAT(SH.salary, 2))
+       CONCAT('Amount: ', FORMAT(SH.amount, 2))
                          `detail`,
        'Approved'        `status`,
        CONCAT(APP.last_name, ', ', APP.first_name)

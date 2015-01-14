@@ -4,7 +4,7 @@ SELECT CONCAT(P1.last_name, ', ', P1.first_name) p1_name,
        CONCAT(P2.last_name, ', ', P2.first_name) p2_name,
        CASE
          WHEN from_date IS NOT NULL THEN
-           CONCAT('since ', FORMAT(from_date, 'YYYY-MM-DD'))
+           CONCAT('since ', DATE_FORMAT(PR.from_date, '%Y-%m-%d'))
        END since
   FROM person_relations PR,
        person_relation_types PRT,

@@ -10,6 +10,7 @@
   `department_id` INT(11)       DEFAULT NULL  COMMENT 'Current department',
   `division_id`   INT(11)       NOT NULL      COMMENT 'Current division',
   `salary`        DECIMAL(12,2) DEFAULT NULL  COMMENT 'Current GROSS salary',
+  `currency`      CHAR(3)       DEFAULT NULL,
 
   PRIMARY KEY (`id`),
 
@@ -18,6 +19,7 @@
   KEY `fk_emp_manager_id_idx`     (`manager_id`),
   KEY `fk_emp_department_id_idx`  (`department_id`),
   KEY `fk_emp_division_id_idx`    (`division_id`),
+  KEY `fk_emp_currency_idx`       (`currency`),
 
   CONSTRAINT `fk_emp_person_id`
     FOREIGN KEY (`person_id`)
@@ -42,6 +44,11 @@
   CONSTRAINT `fk_emp_division_id`
     FOREIGN KEY (`division_id`)
     REFERENCES `divisions` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_currency`
+    FOREIGN KEY (`currency`)
+    REFERENCES `currencies` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
