@@ -13,7 +13,7 @@ SELECT CONCAT(PER.last_name, ', ', PER.first_name) fullname,
        (SELECT MAX(SH.from_date)
           FROM sal_history SH
          WHERE SH.employee_id = EMP.id
-           AND SH.salary = EMP.salary
+           AND SH.amount = EMP.salary
        ) last_sal_change,
        EMP.salary salary
   FROM employees   EMP,
