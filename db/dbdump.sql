@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `hr_schema`;
--- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
@@ -203,40 +203,38 @@ CREATE TABLE `bonuses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `comp_balance`
+-- Temporary view structure for view `comp_balance`
 --
 
 DROP TABLE IF EXISTS `comp_balance`;
 /*!50001 DROP VIEW IF EXISTS `comp_balance`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `comp_balance` (
-  `Number` tinyint NOT NULL,
-  `Name` tinyint NOT NULL,
-  `Until` tinyint NOT NULL,
-  `HPlus` tinyint NOT NULL,
-  `HMinus` tinyint NOT NULL,
-  `Balance` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `comp_balance` AS SELECT 
+ 1 AS `Number`,
+ 1 AS `Name`,
+ 1 AS `Until`,
+ 1 AS `HPlus`,
+ 1 AS `HMinus`,
+ 1 AS `Balance`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `comp_list`
+-- Temporary view structure for view `comp_list`
 --
 
 DROP TABLE IF EXISTS `comp_list`;
 /*!50001 DROP VIEW IF EXISTS `comp_list`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `comp_list` (
-  `Name` tinyint NOT NULL,
-  `Day` tinyint NOT NULL,
-  `Start` tinyint NOT NULL,
-  `End` tinyint NOT NULL,
-  `Total` tinyint NOT NULL,
-  `Projects` tinyint NOT NULL,
-  `Tasks` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `comp_list` AS SELECT 
+ 1 AS `Name`,
+ 1 AS `Day`,
+ 1 AS `Start`,
+ 1 AS `End`,
+ 1 AS `Total`,
+ 1 AS `Projects`,
+ 1 AS `Tasks`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -294,24 +292,23 @@ CREATE TABLE `currencies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `current_absences`
+-- Temporary view structure for view `current_absences`
 --
 
 DROP TABLE IF EXISTS `current_absences`;
 /*!50001 DROP VIEW IF EXISTS `current_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `current_absences` (
-  `name` tinyint NOT NULL,
-  `emp_name` tinyint NOT NULL,
-  `job_title` tinyint NOT NULL,
-  `abs_type` tinyint NOT NULL,
-  `from_date` tinyint NOT NULL,
-  `to_date` tinyint NOT NULL,
-  `days_left` tinyint NOT NULL,
-  `deputy` tinyint NOT NULL,
-  `auth_by` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `current_absences` AS SELECT 
+ 1 AS `name`,
+ 1 AS `emp_name`,
+ 1 AS `job_title`,
+ 1 AS `abs_type`,
+ 1 AS `from_date`,
+ 1 AS `to_date`,
+ 1 AS `days_left`,
+ 1 AS `deputy`,
+ 1 AS `auth_by`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -355,101 +352,96 @@ CREATE TABLE `divisions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `emp_absences`
+-- Temporary view structure for view `emp_absences`
 --
 
 DROP TABLE IF EXISTS `emp_absences`;
 /*!50001 DROP VIEW IF EXISTS `emp_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `emp_absences` (
-  `emp_id` tinyint NOT NULL,
-  `emp_name` tinyint NOT NULL,
-  `abs_type` tinyint NOT NULL,
-  `from_date` tinyint NOT NULL,
-  `to_date` tinyint NOT NULL,
-  `for_year` tinyint NOT NULL,
-  `dur_days` tinyint NOT NULL,
-  `deputy` tinyint NOT NULL,
-  `auth_by` tinyint NOT NULL,
-  `status` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `emp_absences` AS SELECT 
+ 1 AS `emp_id`,
+ 1 AS `emp_name`,
+ 1 AS `abs_type`,
+ 1 AS `from_date`,
+ 1 AS `to_date`,
+ 1 AS `for_year`,
+ 1 AS `dur_days`,
+ 1 AS `deputy`,
+ 1 AS `auth_by`,
+ 1 AS `status`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `emp_fullname`
+-- Temporary view structure for view `emp_fullname`
 --
 
 DROP TABLE IF EXISTS `emp_fullname`;
 /*!50001 DROP VIEW IF EXISTS `emp_fullname`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `emp_fullname` (
-  `full_name` tinyint NOT NULL,
-  `emp_id` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `emp_fullname` AS SELECT 
+ 1 AS `full_name`,
+ 1 AS `emp_id`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `emp_history`
+-- Temporary view structure for view `emp_history`
 --
 
 DROP TABLE IF EXISTS `emp_history`;
 /*!50001 DROP VIEW IF EXISTS `emp_history`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `emp_history` (
-  `emp_id` tinyint NOT NULL,
-  `name` tinyint NOT NULL,
-  `date` tinyint NOT NULL,
-  `type` tinyint NOT NULL,
-  `what` tinyint NOT NULL,
-  `detail` tinyint NOT NULL,
-  `status` tinyint NOT NULL,
-  `who` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `emp_history` AS SELECT 
+ 1 AS `emp_id`,
+ 1 AS `name`,
+ 1 AS `date`,
+ 1 AS `type`,
+ 1 AS `what`,
+ 1 AS `detail`,
+ 1 AS `status`,
+ 1 AS `who`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `emp_resigned`
+-- Temporary view structure for view `emp_resigned`
 --
 
 DROP TABLE IF EXISTS `emp_resigned`;
 /*!50001 DROP VIEW IF EXISTS `emp_resigned`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `emp_resigned` (
-  `fullname` tinyint NOT NULL,
-  `last_position` tinyint NOT NULL,
-  `last_department` tinyint NOT NULL,
-  `last_division` tinyint NOT NULL,
-  `hired` tinyint NOT NULL,
-  `resigned` tinyint NOT NULL,
-  `reason` tinyint NOT NULL,
-  `service_length` tinyint NOT NULL,
-  `age_at_leave` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `emp_resigned` AS SELECT 
+ 1 AS `fullname`,
+ 1 AS `last_position`,
+ 1 AS `last_department`,
+ 1 AS `last_division`,
+ 1 AS `hired`,
+ 1 AS `resigned`,
+ 1 AS `reason`,
+ 1 AS `service_length`,
+ 1 AS `age_at_leave`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `emp_summary`
+-- Temporary view structure for view `emp_summary`
 --
 
 DROP TABLE IF EXISTS `emp_summary`;
 /*!50001 DROP VIEW IF EXISTS `emp_summary`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `emp_summary` (
-  `fullname` tinyint NOT NULL,
-  `position` tinyint NOT NULL,
-  `contracted` tinyint NOT NULL,
-  `hired` tinyint NOT NULL,
-  `service_length` tinyint NOT NULL,
-  `age` tinyint NOT NULL,
-  `last_job_change` tinyint NOT NULL,
-  `last_sal_change` tinyint NOT NULL,
-  `salary` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `emp_summary` AS SELECT 
+ 1 AS `fullname`,
+ 1 AS `position`,
+ 1 AS `contracted`,
+ 1 AS `hired`,
+ 1 AS `service_length`,
+ 1 AS `age`,
+ 1 AS `last_job_change`,
+ 1 AS `last_sal_change`,
+ 1 AS `salary`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -665,21 +657,20 @@ CREATE TABLE `jobs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `leaves_plan`
+-- Temporary view structure for view `leaves_plan`
 --
 
 DROP TABLE IF EXISTS `leaves_plan`;
 /*!50001 DROP VIEW IF EXISTS `leaves_plan`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `leaves_plan` (
-  `emp_name` tinyint NOT NULL,
-  `for_year` tinyint NOT NULL,
-  `MONTH(AB.from_date)` tinyint NOT NULL,
-  `from_date` tinyint NOT NULL,
-  `to_date` tinyint NOT NULL,
-  `dur_days` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `leaves_plan` AS SELECT 
+ 1 AS `emp_name`,
+ 1 AS `for_year`,
+ 1 AS `MONTH(AB.from_date)`,
+ 1 AS `from_date`,
+ 1 AS `to_date`,
+ 1 AS `dur_days`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -724,40 +715,38 @@ CREATE TABLE `memos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `pending_absences`
+-- Temporary view structure for view `pending_absences`
 --
 
 DROP TABLE IF EXISTS `pending_absences`;
 /*!50001 DROP VIEW IF EXISTS `pending_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `pending_absences` (
-  `name` tinyint NOT NULL,
-  `emp_name` tinyint NOT NULL,
-  `job_title` tinyint NOT NULL,
-  `abs_type` tinyint NOT NULL,
-  `from_date` tinyint NOT NULL,
-  `to_date` tinyint NOT NULL,
-  `dur_days` tinyint NOT NULL,
-  `deputy` tinyint NOT NULL,
-  `auth_by` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `pending_absences` AS SELECT 
+ 1 AS `name`,
+ 1 AS `emp_name`,
+ 1 AS `job_title`,
+ 1 AS `abs_type`,
+ 1 AS `from_date`,
+ 1 AS `to_date`,
+ 1 AS `dur_days`,
+ 1 AS `deputy`,
+ 1 AS `auth_by`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary table structure for view `per_relations_list`
+-- Temporary view structure for view `per_relations_list`
 --
 
 DROP TABLE IF EXISTS `per_relations_list`;
 /*!50001 DROP VIEW IF EXISTS `per_relations_list`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `per_relations_list` (
-  `p1_name` tinyint NOT NULL,
-  `relation` tinyint NOT NULL,
-  `p2_name` tinyint NOT NULL,
-  `since` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `per_relations_list` AS SELECT 
+ 1 AS `p1_name`,
+ 1 AS `relation`,
+ 1 AS `p2_name`,
+ 1 AS `since`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -842,24 +831,23 @@ CREATE TABLE `regions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `requested_absences`
+-- Temporary view structure for view `requested_absences`
 --
 
 DROP TABLE IF EXISTS `requested_absences`;
 /*!50001 DROP VIEW IF EXISTS `requested_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `requested_absences` (
-  `name` tinyint NOT NULL,
-  `emp_name` tinyint NOT NULL,
-  `job_title` tinyint NOT NULL,
-  `abs_type` tinyint NOT NULL,
-  `from_date` tinyint NOT NULL,
-  `to_date` tinyint NOT NULL,
-  `dur_days` tinyint NOT NULL,
-  `deputy` tinyint NOT NULL,
-  `auth_by` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `requested_absences` AS SELECT 
+ 1 AS `name`,
+ 1 AS `emp_name`,
+ 1 AS `job_title`,
+ 1 AS `abs_type`,
+ 1 AS `from_date`,
+ 1 AS `to_date`,
+ 1 AS `dur_days`,
+ 1 AS `deputy`,
+ 1 AS `auth_by`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -1286,7 +1274,6 @@ DELIMITER ;
 -- Final view structure for view `comp_balance`
 --
 
-/*!50001 DROP TABLE IF EXISTS `comp_balance`*/;
 /*!50001 DROP VIEW IF EXISTS `comp_balance`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1305,7 +1292,6 @@ DELIMITER ;
 -- Final view structure for view `comp_list`
 --
 
-/*!50001 DROP TABLE IF EXISTS `comp_list`*/;
 /*!50001 DROP VIEW IF EXISTS `comp_list`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1324,7 +1310,6 @@ DELIMITER ;
 -- Final view structure for view `current_absences`
 --
 
-/*!50001 DROP TABLE IF EXISTS `current_absences`*/;
 /*!50001 DROP VIEW IF EXISTS `current_absences`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1343,7 +1328,6 @@ DELIMITER ;
 -- Final view structure for view `emp_absences`
 --
 
-/*!50001 DROP TABLE IF EXISTS `emp_absences`*/;
 /*!50001 DROP VIEW IF EXISTS `emp_absences`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1362,7 +1346,6 @@ DELIMITER ;
 -- Final view structure for view `emp_fullname`
 --
 
-/*!50001 DROP TABLE IF EXISTS `emp_fullname`*/;
 /*!50001 DROP VIEW IF EXISTS `emp_fullname`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1381,7 +1364,6 @@ DELIMITER ;
 -- Final view structure for view `emp_history`
 --
 
-/*!50001 DROP TABLE IF EXISTS `emp_history`*/;
 /*!50001 DROP VIEW IF EXISTS `emp_history`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1400,7 +1382,6 @@ DELIMITER ;
 -- Final view structure for view `emp_resigned`
 --
 
-/*!50001 DROP TABLE IF EXISTS `emp_resigned`*/;
 /*!50001 DROP VIEW IF EXISTS `emp_resigned`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1419,7 +1400,6 @@ DELIMITER ;
 -- Final view structure for view `emp_summary`
 --
 
-/*!50001 DROP TABLE IF EXISTS `emp_summary`*/;
 /*!50001 DROP VIEW IF EXISTS `emp_summary`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1429,7 +1409,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_summary` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `position`,`emp`.`contract_date` AS `contracted`,`emp`.`hire_date` AS `hired`,`utl_getDateDiffStr`(`emp`.`hire_date`,curdate()) AS `service_length`,`utl_getDateDiffStr`(`per`.`birth_date`,curdate()) AS `age`,(select max(`jh`.`from_date`) from `job_history` `jh` where ((`jh`.`employee_id` = `emp`.`id`) and (`jh`.`job_id` = `emp`.`job_id`))) AS `last_job_change`,(select max(`sh`.`from_date`) from `sal_history` `sh` where ((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`amount` = `emp`.`salary`))) AS `last_sal_change`,`emp`.`salary` AS `salary` from ((`employees` `emp` join `persons` `per`) join `jobs` `pos`) where ((`pos`.`id` = `emp`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and isnull(`emp`.`leave_date`)) order by `emp`.`hire_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
+/*!50001 VIEW `emp_summary` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `position`,`emp`.`contract_date` AS `contracted`,`emp`.`hire_date` AS `hired`,`UTL_GETDATEDIFFSTR`(`emp`.`hire_date`,curdate()) AS `service_length`,`UTL_GETDATEDIFFSTR`(`per`.`birth_date`,curdate()) AS `age`,(select max(`jh`.`from_date`) from `job_history` `jh` where ((`jh`.`employee_id` = `emp`.`id`) and (`jh`.`job_id` = `emp`.`job_id`))) AS `last_job_change`,(select max(`sh`.`from_date`) from `sal_history` `sh` where ((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`amount` = `emp`.`salary`))) AS `last_sal_change`,`emp`.`salary` AS `salary` from ((`employees` `emp` join `persons` `per`) join `jobs` `pos`) where ((`pos`.`id` = `emp`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and isnull(`emp`.`leave_date`)) order by `emp`.`hire_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1438,7 +1418,6 @@ DELIMITER ;
 -- Final view structure for view `leaves_plan`
 --
 
-/*!50001 DROP TABLE IF EXISTS `leaves_plan`*/;
 /*!50001 DROP VIEW IF EXISTS `leaves_plan`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1457,7 +1436,6 @@ DELIMITER ;
 -- Final view structure for view `pending_absences`
 --
 
-/*!50001 DROP TABLE IF EXISTS `pending_absences`*/;
 /*!50001 DROP VIEW IF EXISTS `pending_absences`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1476,7 +1454,6 @@ DELIMITER ;
 -- Final view structure for view `per_relations_list`
 --
 
-/*!50001 DROP TABLE IF EXISTS `per_relations_list`*/;
 /*!50001 DROP VIEW IF EXISTS `per_relations_list`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1495,7 +1472,6 @@ DELIMITER ;
 -- Final view structure for view `requested_absences`
 --
 
-/*!50001 DROP TABLE IF EXISTS `requested_absences`*/;
 /*!50001 DROP VIEW IF EXISTS `requested_absences`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1519,4 +1495,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-30  9:09:40
+-- Dump completed on 2015-04-07 18:12:58
