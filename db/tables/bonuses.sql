@@ -4,10 +4,11 @@
   `granted_on`  DATE          DEFAULT NULL,
   `granted_by`  INT(11)       DEFAULT NULL,
   `amount`      DECIMAL(12,2) DEFAULT NULL,
+  `currency`    VARCHAR(5)    DEFAULT NULL,
 
   PRIMARY KEY (`id`)
 
-  KEY `fk_bonus_granted_by_idx` (`granted_by`),
+  KEY `fk_bonuses_granted_idx` (`granted_by`),
 
   CONSTRAINT `fk_bonuses_granted`
     FOREIGN KEY (`granted_by`)
