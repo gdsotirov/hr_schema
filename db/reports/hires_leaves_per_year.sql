@@ -1,7 +1,7 @@
 SELECT HL.yr                    `Year`,
        SUM(IFNULL(HL.hires, 0)) `Hires`,
        SUM(IFNULL(HL.lefts, 0)) `Leaves`,
-       SUM(IFNULL(HL.hires, 0)) -
+	   SUM(IFNULL(HL.hires, 0)) -
        SUM(IFNULL(HL.lefts, 0)) `Balance`
   FROM (SELECT YEAR(hire_date) yr, sum(1) hires, SUM(0) lefts
           FROM employees
@@ -13,4 +13,4 @@ SELECT HL.yr                    `Year`,
         GROUP BY YEAR(leave_date)
        ) HL
  GROUP BY HL.yr
- ORDER BY HL.yr;
+ ORDER BY HL.yr DESC;
