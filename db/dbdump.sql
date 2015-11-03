@@ -161,7 +161,7 @@ CREATE TABLE `bonus_distribution` (
   `bonus_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
   `amount` decimal(12,2) NOT NULL COMMENT 'Amount in GROSS',
-  `currency` char(3) DEFAULT NULL,
+  `currency` char(3) DEFAULT 'BGN',
   `granted_on` date NOT NULL,
   `granted_by` int(11) NOT NULL,
   `approved_on` date DEFAULT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE `bonuses` (
   `granted_on` date DEFAULT NULL,
   `granted_by` int(11) DEFAULT NULL,
   `amount` decimal(12,2) DEFAULT NULL,
-  `currency` varchar(5) DEFAULT NULL,
+  `currency` varchar(5) DEFAULT 'BGN',
   PRIMARY KEY (`id`),
   KEY `fk_bonuses_granted_idx` (`granted_by`),
   CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
@@ -1573,4 +1573,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-04 16:39:09
+-- Dump completed on 2015-11-03 13:46:06
