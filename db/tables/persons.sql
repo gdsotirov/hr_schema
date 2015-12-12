@@ -2,6 +2,7 @@
   `id`              INT(11)       NOT NULL AUTO_INCREMENT,
   `first_name`      VARCHAR(64)   NOT NULL,
   `middle_name`     VARCHAR(64)   DEFAULT NULL,
+  `maiden_name`     VARCHAR(32)   DEFAULT NULL,
   `last_name`       VARCHAR(64)   NOT NULL,
   `sex`             ENUM('Male','Female')
                                   NOT NULL,

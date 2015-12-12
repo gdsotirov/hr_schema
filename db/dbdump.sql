@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `hr_schema`;
--- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
--- Host: localhost    Database: hr_schema
+-- Host: 127.0.0.1    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	5.6.14-log
+-- Server version	5.7.9-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -332,6 +332,34 @@ CREATE TABLE `departments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `division_change`
+--
+
+DROP TABLE IF EXISTS `division_change`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `division_change` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL,
+  `from_date` date NOT NULL,
+  `division_id` int(11) NOT NULL,
+  `granted_on` date DEFAULT NULL,
+  `granted_by` int(11) DEFAULT NULL,
+  `approved_on` date DEFAULT NULL,
+  `approved_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_div_chng_emp_idx` (`employee_id`),
+  KEY `fk_div_chng_div_idx` (`division_id`),
+  KEY `fk_div_chng_granted_idx` (`granted_by`),
+  KEY `fk_div_chng_approved_idx` (`approved_by`),
+  CONSTRAINT `fk_div_chng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_div` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_emp` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Employees division change register';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `divisions`
 --
 
@@ -488,7 +516,7 @@ CREATE TABLE `employees` (
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER employee_add
 AFTER INSERT ON employees
@@ -520,7 +548,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER employee_change
 AFTER UPDATE ON employees
@@ -801,6 +829,7 @@ CREATE TABLE `persons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(64) NOT NULL,
   `middle_name` varchar(64) DEFAULT NULL,
+  `maiden_name` varchar(32) DEFAULT NULL,
   `last_name` varchar(64) NOT NULL,
   `sex` enum('Male','Female') NOT NULL,
   `birth_date` date DEFAULT NULL,
@@ -936,8 +965,8 @@ BEGIN
   DECLARE dNetSalary  DECIMAL(10,2);
 
   /* Determine the base */
-  IF dGrossSalary > 2400.0 THEN
-    SET dBaseSal = 2400.0;
+  IF dGrossSalary > 2600.0 THEN
+    SET dBaseSal = 2600.0;
   ELSE
     SET dBaseSal = dGrossSalary;
   END IF;
@@ -1057,6 +1086,40 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `calcNetSalaryVN` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryVN`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
+BEGIN
+  /* See http://nicvn.com/net-gross-salary-converter.html */
+  /* See https://www.hr2b.com/salary-calculator */
+  DECLARE dSocIns    DECIMAL(10,2);
+  DECLARE dHlthIns   DECIMAL(10,2);
+  DECLARE dUnEmplIns DECIMAL(10,2);
+  DECLARE dTrdeUn    DECIMAL(10,2);
+  DECLARE dNetSalary DECIMAL(10,2);
+
+  SET dSocIns    = dGrossSalary * 8 / 100;
+  SET dHlthIns   = dGrossSalary * 1.5 / 100;
+  SET dUnEmplIns = dGrossSalary * 1 / 100;
+  SET dTrdeUn    = dGrossSalary * 1 / 100;
+
+  SET dNetSalary = dGrossSalary - dSocIns - dHlthIns - dUnEmplIns - dTrdeUn;
+
+  RETURN dNetSalary;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `emp_getFullName` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1065,29 +1128,36 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getFullName`(EmpID INTEGER) RETURNS varchar(256) CHARSET utf8
     READS SQL DATA
 BEGIN
-  DECLARE vcResult VARCHAR(256) DEFAULT NULL;
+  DECLARE vcResult   VARCHAR(256) DEFAULT NULL;
   DECLARE vcFrstName VARCHAR(64) DEFAULT NULL;
   DECLARE vcMdleName VARCHAR(64) DEFAULT NULL;
+  DECLARE vcMaidName VARCHAR(32) DEFAULT NULL;
   DECLARE vcLastName VARCHAR(64) DEFAULT NULL;
   DECLARE dEmpLeaveDate DATE DEFAULT NULL;
 
   SELECT PER.first_name,
          PER.middle_name,
+         PER.maiden_name,
          PER.last_name,
          EMP.leave_date
     INTO vcFrstName,
          vcMdleName,
+         vcMaidName,
          vcLastName,
          dEmpLeaveDate
     FROM employees EMP,
          persons   PER
    WHERE EMP.id = EmpID
      AND EMP.person_id = PER.id;
+
+  IF vcMaidName IS NOT NULL THEN
+    SET vcLastName := CONCAT(vcMaidName, '-', vcLastName);
+  END IF;
 
   IF vcMdleName IS NOT NULL THEN
     SET vcResult := CONCAT(vcLastName, ', ', vcFrstName, ' ', vcMdleName);
@@ -1114,7 +1184,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getServiceLength`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
     READS SQL DATA
@@ -1150,7 +1220,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getTimeCurPosition`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
     READS SQL DATA
@@ -1187,6 +1257,110 @@ BEGIN
   END IF;
 
   RETURN vcResult;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getTeamExitDate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getTeamExitDate`(iEmpID INTEGER,
+                                iDepID INTEGER) RETURNS date
+BEGIN
+  DECLARE dLeaveDate DATE DEFAULT NULL;
+  DECLARE dExitDate  DATE DEFAULT NULL;
+
+  /* check arguments */
+  IF iEmpID IS NULL OR iDepID IS NULL THEN
+    RETURN NULL;
+  END IF;
+
+  /* select date of team change */
+  SELECT MIN(from_date)
+    INTO dExitDate
+    FROM team_change TE
+   WHERE employee_id = iEmpID
+     AND department <> iDepID
+     AND from_date >= (SELECT MAX(from_date)
+                         FROM team_change
+                        WHERE employee_id = TE.employee_id
+                          AND department = iDepID);
+
+  /* if no date of team change */
+  IF dExitDate IS NULL THEN
+    /* select leave date, but only if current team is the same */
+    SELECT leave_date
+      INTO dLeaveDate
+      FROM employees
+     WHERE id = iEmpID
+       AND department_id = iDepID;
+
+	/* if leave date found presume it as team exit date */
+	IF dLeaveDate IS NOT NULL THEN
+      SET dExitDate = dLeaveDate;
+    END IF;
+  END IF;
+
+  RETURN dExitDate;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getTeamJoinDate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getTeamJoinDate`(iEmpID INTEGER,
+                                iDepID INTEGER) RETURNS date
+BEGIN
+  DECLARE dHireDate DATE DEFAULT NULL;
+  DECLARE dJoinDate DATE DEFAULT NULL;
+
+  /* check arguments */
+  IF iEmpID IS NULL OR iDepID IS NULL THEN
+    RETURN NULL;
+  END IF;
+
+  /* select date of team change */
+  SELECT MAX(from_date)
+    INTO dJoinDate
+    FROM team_change
+   WHERE employee_id = iEmpID
+     AND department = iDepID;
+
+  /* if no date of team change */
+  IF dJoinDate IS NULL THEN
+    /* select hire date, but only if current team is the same */
+    SELECT hire_date
+      INTO dHireDate
+      FROM employees
+     WHERE id = iEmpID
+       AND department_id = iDepID;
+
+	/* if hire date found presume it as team join date */
+	IF dHireDate IS NOT NULL THEN
+      SET dJoinDate = dHireDate;
+    END IF;
+  END IF;
+
+  RETURN dJoinDate;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1272,7 +1446,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `utl_getDateDiffStr`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET utf8
     NO SQL
@@ -1304,7 +1478,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mgmt_promote`(IN iEmpID INTEGER,
                               IN dBeginDate DATE,
@@ -1573,4 +1747,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-03 13:46:06
+-- Dump completed on 2015-12-12 17:05:49
