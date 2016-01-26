@@ -21,17 +21,17 @@
   CONSTRAINT `fk_candidate_person`
     FOREIGN KEY (`person_id`)
     REFERENCES `persons` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_job`
     FOREIGN KEY (`job_id`)
     REFERENCES `jobs` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_employee`
     FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
 ENGINE=InnoDB

@@ -18,23 +18,23 @@
   CONSTRAINT `fk_tmchng_employee`
     FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tmchng_department`
     FOREIGN KEY (`department`)
     REFERENCES `departments` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tmchng_granted`
     FOREIGN KEY (`granted_by`)
     REFERENCES `employees` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tmchng_approved`
     FOREIGN KEY (`approved_by`)
     REFERENCES `employees` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;

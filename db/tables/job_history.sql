@@ -18,22 +18,22 @@
   CONSTRAINT `fk_jobhist_employee`
     FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_job`
     FOREIGN KEY (`job_id`)
     REFERENCES `jobs` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_granted`
     FOREIGN KEY (`granted_by`)
     REFERENCES `employees` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_approved`
     FOREIGN KEY (`approved_by`)
     REFERENCES `employees` (`id`)
-    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
     ON UPDATE CASCADE
 )
 ENGINE=InnoDB

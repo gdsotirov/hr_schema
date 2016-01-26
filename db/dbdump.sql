@@ -276,6 +276,30 @@ CREATE TABLE `countries` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `curr_rates`
+--
+
+DROP TABLE IF EXISTS `curr_rates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `curr_rates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `from_curr` char(3) NOT NULL,
+  `to_curr` char(3) NOT NULL,
+  `for_date` date NOT NULL,
+  `rate` decimal(10,7) NOT NULL,
+  `country` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_curr_rates_country_idx` (`country`),
+  KEY `fk_curr_rates_from_curr` (`from_curr`),
+  KEY `fk_curr_rates_to_curr` (`to_curr`),
+  CONSTRAINT `fk_curr_rates_country` FOREIGN KEY (`country`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_curr_rates_from_curr` FOREIGN KEY (`from_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_curr_rates_to_curr` FOREIGN KEY (`to_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Currency conversion rates register';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `currencies`
 --
 
@@ -838,8 +862,9 @@ CREATE TABLE `persons` (
   `martial_status` enum('Single','Married','Cohabitation','Divorced','Widowed','Separated') DEFAULT NULL,
   `children` decimal(2,0) DEFAULT NULL,
   `personal_id` varchar(32) DEFAULT NULL,
+  `linkedin_profile` varchar(256) DEFAULT NULL COMMENT 'URL to LinkedIn profile',
   `short_bio` text,
-  `cv_doc` blob,
+  `cv_doc` longblob,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_person_names` (`first_name`,`middle_name`,`last_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -930,10 +955,10 @@ CREATE TABLE `team_change` (
   KEY `fk_tmchng_department_idx` (`department`),
   KEY `fk_tmchng_granted_idx` (`granted_by`),
   KEY `fk_tmchng_approved_idx` (`approved_by`),
-  CONSTRAINT `fk_tmchng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_tmchng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1114,6 +1139,53 @@ BEGIN
   SET dNetSalary = dGrossSalary - dSocIns - dHlthIns - dUnEmplIns - dTrdeUn;
 
   RETURN dNetSalary;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `curr_conversion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `curr_conversion`(amount DECIMAL, currency CHAR(3), to_currency CHAR(3), date_for DATE) RETURNS decimal(30,10)
+BEGIN
+  DECLARE conv_rate DECIMAL(10,6)  DEFAULT NULL;
+  DECLARE err_msg   VARCHAR(128)   DEFAULT NULL;
+  DECLARE result    DECIMAL(30,10) DEFAULT NULL;
+
+  IF date_for IS NULL THEN
+    SET date_for := NOW();
+  END IF;
+
+  IF currency <> to_currency THEN
+    SELECT rate
+      INTO conv_rate
+      FROM curr_rates
+     WHERE from_curr = currency
+       AND to_curr = to_currency
+       AND for_date <= date_for
+     ORDER BY for_date DESC
+     LIMIT 1;
+
+    IF conv_rate IS NULL THEN
+      SET err_msg := CONCAT('No conversion rate for ', currency, ' to ', to_currency, ' for ', DATE_FORMAT(date_for, '%Y-%m-%d'));
+      SIGNAL SQLSTATE '99001' SET MESSAGE_TEXT = err_msg;
+    END IF;
+
+    SET result := amount * conv_rate;
+  ELSE
+    SET result := amount; /* conversion rate is 1 */
+  END IF;
+
+  RETURN result;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1747,4 +1819,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-12 17:05:49
+-- Dump completed on 2016-01-26 16:22:41
