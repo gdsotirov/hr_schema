@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE FUNCTION curr_conversion(amount      DECIMAL,
+CREATE FUNCTION curr_conversion(amount      DECIMAL(30,10),
                                 currency    CHAR(3),
                                 to_currency CHAR(3),
                                 date_for    DATE)
