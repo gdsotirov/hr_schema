@@ -18,7 +18,9 @@ SELECT CONCAT(PER.first_name, ' ', PER.last_name) emp_name,
                            )
            )
        )
-   AND EMP.id = 1
+   AND EMP.person_id = PER.id
+   AND CONCAT(PER.first_name, ' ', PER.last_name) LIKE '%'
    AND ATD.from_date >= EMP.hire_date
    AND ATD.from_date <= IF(EMP.leave_date IS NOT NULL, EMP.leave_date, NOW())
- GROUP BY EMP.id, ATD.for_year;
+ GROUP BY EMP.id, ATD.for_year
+ ORDER BY ATD.for_year DESC;
