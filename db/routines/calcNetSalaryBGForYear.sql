@@ -23,11 +23,11 @@ BEGIN
   CASE
     WHEN yForYear BETWEEN 2010 AND 2012 THEN
       SET dMaxInsInc = 2000;
-	WHEN yForYear = 2013 THEN
+    WHEN yForYear = 2013 THEN
       SET dMaxInsInc = 2200;
     WHEN yForYear = 2014 THEN
       SET dMaxInsInc = 2400;
-	WHEN yForYear >= 2015 THEN
+    WHEN yForYear >= 2015 THEN
       SET dMaxInsInc = 2600;
   END CASE;
 
