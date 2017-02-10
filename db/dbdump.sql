@@ -1,5 +1,6 @@
+CREATE DATABASE  IF NOT EXISTS `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `hr_schema`;
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: hr_schema
 -- ------------------------------------------------------
@@ -980,6 +981,34 @@ CREATE TABLE `team_change` (
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBG`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
 BEGIN
+  RETURN hr_schema.calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `calcNetSalaryBGForYear` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dGrossSalary DECIMAL, yForYear YEAR) RETURNS decimal(10,2)
+BEGIN
+  /* Maximal Social Insurance Income */
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2600 /* 2015 onwards */;
+  /* Precent for State Public Insurance */ 
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 7.5  /* 2011 onwards */;
+  /* Percent for Additional Mandatory Pension Insurance */
+  DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
+  /* Percent for Health Insurance */
+  DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
+
   DECLARE dBaseSal    DECIMAL(10,2);
   DECLARE dSPIAmt     DECIMAL(10,2);
   DECLARE dAMPIAmt    DECIMAL(10,2);
@@ -988,21 +1017,44 @@ BEGIN
   DECLARE dIncomeTax  DECIMAL(10,2);
   DECLARE dNetSalary  DECIMAL(10,2);
 
+  /* Determine Maximal Social Insurance Income per year */
+  CASE
+    WHEN yForYear BETWEEN 2010 AND 2012 THEN
+      SET dMaxInsInc = 2000;
+    WHEN yForYear = 2013 THEN
+      SET dMaxInsInc = 2200;
+    WHEN yForYear = 2014 THEN
+      SET dMaxInsInc = 2400;
+    WHEN yForYear >= 2015 THEN
+      SET dMaxInsInc = 2600;
+  END CASE;
+
+  CASE
+    WHEN yForYear = 2010 THEN
+      SET dPubInsPerc = 2.2;
+      SET dAMPInsPerc = 6.7;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear >= 2011 THEN
+      SET dPubInsPerc = 2.2;
+      SET dAMPInsPerc = 7.5;
+      SET dHlthInPerc = 3.2;
+  END CASE;
+
   /* Determine the base */
-  IF dGrossSalary > 2600.0 THEN
-    SET dBaseSal = 2600.0;
+  IF dGrossSalary > dMaxInsInc THEN
+    SET dBaseSal = dMaxInsInc;
   ELSE
     SET dBaseSal = dGrossSalary;
   END IF;
 
   /* Calcualte State Public Insurance */
-  SET dSPIAmt  = ROUND(dBaseSal * 7.5 / 100, 2);
+  SET dSPIAmt  = ROUND(dBaseSal * dPubInsPerc / 100, 2);
 
   /* Calculate Additional Mandatory Pension Insurance */
-  SET dAMPIAmt = ROUND(dBaseSal * 2.2 / 100, 2);
+  SET dAMPIAmt = ROUND(dBaseSal * dAMPInsPerc / 100, 2);
 
   /* Calculate Health Insurance */
-  SET dHIAmt   = ROUND(dBaseSal * 3.2 / 100, 2);
+  SET dHIAmt   = ROUND(dBaseSal * dHlthInPerc / 100, 2);
 
   /* Calculate Taxable Amount */
   SET dTaxableAmt = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt, 2);
@@ -1021,6 +1073,7 @@ BEGIN
                         + ROUND((600 - 250) * 22 / 100, 1)
                         + ROUND((250 - 180) * 20 / 100, 1);
   END CASE;*/
+  /* Flat Total Income Tax of 10% */
   SET dIncomeTax = ROUND(dTaxableAmt * 10 / 100, 2);
 
   /* Calcualte Net Salary */
@@ -1334,6 +1387,110 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getPositionEndDate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getPositionEndDate`(iEmpID INTEGER,
+                                   iJobID INTEGER) RETURNS date
+BEGIN
+  DECLARE dLeaveDate DATE DEFAULT NULL;
+  DECLARE dEndDate   DATE DEFAULT NULL;
+
+  /* check arguments */
+  IF iEmpID IS NULL OR iJobID IS NULL THEN
+    RETURN NULL;
+  END IF;
+
+  /* select date of job change */
+  SELECT MIN(from_date)
+    INTO dEndDate
+    FROM job_history JH
+   WHERE employee_id = iEmpID
+     AND job_id      <> iJobID
+     AND from_date >= (SELECT MAX(from_date)
+                         FROM job_history
+                        WHERE employee_id = JH.employee_id
+                          AND job_id      = iJobID);
+
+  /* if no date of team change */
+  IF dEndDate IS NULL THEN
+    /* select hire date, but only if current job is the same */
+    SELECT leave_date
+      INTO dLeaveDate
+      FROM employees
+     WHERE id     = iEmpID
+       AND job_id = iJobID;
+
+    /* if hire date found presume it as team join date */
+    IF dLeaveDate IS NOT NULL THEN
+      SET dEndDate = dLeaveDate;
+    END IF;
+  END IF;
+
+  RETURN dEndDate;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getPositionStartDate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getPositionStartDate`(iEmpID INTEGER,
+                                     iJobID INTEGER) RETURNS date
+BEGIN
+  DECLARE dHireDate  DATE DEFAULT NULL;
+  DECLARE dStartDate DATE DEFAULT NULL;
+
+  /* check arguments */
+  IF iEmpID IS NULL OR iJobID IS NULL THEN
+    RETURN NULL;
+  END IF;
+
+  /* select date of job change */
+  SELECT MAX(from_date)
+    INTO dStartDate
+    FROM job_history
+   WHERE employee_id = iEmpID
+     AND job_id      = iJobID;
+
+  /* if no date of team change */
+  IF dStartDate IS NULL THEN
+    /* select hire date, but only if current job is the same */
+    SELECT hire_date
+      INTO dHireDate
+      FROM employees
+     WHERE id = iEmpID
+       AND job_id = iJobID;
+
+	/* if hire date found presume it as job start date */
+	IF dHireDate IS NOT NULL THEN
+      SET dStartDate = dHireDate;
+    END IF;
+  END IF;
+
+  RETURN dStartDate;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `getTeamExitDate` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1535,6 +1692,113 @@ BEGIN
   SET days := TIMESTAMPDIFF(DAY, DATE_ADD(date1, INTERVAL years * 12 + months MONTH), date2);
 
   RETURN CONCAT(years, 'y ', months, 'm ', days, 'd');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `emp_transfer` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `emp_transfer`(IN iEmpID     INTEGER,
+                              IN dBeginDate DATE,
+                              IN iJobID     INTEGER,
+                              IN iTeamID    INTEGER,
+                              IN nSalary    DECIMAL,
+                              IN cCurrency  CHAR(3),
+                              IN dGrantedOn DATE,
+                              IN iGrantedBy INTEGER,
+                              IN dApprOn    DATE,
+                              IN iApprBy    INTEGER)
+BEGIN
+  DECLARE emp_cnt INTEGER DEFAULT 0;
+  DECLARE job_cnt INTEGER DEFAULT 0;
+  DECLARE tm_cnt  INTEGER DEFAULT 0;
+
+  SELECT COUNT(*)
+    INTO emp_cnt
+    FROM employees
+   WHERE id = iEmpID;
+
+  IF ( emp_cnt = 0 ) THEN
+    SET @msg = CONCAT('Unknown employee with identifier <', iEmpID, '>!');
+    SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = @msg;
+  END IF;
+
+  IF dBeginDate IS NULL THEN
+    SET dBeginDate := CURDATE();
+  END IF;
+
+  /* log into history and than do changes */
+  IF iJobID IS NOT NULL THEN
+    SELECT COUNT(*)
+      INTO job_cnt
+      FROM jobs
+     WHERE id = iJobID;
+
+    IF ( job_cnt = 0 ) THEN
+      SET @msg = CONCAT('Unknown job with identifier <', iJobID, '>!');
+      SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = @msg;
+    END IF;
+
+    INSERT INTO job_history
+      (employee_id, from_date, job_id, granted_on, granted_by, approved_on, approved_by)
+    SELECT
+      EMP.id, dBeginDate, iJobID, dGrantedOn, iGrantedBy, dApprOn, iApprBy
+      FROM employees EMP
+     WHERE id = iEmpID
+       AND NOT EXISTS (SELECT 1
+                         FROM job_history
+                        WHERE employee_id = EMP.id
+                          AND from_date = dBeginDate
+                          AND job_id = iJobID);
+  END IF;
+
+  IF iTeamID IS NOT NULL THEN
+    SELECT COUNT(*)
+      INTO tm_cnt
+      FROM departments
+     WHERE id = iTeamID;
+
+    IF ( tm_cnt = 0 ) THEN
+      SET @msg = CONCAT('Unknown department with identifier <', iJobID, '>!');
+      SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = @msg;
+    END IF;
+
+    INSERT INTO team_change
+      (employee_id, from_date, department, granted_on, granted_by, approved_on, approved_by)
+    SELECT
+       EMP.id, dBeginDate, iTeamID, dGrantedOn, iGrantedBy, dApprOn, iApprBy
+      FROM employees EMP
+     WHERE id = iEmpID
+       AND NOT EXISTS (SELECT 1
+                         FROM team_change
+                        WHERE employee_id = EMP.id
+                          AND from_date = dBeginDate
+                          AND department = iTeamID);
+  END IF;
+
+  IF nSalary IS NOT NULL AND cCurrency IS NOT NULL THEN
+    INSERT INTO sal_history
+      (employee_id, from_date, amount, currency, granted_on, granted_by, approved_on, approved_by)
+    SELECT
+       EMP.id, dBeginDate, nSalary, cCurrency, dGrantedOn, iGrantedBy, dApprOn, iApprBy
+      FROM employees EMP
+     WHERE id = iEmpID
+       AND NOT EXISTS (SELECT 1
+                         FROM sal_history
+                        WHERE employee_id = EMP.id
+                          AND from_date = dBeginDate
+                          AND salary = nSalary);
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1818,4 +2082,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-23 14:45:57
+-- Dump completed on 2017-02-10 15:25:30
