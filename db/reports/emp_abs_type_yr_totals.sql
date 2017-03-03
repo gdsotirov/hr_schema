@@ -1,4 +1,4 @@
-SELECT emp_getFullName(EMP.id) `Name`,
+SELECT EMP.id, emp_getFullName(EMP.id) `Name`,
        YEAR(ABS.from_date) `Year`,
        SUM(IF(ABS.`type` = 1            , utl_calcVacDaysId(ABS.id), 0)) `Paid`,
        SUM(IF(ABS.`type` = 13           , utl_calcVacDaysId(ABS.id), 0)) `KP`,
@@ -15,7 +15,17 @@ SELECT emp_getFullName(EMP.id) `Name`,
        absences      ABS,
        absence_types ABT
  WHERE ABS.employee_id = EMP.id
-   AND ABS.status = 'Authorized'
+   AND ABS.`status` = 'Authorized'
    AND ABT.id = ABS.`type`
-   AND EMP.id = 9
- GROUP BY `Year`;
+   AND EMP.id IN (SELECT id
+                    FROM employees
+                   WHERE person_id IN (SELECT id
+                                         FROM persons
+                                        WHERE CONCAT(first_name, ' ',
+                                                     CASE
+                                                       WHEN middle_name IS NULL THEN ''
+                                                       ELSE CONCAT(middle_name, ' ')
+                                                     END, last_name) LIKE '%'
+                                      )
+                 )
+ GROUP BY `Year` DESC;
