@@ -8,7 +8,7 @@
   `granted_by`  INT(11)       NOT NULL,
   `approved_on` DATE          DEFAULT NULL,
   `approved_by` INT(11)       DEFAULT NULL,
-  `details`     VARCHAR(256)  DEFAULT NULL,
+  `details`     TEXT,
 
   PRIMARY KEY (`id`),
 

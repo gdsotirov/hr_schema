@@ -4,7 +4,7 @@ USE `hr_schema`;
 --
 -- Host: 127.0.0.1    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	5.7.12-log
+-- Server version	5.7.17-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -166,7 +166,7 @@ CREATE TABLE `bonus_distribution` (
   `granted_by` int(11) NOT NULL,
   `approved_on` date DEFAULT NULL,
   `approved_by` int(11) DEFAULT NULL,
-  `details` varchar(256) DEFAULT NULL,
+  `details` text,
   PRIMARY KEY (`id`),
   KEY `idx_granted_date` (`granted_on`),
   KEY `idx_approved_date` (`approved_on`),
@@ -517,6 +517,7 @@ CREATE TABLE `employees` (
   `division_id` int(11) NOT NULL COMMENT 'Current division',
   `salary` decimal(12,2) DEFAULT NULL COMMENT 'Current GROSS salary',
   `currency` char(3) DEFAULT NULL,
+  `annon_issue_id` varchar(16) DEFAULT NULL COMMENT 'Announcement issue identifier (TTS key)',
   PRIMARY KEY (`id`),
   KEY `fk_emp_job_id_idx` (`job_id`),
   KEY `fk_emp_manager_id_idx` (`manager_id`),
@@ -2082,4 +2083,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-10 15:25:30
+-- Dump completed on 2017-05-10  9:48:07
