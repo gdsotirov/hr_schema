@@ -2,7 +2,7 @@
   `id`          INT(11)       NOT NULL  AUTO_INCREMENT,
   `employee_id` INT(11)       NOT NULL,
   `from_date`   DATE          NOT NULL,
-  `amount`      DECIMAL(12,2) NOT NULL,
+  `amount`      DECIMAL(14,3) NOT NULL,
   `currency`    CHAR(3)       DEFAULT NULL,
   `granted_on`  DATE          DEFAULT NULL,
   `granted_by`  INT(11)       NOT NULL,

@@ -515,9 +515,9 @@ CREATE TABLE `employees` (
   `manager_id` int(11) DEFAULT NULL COMMENT 'Current manager',
   `department_id` int(11) DEFAULT NULL COMMENT 'Current department',
   `division_id` int(11) NOT NULL COMMENT 'Current division',
-  `salary` decimal(12,2) DEFAULT NULL COMMENT 'Current GROSS salary',
+  `salary` decimal(14,3) DEFAULT NULL COMMENT 'Current GROSS salary',
   `currency` char(3) DEFAULT NULL,
-  `annon_issue_id` varchar(16) DEFAULT NULL COMMENT 'Announcement issue identifier (TTS key)',
+  `newcomer_issue_id` varchar(16) DEFAULT NULL COMMENT 'Related newcomer issue identifier (TTS key)',
   PRIMARY KEY (`id`),
   KEY `fk_emp_job_id_idx` (`job_id`),
   KEY `fk_emp_manager_id_idx` (`manager_id`),
@@ -917,7 +917,7 @@ CREATE TABLE `sal_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) NOT NULL,
   `from_date` date NOT NULL,
-  `amount` decimal(12,2) NOT NULL,
+  `amount` decimal(14,3) NOT NULL,
   `currency` char(3) DEFAULT NULL,
   `granted_on` date DEFAULT NULL,
   `granted_by` int(11) NOT NULL,
@@ -2083,4 +2083,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-10  9:48:07
+-- Dump completed on 2017-10-04 12:15:27
