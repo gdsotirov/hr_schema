@@ -4,8 +4,8 @@ CREATE FUNCTION calcNetSalaryBGForYear(dGrossSalary DECIMAL, yForYear YEAR) RETU
 BEGIN
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2600 /* 2015 onwards */;
-  /* Precent for State Public Insurance */ 
-  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 7.5  /* 2011 onwards */;
+  /* Percent for State Public Insurance */ 
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 7.94 /* 2017 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
   DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
   /* Percent for Health Insurance */
@@ -36,9 +36,13 @@ BEGIN
       SET dPubInsPerc = 2.2;
       SET dAMPInsPerc = 6.7;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2011 THEN
+    WHEN yForYear >= 2011 AND yForYear <= 2016 THEN
       SET dPubInsPerc = 2.2;
       SET dAMPInsPerc = 7.5;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear >= 2017 THEN
+      SET dPubInsPerc = 2.2;
+      SET dAMPInsPerc = 7.94;
       SET dHlthInPerc = 3.2;
   END CASE;
 
