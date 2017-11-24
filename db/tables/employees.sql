@@ -3,6 +3,7 @@
   `person_id`         INT(11)       NOT NULL,
   `contract_date`     DATE          NOT NULL      COMMENT 'Date when contract was signed',
   `hire_date`         DATE          NOT NULL      COMMENT 'Date from which the employee started work',
+  `trial_period`      INT(1)        DEFAULT NULL  COMMENT 'Trial Periods in months',
   `leave_date`        DATE          DEFAULT NULL  COMMENT 'Date on which the employee left company',
   `leave_reason`      TEXT                        COMMENT 'Reason for leave',
   `job_id`            INT(11)       NOT NULL      COMMENT 'Current job',
