@@ -7,6 +7,7 @@ SELECT CASE
          WHEN FLOOR(DATEDIFF(NOW(), PER.birth_date)/365) BETWEEN 55 AND 64 THEN '55_64'
          WHEN FLOOR(DATEDIFF(NOW(), PER.birth_date)/365)             >= 65 THEN '>=65'
        END age_group,
+       ROUND(COUNT(*) / (SELECT COUNT(*) FROM employees WHERE (leave_date IS NULL OR leave_date >= CURDATE())) * 100, 2) percent,
        COUNT(*) cnt
   FROM persons   PER,
        employees EMP
