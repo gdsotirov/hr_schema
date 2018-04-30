@@ -1,5 +1,6 @@
 SELECT EMP.id, concat(PER.first_name, ' ', PER.last_name) emp_name,
        utl_getDateDiffStr(EMP.hire_date, NOW()) inership,
+       (SELECT MAX(from_date) from sal_history WHERE employee_id = EMP.id) last_adjustment,
        EMP.salary base_sal, EMP.currency,
        CASE
          WHEN EMP.division_id = 1 /* BG */ THEN
