@@ -1,5 +1,5 @@
-﻿CREATE VIEW pending_absences AS
-SELECT DEP.name,
+CREATE OR REPLACE VIEW pending_absences AS
+SELECT DEP.`name`,
        EAB.emp_name,
        JOB.title job_title,
        EAB.abs_type,
@@ -16,7 +16,7 @@ SELECT DEP.name,
    AND DEP.id = EMP.department_id
    AND JOB.id = EMP.job_id
    AND EAB.from_date > CURDATE()
-   AND EAB.status = 'Authorized'
+   AND EAB.`status` = 'Authorized'
  ORDER BY EAB.from_date, /* sooner absences first */
           dur_days DESC, /* longer durations first */
           emp_name       /* alphabetic ordering of employees */

@@ -4,6 +4,8 @@ CREATE PROCEDURE mgmt_promote(IN iEmpID INTEGER,
                               IN dBeginDate DATE,
                               IN iNewJobID INTEGER,
                               IN nNewSalary DECIMAL)
+  READS SQL DATA
+  MODIFIES SQL DATA
 BEGIN
   IF dBeginDate IS NULL THEN
     SET dBeginDate := CURDATE();
@@ -35,6 +37,6 @@ BEGIN
        SET salary = nNewSalary
      WHERE id = iEmpID;
   END IF;
-END /
+END //
 
 DELIMITER ;

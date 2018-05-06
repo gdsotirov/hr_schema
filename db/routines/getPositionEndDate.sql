@@ -2,6 +2,7 @@ DELIMITER //
 
 CREATE FUNCTION getPositionEndDate(iEmpID INTEGER,
                                    iJobID INTEGER) RETURNS DATE
+  READS SQL DATA
 BEGIN
   DECLARE dLeaveDate DATE DEFAULT NULL;
   DECLARE dEndDate   DATE DEFAULT NULL;

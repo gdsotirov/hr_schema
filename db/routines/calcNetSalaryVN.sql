@@ -1,6 +1,8 @@
 DELIMITER //
 
 CREATE FUNCTION calcNetSalaryVN(dGrossSalary DECIMAL) RETURNS DECIMAL(10,2)
+  NO SQL
+  DETERMINISTIC
 BEGIN
   /* See http://nicvn.com/net-gross-salary-converter.html */
   /* See https://www.hr2b.com/salary-calculator */

@@ -1,6 +1,8 @@
 DELIMITER //
 
 CREATE FUNCTION calcNetSalaryTN(dGrossSalary DECIMAL) RETURNS DECIMAL(10,2)
+  NO SQL
+  DETERMINISTIC
 BEGIN
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Income-determination */
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Taxes-on-personal-income */

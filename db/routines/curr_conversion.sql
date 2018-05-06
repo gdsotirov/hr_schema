@@ -4,7 +4,8 @@ CREATE FUNCTION curr_conversion(amount      DECIMAL(30,10),
                                 currency    CHAR(3),
                                 to_currency CHAR(3),
                                 date_for    DATE)
-RETURNS DECIMAL(30,10)
+  RETURNS DECIMAL(30,10)
+  READS SQL DATA
 BEGIN
   DECLARE conv_rate DECIMAL(10,6)  DEFAULT NULL;
   DECLARE err_msg   VARCHAR(128)   DEFAULT NULL;

@@ -1,6 +1,8 @@
 DELIMITER //
 
 CREATE FUNCTION calcNetSalaryBG(dGrossSalary DECIMAL) RETURNS DECIMAL(10,2)
+  NO SQL
+  DETERMINISTIC
 BEGIN
   RETURN hr_schema.calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
 END //

@@ -1,4 +1,4 @@
-﻿CREATE VIEW emp_summary AS
+CREATE OR REPLACE VIEW emp_summary AS
 SELECT CONCAT(PER.last_name, ', ', PER.first_name) fullname,
        POS.title position,
        EMP.contract_date contracted,

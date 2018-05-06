@@ -1,4 +1,4 @@
-﻿CREATE VIEW comp_balance AS
+CREATE OR REPLACE VIEW comp_balance AS
 SELECT EMP.id `Number`,
        CONCAT(PER.first_name, ' ', PER.last_name) `Name`,
        DATE_FORMAT(MAX(from_date), '%Y-%m') `Until`,
@@ -36,4 +36,3 @@ SELECT EMP.id `Number`,
    AND PER.id = EMP.person_id
  GROUP BY `Name`
  ORDER BY `Name`;
- 

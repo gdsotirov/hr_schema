@@ -8,15 +8,10 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_curr_rates_from_curr`   (`from_curr`),
-  KEY `fk_curr_rates_to_curr`     (`to_curr`),
-  KEY `fk_curr_rates_country_idx` (`country`),
+  KEY `fk_curr_rates_from_curr_idx` (`from_curr`),
+  KEY `fk_curr_rates_to_curr_idx`   (`to_curr`),
+  KEY `fk_curr_rates_country_idx`   (`country`),
 
-  CONSTRAINT `fk_curr_rates_country`
-    FOREIGN KEY (`country`)
-    REFERENCES `countries` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_curr_rates_from_curr`
     FOREIGN KEY (`from_curr`)
     REFERENCES `currencies` (`id`)
@@ -25,6 +20,11 @@
   CONSTRAINT `fk_curr_rates_to_curr`
     FOREIGN KEY (`to_curr`)
     REFERENCES `currencies` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_curr_rates_country`
+    FOREIGN KEY (`country`)
+    REFERENCES `countries` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 )

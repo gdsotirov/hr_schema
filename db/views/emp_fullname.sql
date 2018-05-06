@@ -1,4 +1,4 @@
-﻿CREATE VIEW emp_fullname AS
+CREATE OR REPLACE VIEW emp_fullname AS
 SELECT emp_getFullName(EMP.id) full_name,
        EMP.id emp_id
   FROM employees EMP,

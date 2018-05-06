@@ -16,4 +16,4 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Locations of company''s offices, wharehouses, etc.';
+COMMENT='Locations of company offices, wharehouses, etc.';

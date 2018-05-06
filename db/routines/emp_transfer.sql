@@ -10,6 +10,8 @@ CREATE PROCEDURE emp_transfer(IN iEmpID     INTEGER,
                               IN iGrantedBy INTEGER,
                               IN dApprOn    DATE,
                               IN iApprBy    INTEGER)
+  READS SQL DATA
+  MODIFIES SQL DATA
 BEGIN
   DECLARE emp_cnt INTEGER DEFAULT 0;
   DECLARE job_cnt INTEGER DEFAULT 0;

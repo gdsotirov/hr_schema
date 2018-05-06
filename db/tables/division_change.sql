@@ -15,8 +15,8 @@
   KEY `fk_div_chng_granted_idx`   (`granted_by`),
   KEY `fk_div_chng_approved_idx`  (`approved_by`),
 
-  CONSTRAINT `fk_div_chng_approved`
-    FOREIGN KEY (`approved_by`)
+  CONSTRAINT `fk_div_chng_emp`
+    FOREIGN KEY (`employee_id`)
     REFERENCES `employees` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
@@ -25,13 +25,13 @@
     REFERENCES `divisions` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_div_chng_emp`
-    FOREIGN KEY (`employee_id`)
+  CONSTRAINT `fk_div_chng_granted`
+    FOREIGN KEY (`granted_by`)
     REFERENCES `employees` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_div_chng_granted`
-    FOREIGN KEY (`granted_by`)
+  CONSTRAINT `fk_div_chng_approved`
+    FOREIGN KEY (`approved_by`)
     REFERENCES `employees` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE

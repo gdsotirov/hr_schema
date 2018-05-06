@@ -1,4 +1,4 @@
-﻿CREATE VIEW requested_absences AS
+CREATE OR REPLACE VIEW requested_absences AS
 SELECT DEP.name,
        EAB.emp_name,
        JOB.title job_title,

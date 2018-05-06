@@ -1,4 +1,4 @@
-﻿CREATE VIEW per_relations_list AS
+CREATE OR REPLACE VIEW per_relations_list AS
 SELECT CONCAT(P1.last_name, ', ', P1.first_name) p1_name,
        CONCAT('is ', PRT.title, ' of') relation,
        CONCAT(P2.last_name, ', ', P2.first_name) p2_name,

@@ -1,4 +1,4 @@
-﻿CREATE VIEW comp_list AS
+CREATE OR REPLACE VIEW comp_list AS
 SELECT CONCAT(PER.first_name, ' ', PER.last_name) `Name`,
        DATE_FORMAT(AB.from_date, '%d/%m/%Y') `Day`,
        TIME_FORMAT(AB.from_date, '%H:%i') `Start`,

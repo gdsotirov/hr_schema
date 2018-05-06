@@ -1,6 +1,8 @@
 DELIMITER //
 
 CREATE FUNCTION calcNetSalaryBGForYear(dGrossSalary DECIMAL, yForYear YEAR) RETURNS DECIMAL(10,2)
+  NO SQL
+  DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2600 /* 2015 onwards */;

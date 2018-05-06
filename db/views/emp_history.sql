@@ -1,4 +1,4 @@
-﻿CREATE VIEW emp_history AS
+CREATE OR REPLACE VIEW emp_history AS
 SELECT EMP.id            `emp_id`,
        CONCAT(PER.last_name, ', ', PER.first_name)
                          `name`,
