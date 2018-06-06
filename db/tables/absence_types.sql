@@ -2,6 +2,7 @@
   `id`          INT(11)     NOT NULL AUTO_INCREMENT,
   `title`       VARCHAR(64) NOT NULL,
   `description` TEXT,
+  `days_type`   ENUM('work','cal') DEFAULT NULL COMMENT 'Whether leave should be specified in working or calendar days',
 
   PRIMARY KEY (`id`)
 )
