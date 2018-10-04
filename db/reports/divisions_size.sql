@@ -8,5 +8,5 @@ SELECT CASE GROUPING(DV.id)     WHEN 1 THEN 99      ELSE DV.id     END id,
         AND EMP.hire_date <= DATE(NOW())
  WHERE 1=1
  GROUP BY DV.id, DV.`name` WITH ROLLUP
-HAVING    (GROUPING(DV.id) = 0 AND GROUPING(DV.`name`) = 0)
-       OR (GROUPING(DV.id) = 1 AND GROUPING(DV.`name`) = 1);
+HAVING    (GROUPING(DV.id) = 0 AND GROUPING(DV.`name`) = 0 AND COUNT(EMP.id) > 0)
+       OR (GROUPING(DV.id) = 1 AND GROUPING(DV.`name`) = 1 AND COUNT(EMP.id) > 0);
