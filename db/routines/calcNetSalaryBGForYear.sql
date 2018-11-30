@@ -7,7 +7,7 @@ BEGIN
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2600 /* 2015 onwards */;
   /* Percent for State Public Insurance */ 
-  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 7.94 /* 2017 onwards */;
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
   DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
   /* Percent for Health Insurance */
@@ -42,9 +42,13 @@ BEGIN
       SET dPubInsPerc = 2.2;
       SET dAMPInsPerc = 7.5;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2017 THEN
+    WHEN yForYear >= 2017 AND yForYear < 2018 THEN
       SET dPubInsPerc = 2.2;
       SET dAMPInsPerc = 7.94;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear >= 2018 THEN
+      SET dPubInsPerc = 2.2;
+      SET dAMPInsPerc = 8.38;
       SET dHlthInPerc = 3.2;
   END CASE;
 
