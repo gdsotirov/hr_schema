@@ -29,8 +29,10 @@ BEGIN
       SET dMaxInsInc = 2200;
     WHEN yForYear = 2014 THEN
       SET dMaxInsInc = 2400;
-    WHEN yForYear >= 2015 THEN
+    WHEN yForYear BETWEEN 2015 AND 2018 THEN
       SET dMaxInsInc = 2600;
+    WHEN yForYear >= 2019 THEN
+      SET dMaxInsInc = 3000;
   END CASE;
 
   CASE
