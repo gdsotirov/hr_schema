@@ -1,0 +1,13 @@
+﻿DELIMITER //
+
+CREATE FUNCTION caclSnrtyAmt(nSalary DECIMAL(14,2), nSnrtyYrs INT) RETURNS DECIMAL(14,2)
+  NO SQL
+  DETERMINISTIC
+BEGIN
+  DECLARE nSnrtyPrcnt DECIMAL(3,1) DEFAULT calcSnrtyPrcnt(nSnrtyYrs);
+  DECLARE nSnrtyAmt DECIMAL(14,2) DEFAULT nSalary * nSnrtyPrcnt/100;
+
+  RETURN nSnrtyAmt;
+END //
+
+DELIMITER ;
