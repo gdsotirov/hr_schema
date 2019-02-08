@@ -9,12 +9,7 @@ BEGIN
   DECLARE months INTEGER;
   DECLARE days INTEGER;
 
-  /* Years between */
-  SET years = TIMESTAMPDIFF(YEAR, date1, date2);
-  /* Months between */
-  SET months := TIMESTAMPDIFF(MONTH, DATE_ADD(date1, INTERVAL years YEAR), date2);
-  /* Days between */
-  SET days := TIMESTAMPDIFF(DAY, DATE_ADD(date1, INTERVAL years * 12 + months MONTH), date2);
+  CALL utl_getDateDiff(date1, date2, years, months, days);
 
   RETURN CONCAT(years, 'y ', months, 'm ', days, 'd');
 END //
