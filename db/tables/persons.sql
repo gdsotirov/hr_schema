@@ -13,13 +13,17 @@
                                     DEFAULT NULL,
   `children`          DECIMAL(2,0)  DEFAULT NULL,
   `personal_id`       VARCHAR(32)   DEFAULT NULL,
+  `short_bio`         TEXT          DEFAULT NULL,
+  `cv_doc`            LONGBLOB      DEFAULT NULL,
   `linkedin_profile`  VARCHAR(256)  DEFAULT NULL COMMENT 'URL to LinkedIn profile',
-  `short_bio`         TEXT,
-  `cv_doc`            LONGBLOB,
+
+  `prior_internship_yrs` INT(2) NULL COMMENT 'Prior intership in years',
+  `prior_internship_mns` INT(2) NULL COMMENT 'Prior intership in months',
+  `prior_internship_dys` INT(2) NULL COMMENT 'Prior intership in days',
 
   PRIMARY KEY (`id`),
 
-  UNIQUE KEY `idx_person_names` (`first_name`,`middle_name`,`last_name`)
+  UNIQUE KEY `idx_person_names` (`first_name` ASC, `middle_name` ASC, `last_name` ASC) VISIBLE
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
