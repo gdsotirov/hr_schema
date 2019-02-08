@@ -17,9 +17,9 @@
   `cv_doc`            LONGBLOB      DEFAULT NULL,
   `linkedin_profile`  VARCHAR(256)  DEFAULT NULL COMMENT 'URL to LinkedIn profile',
 
-  `prior_internship_yrs` INT(2) NULL COMMENT 'Prior intership in years',
-  `prior_internship_mns` INT(2) NULL COMMENT 'Prior intership in months',
-  `prior_internship_dys` INT(2) NULL COMMENT 'Prior intership in days',
+  `prior_internship_yrs` INT(2) NULL COMMENT 'Prior internship in years',
+  `prior_internship_mns` INT(2) NULL COMMENT 'Prior internship in months',
+  `prior_internship_dys` INT(2) NULL COMMENT 'Prior internship in days',
 
   PRIMARY KEY (`id`),
 
