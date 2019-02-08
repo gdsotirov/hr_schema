@@ -1,8 +1,17 @@
 SELECT EMP.id, concat(PER.first_name, ' ', PER.last_name) emp_name,
-       utl_getDateDiffStr(EMP.hire_date, NOW()) inership,
+       CONCAT(IFNULL(PER.prior_internship_yrs, 0), 'y ',
+              IFNULL(PER.prior_internship_mns, 0), 'm ',
+              IFNULL(PER.prior_internship_dys, 0), 'd') prior_internship,
+       utl_getDateDiffStr(EMP.hire_date, NOW()) inernship,
        (SELECT MAX(from_date) from sal_history WHERE employee_id = EMP.id) last_adjustment,
        EMP.salary base_sal, EMP.currency,
        emp_calcSnrtyYrs(EMP.id) snrty_yrs,
+       CASE
+         WHEN EMP.division_id = 1 /* BG */ THEN
+           caclSnrtyAmt(EMP.salary, emp_calcSnrtyYrs(EMP.id))
+         ELSE
+           0
+       END snrty_amt,
        CASE
          WHEN EMP.division_id = 1 /* BG */ THEN
             EMP.salary + caclSnrtyAmt(EMP.salary, emp_calcSnrtyYrs(EMP.id))
