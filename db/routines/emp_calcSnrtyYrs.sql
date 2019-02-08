@@ -1,0 +1,15 @@
+﻿DELIMITER //
+
+CREATE FUNCTION emp_calcSnrtyYrs(EmpID INT) RETURNS INTEGER
+  DETERMINISTIC
+BEGIN
+  DECLARE iTotalYrs INT DEFAULT 0;
+  DECLARE iTotalMns INT DEFAULT 0;
+  DECLARE iTotalDys INT DEFAULT 0;
+
+  CALL emp_calcTotalSnrty(EmpID, iTotalYrs, iTotalMns, iTotalDys);
+
+  RETURN iTotalYrs;
+END //
+
+DELIMITER ;
