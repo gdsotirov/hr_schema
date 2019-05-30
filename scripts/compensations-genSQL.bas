@@ -15,7 +15,7 @@ Sub genSQL()
 
         ' Process only unapproved cells
         If ash.Cells(rw.Row, 9).Value = "" Then
-            insertString = insertString & "INSERT INTO absences (employee_id, from_date, to_date, `type`, for_year, authorized_by, description)"
+            insertString = insertString & "INSERT INTO absences (employee_id, from_date, to_date, `type`, for_year, authorized_by, `status`, `description`)"
             insertString = insertString + " VALUES ("
 
             ' employee_id
@@ -32,6 +32,8 @@ Sub genSQL()
             insertString = insertString & Format(ash.Cells(rw.Row, 2), "yyyy") & ", "
             ' authorized_by
             insertString = insertString & "1, "
+            ' status
+            insertString = insertString & "'Authorized'"
             ' description
             If ash.Cells(rw.Row, 3) > ash.Cells(rw.Row, 4) Then
                 insertString = insertString & "'Offline: " & ash.Cells(rw.Row, 7) & "'"
