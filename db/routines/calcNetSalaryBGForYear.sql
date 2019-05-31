@@ -5,11 +5,11 @@ CREATE FUNCTION calcNetSalaryBGForYear(dGrossSalary DECIMAL, yForYear YEAR) RETU
   DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2600 /* 2015 onwards */;
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;
   /* Percent for State Public Insurance */ 
-  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
-  DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
+  DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
 
