@@ -23,7 +23,8 @@
 
   PRIMARY KEY (`id`),
 
-  UNIQUE KEY `idx_person_names` (`first_name` ASC, `middle_name` ASC, `last_name` ASC) VISIBLE
+  UNIQUE KEY `idx_person_names` (`first_name` ASC, `middle_name` ASC, `last_name` ASC) VISIBLE,
+  KEY `idx_person_bd` (`birth_date`)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
