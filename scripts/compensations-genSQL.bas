@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "SQL"
 Sub genSQL()
     Dim ash As Worksheet
     Dim insertString As String
@@ -33,7 +33,7 @@ Sub genSQL()
             ' authorized_by
             insertString = insertString & "1, "
             ' status
-            insertString = insertString & "'Authorized'"
+            insertString = insertString & "'Authorized'" & ", "
             ' description
             If ash.Cells(rw.Row, 3) > ash.Cells(rw.Row, 4) Then
                 insertString = insertString & "'Offline: " & ash.Cells(rw.Row, 7) & "'"
