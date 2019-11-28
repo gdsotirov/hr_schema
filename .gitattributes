@@ -1,0 +1,2 @@
+*.sql linguist-language=SQL linguist-detectable=true
+db/dbdump.sql linguist-generated=true
