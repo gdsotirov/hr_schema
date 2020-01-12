@@ -38,4 +38,6 @@
     ON UPDATE CASCADE
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8;
+DEFAULT CHARSET=utf8
+COMMENT='Employees salary history';
+

@@ -35,4 +35,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='List of coutries where the company has activities';
+COMMENT='List of countries where the company has activities';
+

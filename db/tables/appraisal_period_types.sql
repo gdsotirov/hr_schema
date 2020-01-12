@@ -6,4 +6,6 @@
   PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8;
+DEFAULT CHARSET=utf8
+COMMENT='Type of appraisals by period';
+

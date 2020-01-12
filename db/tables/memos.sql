@@ -26,4 +26,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Notes on employees behviour, attitude, problematics, etc.';
+COMMENT='Notes on employees behavior, attitude, problems, etc.';
+

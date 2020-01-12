@@ -41,4 +41,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Employees appraisls';
+COMMENT='Employees appraisals';
+

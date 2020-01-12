@@ -11,4 +11,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='List of jobs within the company';
+COMMENT='List of jobs within the company with salary range';
+

@@ -48,4 +48,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Bonueses history';
+COMMENT='Bonus distribution per employee';
+

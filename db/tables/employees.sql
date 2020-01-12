@@ -56,4 +56,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Catalog of company''s most valuable resource';
+COMMENT='Catalog of company''s most valuable resources';
+

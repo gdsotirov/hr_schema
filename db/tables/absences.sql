@@ -42,4 +42,5 @@
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8
-COMMENT='Emplooyees vacations registry';
+COMMENT='Register of employees absences';
+

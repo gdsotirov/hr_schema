@@ -27,4 +27,6 @@
   KEY `idx_person_bd` (`birth_date`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8;
+DEFAULT CHARSET=utf8
+COMMENT='Persons register';
+
