@@ -28,4 +28,5 @@ SELECT EMP.id, emp_getFullName(EMP.id) `Name`,
                                                      END, last_name) LIKE '%'
                                       )
                  )
- GROUP BY `Year` DESC;
+ GROUP BY EMP.id, `Name`, `Year`
+ ORDER BY `Year` DESC;
