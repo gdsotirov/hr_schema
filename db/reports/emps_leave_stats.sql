@@ -1,4 +1,4 @@
-/* Intership at leave date with TIMESTAMPDIFF */
+/* Internship at leave date with TIMESTAMPDIFF */
 
 SELECT CASE
          WHEN TIMESTAMPDIFF(YEAR, EMP.hire_date, EMP.leave_date) < 1                  THEN '<01 year'
@@ -10,12 +10,13 @@ SELECT CASE
          WHEN TIMESTAMPDIFF(YEAR, EMP.hire_date, EMP.leave_date) BETWEEN 11 and 14.99 THEN '<15 years'
          WHEN TIMESTAMPDIFF(YEAR, EMP.hire_date, EMP.leave_date) BETWEEN 15 and 19.99 THEN '<20 years'
          ELSE '>20 years'
-       END intership, COUNT(*) nb_emps
+       END internship, COUNT(*) nb_emps
   FROM employees EMP
  WHERE leave_date IS NOT NULL
- GROUP BY intership;
+ GROUP BY internship
+ ORDER BY internship;
 
-/* Intership at leave date with DATEDIFF */
+/* Internship at leave date with DATEDIFF */
 
 SELECT CASE
          WHEN ROUND(DATEDIFF(EMP.leave_date, EMP.hire_date)/365, 2) <= 1  THEN '<=01 year'
@@ -34,34 +35,34 @@ SELECT CASE
          WHEN ROUND(DATEDIFF(EMP.leave_date, EMP.hire_date)/365, 2) > 15
           AND ROUND(DATEDIFF(EMP.leave_date, EMP.hire_date)/365, 2) <= 20 THEN '<=20 years'
          ELSE '>20 years'
-       END intership, COUNT(*) nb_emps
+       END internship, COUNT(*) nb_emps
   FROM employees EMP
  WHERE leave_date IS NOT NULL
- GROUP BY intership;
+ GROUP BY internship
+ ORDER BY internship;
 
-/* Employees that left by length of intership */
+/* Employees that left by length of internship */
 
 SELECT CONCAT(PER.first_name, ' ', PER.last_name) emp_name,
-       ROUND(DATEDIFF(EMP.leave_date, EMP.hire_date)/365, 2) emp_intership
+       ROUND(DATEDIFF(EMP.leave_date, EMP.hire_date)/365, 2) emp_internship
   FROM employees EMP,
        persons   PER
  WHERE EMP.person_id = PER.id
    AND EMP.leave_date IS NOT NULL
- ORDER BY emp_intership DESC;
+ ORDER BY emp_internship DESC;
 
-/* Shortest interships */
+/* Shortest internships up to 31 days */
 
-SELECT @rownum := @rownum + 1 rank,
+SELECT ROW_NUMBER() OVER () `rank`,
        CONCAT(PER.first_name, ' ', PER.last_name) emp_name,
        DEP.`name` dep_name,
        EMP.hire_date, EMP.leave_date,
-       DATEDIFF(EMP.leave_date, EMP.hire_date) emp_intership
+       DATEDIFF(EMP.leave_date, EMP.hire_date) emp_internship
   FROM employees   EMP
        LEFT OUTER JOIN
        departments DEP ON EMP.department_id = DEP.id,
-       persons     PER,
-       (SELECT @rownum := 0) r
+       persons     PER
  WHERE EMP.person_id = PER.id
    AND EMP.leave_date IS NOT NULL
    AND DATEDIFF(EMP.leave_date, EMP.hire_date) BETWEEN 0 AND 31
- ORDER BY emp_intership ASC;
+ ORDER BY emp_internship ASC;
