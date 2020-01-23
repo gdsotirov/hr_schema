@@ -1,4 +1,4 @@
-SELECT CONCAT(PER.first_name, ' ', PER.last_name) nam, SUM(utl_calcVacDays(A.id)) total
+SELECT CONCAT(PER.first_name, ' ', PER.last_name) nam, SUM(utl_calcVacDaysId(A.id)) total
   FROM absences      A,
        absence_types ABT,
        employees     EMP,

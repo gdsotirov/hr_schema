@@ -1,7 +1,7 @@
 SELECT AB.id, ABT.title,
        DATE_FORMAT(AB.from_date, '%d %b %Y') `From`,
        DATE_FORMAT(AB.to_date  , '%d %b %Y') `To`,
-       utl_calcVacDays(AB.id) `Days`
+       utl_calcVacDaysId(AB.id) `Days`
   FROM absences AB,
        absence_types ABT
  WHERE AB.`type` = ABT.id
