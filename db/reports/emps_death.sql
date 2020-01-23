@@ -6,8 +6,8 @@ SELECT CONCAT(PER.first_name, ' ', PER.last_name) nam,
        PER.death_date,
        TIMESTAMPDIFF(Year, PER.birth_date, PER.death_date) age,
        utl_getDateDiffStr(PER.birth_date, PER.death_date) age_full,
-       utl_getDateDiffStr(EMP.hire_date, EMP.leave_date) intership,
-       NULL total_intership
+       utl_getDateDiffStr(EMP.hire_date, EMP.leave_date) internship,
+       NULL total_internship
   FROM persons   PER,
        employees EMP
  WHERE EMP.person_id = PER.id

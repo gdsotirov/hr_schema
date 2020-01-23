@@ -1,6 +1,6 @@
 SELECT DENSE_RANK() OVER (ORDER BY SUM(utl_calcVacDays(SLV.from_date, SLV.to_date)) DESC) AS rnk,
        CONCAT(PER.first_name, ' ', PER.last_name) emp_name,
-       utl_getDateDiffStr(EMP.hire_date, IFNULL(EMP.leave_date, CURDATE())) intership,
+       utl_getDateDiffStr(EMP.hire_date, IFNULL(EMP.leave_date, CURDATE())) internship,
        SUM(utl_calcVacDays(SLV.from_date, SLV.to_date)) tot_dur,
        ROUND(AVG(utl_calcVacDays(SLV.from_date, SLV.to_date)), 2) avg_days_per_leave,
        ROUND(SUM(utl_calcVacDays(SLV.from_date, SLV.to_date)) /

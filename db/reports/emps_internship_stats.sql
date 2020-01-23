@@ -15,7 +15,7 @@ SELECT CASE
          WHEN ROUND(DATEDIFF(NOW(), EMP.hire_date)/365, 2) > 15
           AND ROUND(DATEDIFF(NOW(), EMP.hire_date)/365, 2) <= 20 THEN '<=20 years'
          ELSE '>20 years'
-       END intership, COUNT(*) nb_emps
+       END internship, COUNT(*) nb_emps
   FROM employees EMP
  WHERE leave_date IS NULL
- GROUP BY intership;
+ GROUP BY internship;
