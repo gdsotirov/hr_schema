@@ -1,4 +1,4 @@
-﻿SELECT EMP.id, emp_getFullName(EMP.id)  full_name,
+SELECT EMP.id, emp_getFullName(EMP.id)  full_name,
        DEP.`name`                       currently_in,
        EMP.hire_date,
        getPositionStartDate(EMP.id, 30) started_on,
