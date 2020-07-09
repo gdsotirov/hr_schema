@@ -6,7 +6,7 @@ CREATE FUNCTION calcNetSalaryTN(dGrossSalary DECIMAL) RETURNS DECIMAL(10,2)
 BEGIN
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Income-determination */
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Taxes-on-personal-income */
-  DECLARE dAnnGrossSal  DECIMAL(10,2);   
+  DECLARE dAnnGrossSal  DECIMAL(10,2);
   DECLARE dAnnSocSec    DECIMAL(10,2);
   DECLARE dMthSocSec    DECIMAL(10,2);
   DECLARE dAnnProfExp   DECIMAL(10,2);
@@ -49,13 +49,13 @@ BEGIN
             SET dAnnTaxAmt = dAnnTaxAmt + ROUND((dAnnTaxSal - 20000) * 30 / 100, 2);
           ELSE
             SET dAnnTaxAmt = dAnnTaxAmt + ROUND((50000 - 20000) * 30 / 100, 2);
-            SET dAnnTaxAmt = dAnnTaxAmt + ROUND(dAnnTaxSal - 50000 * 35 / 100, 2);
+            SET dAnnTaxAmt = dAnnTaxAmt + ROUND((dAnnTaxSal - 50000) * 35 / 100, 2);
           END IF;
         END IF;
       END IF;
     END IF;
 
-	/* Calcualte monthly income tax */
+    /* Calcualte monthly income tax */
     SET dMthTaxAmt = ROUND(dAnnTaxAmt / 12, 2);
   END IF;
 
