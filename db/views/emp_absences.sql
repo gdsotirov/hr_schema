@@ -5,7 +5,7 @@ SELECT EMP.id emp_id,
        ABR.from_date,
        ABR.to_date,
        ABR.for_year,
-       utl_calcVacDays(ABR.id) dur_days,
+       utl_calcVacDaysId(ABR.id) dur_days,
        CASE
          WHEN DPTY.id IS NOT NULL THEN
            CONCAT(DPP.last_name, ', ', DPP.first_name)
