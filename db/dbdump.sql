@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: hr_schema
+-- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,14 +21,14 @@
 
 DROP TABLE IF EXISTS `absence_totals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `absence_totals` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) NOT NULL,
-  `employee_id` int(11) DEFAULT NULL,
-  `division_id` int(11) DEFAULT NULL,
-  `days` int(11) NOT NULL,
-  `for_year` year(4) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type_id` int NOT NULL,
+  `employee_id` int DEFAULT NULL,
+  `division_id` int DEFAULT NULL,
+  `days` int NOT NULL,
+  `for_year` year NOT NULL,
   `from_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_abstot_type_idx` (`type_id`),
@@ -37,7 +37,7 @@ CREATE TABLE `absence_totals` (
   CONSTRAINT `fk_abstot_division` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_abstot_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_abstot_type` FOREIGN KEY (`type_id`) REFERENCES `absence_types` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Defines the maximum days per absence type, user or division to be used in a calendar year';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Defines the maximum days per absence type, user or division to be used in a calendar year';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,14 +46,14 @@ CREATE TABLE `absence_totals` (
 
 DROP TABLE IF EXISTS `absence_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `absence_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
   `description` text,
   `days_type` enum('work','cal') DEFAULT NULL COMMENT 'Whether leave should be specified in working or calendar days',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,17 +62,17 @@ CREATE TABLE `absence_types` (
 
 DROP TABLE IF EXISTS `absences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `absences` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `from_date` datetime NOT NULL,
   `to_date` datetime DEFAULT NULL,
-  `type` int(11) NOT NULL,
-  `for_year` int(11) DEFAULT NULL COMMENT 'In case of paid leave, for which year is valid',
+  `type` int NOT NULL,
+  `for_year` int DEFAULT NULL COMMENT 'In case of paid leave, for which year is valid',
   `description` text COMMENT 'Additional information about the absence',
-  `authorized_by` int(11) NOT NULL,
-  `deputy_id` int(11) DEFAULT NULL,
+  `authorized_by` int NOT NULL,
+  `deputy_id` int DEFAULT NULL,
   `status` enum('Requested','Authorized','Unauthorized','Cancelled') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_vacation_date` (`from_date`),
@@ -84,7 +84,7 @@ CREATE TABLE `absences` (
   CONSTRAINT `fk_absence_deputy` FOREIGN KEY (`deputy_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_absence_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_absence_type` FOREIGN KEY (`type`) REFERENCES `absence_types` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Emplooyees vacations registry';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Emplooyees vacations registry';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,13 +93,13 @@ CREATE TABLE `absences` (
 
 DROP TABLE IF EXISTS `appraisal_period_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appraisal_period_types` (
   `id` varchar(16) NOT NULL,
   `title` varchar(64) NOT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,13 +108,13 @@ CREATE TABLE `appraisal_period_types` (
 
 DROP TABLE IF EXISTS `appraisal_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appraisal_types` (
   `id` varchar(16) NOT NULL,
   `title` varchar(64) NOT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,16 +123,16 @@ CREATE TABLE `appraisal_types` (
 
 DROP TABLE IF EXISTS `appraisals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appraisals` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `period_type` varchar(16) NOT NULL,
   `type` varchar(16) NOT NULL,
   `period_from` date NOT NULL,
   `period_to` date NOT NULL,
   `interview_date` date NOT NULL,
-  `appriser` int(11) NOT NULL,
+  `appriser` int NOT NULL,
   `overall_eval` decimal(2,1) NOT NULL,
   `document` blob,
   PRIMARY KEY (`id`),
@@ -145,7 +145,7 @@ CREATE TABLE `appraisals` (
   CONSTRAINT `fk_appraisal_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_appraisal_period_type` FOREIGN KEY (`period_type`) REFERENCES `appraisal_period_types` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_appraisal_type` FOREIGN KEY (`type`) REFERENCES `appraisal_types` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Employees appraisls';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Employees appraisls';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,17 +154,17 @@ CREATE TABLE `appraisals` (
 
 DROP TABLE IF EXISTS `bonus_distribution`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bonus_distribution` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bonus_id` int(11) NOT NULL,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `bonus_id` int NOT NULL,
+  `employee_id` int NOT NULL,
   `amount` decimal(12,2) NOT NULL COMMENT 'Amount in GROSS',
   `currency` char(3) DEFAULT 'BGN',
   `granted_on` date NOT NULL,
-  `granted_by` int(11) NOT NULL,
+  `granted_by` int NOT NULL,
   `approved_on` date DEFAULT NULL,
-  `approved_by` int(11) DEFAULT NULL,
+  `approved_by` int DEFAULT NULL,
   `details` text,
   PRIMARY KEY (`id`),
   KEY `idx_granted_date` (`granted_on`),
@@ -179,7 +179,7 @@ CREATE TABLE `bonus_distribution` (
   CONSTRAINT `fk_bondtl_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Bonueses history';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Bonueses history';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,12 +188,12 @@ CREATE TABLE `bonus_distribution` (
 
 DROP TABLE IF EXISTS `bonuses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bonuses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
   `granted_on` date DEFAULT NULL,
-  `granted_by` int(11) DEFAULT NULL,
+  `granted_by` int DEFAULT NULL,
   `amount` decimal(12,2) DEFAULT NULL,
   `currency` char(3) DEFAULT 'BGN',
   PRIMARY KEY (`id`),
@@ -201,7 +201,7 @@ CREATE TABLE `bonuses` (
   KEY `fk_bonuses_currency_idx` (`currency`),
   CONSTRAINT `fk_bonuses_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +211,7 @@ CREATE TABLE `bonuses` (
 DROP TABLE IF EXISTS `comp_balance`;
 /*!50001 DROP VIEW IF EXISTS `comp_balance`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `comp_balance` AS SELECT 
  1 AS `Number`,
  1 AS `Name`,
@@ -228,7 +228,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `comp_list`;
 /*!50001 DROP VIEW IF EXISTS `comp_list`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `comp_list` AS SELECT 
  1 AS `Name`,
  1 AS `Day`,
@@ -245,9 +245,9 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `countries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `countries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `iso_num3` char(3) NOT NULL COMMENT 'ISO 3166-1 numeric 3 code',
   `iso_code2` char(2) NOT NULL COMMENT 'ISO 3166-1 alpha-2 code',
   `iso_code3` char(3) NOT NULL COMMENT 'ISO 3166-1 alpha-3 code',
@@ -264,7 +264,7 @@ CREATE TABLE `countries` (
   `un_member_until` date DEFAULT NULL,
   `tld` char(3) DEFAULT NULL COMMENT 'Top level domain',
   `calling_code` varchar(10) DEFAULT NULL,
-  `region_id` int(11) NOT NULL,
+  `region_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_iso_num3` (`iso_num3`),
   UNIQUE KEY `idx_iso_code2` (`iso_code2`),
@@ -273,7 +273,7 @@ CREATE TABLE `countries` (
   KEY `idx_name_en` (`name_en`),
   KEY `fk_ctry_region_idx` (`region_id`),
   CONSTRAINT `fk_ctry_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of coutries where the company has activities';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='List of coutries where the company has activities';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,14 +282,14 @@ CREATE TABLE `countries` (
 
 DROP TABLE IF EXISTS `curr_rates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `curr_rates` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `from_curr` char(3) NOT NULL,
   `to_curr` char(3) NOT NULL,
   `for_date` date NOT NULL,
   `rate` decimal(10,7) NOT NULL,
-  `country` int(11) DEFAULT NULL,
+  `country` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_curr_rates_country_idx` (`country`),
   KEY `fk_curr_rates_from_curr_idx` (`from_curr`),
@@ -297,7 +297,7 @@ CREATE TABLE `curr_rates` (
   CONSTRAINT `fk_curr_rates_country` FOREIGN KEY (`country`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_curr_rates_from_curr` FOREIGN KEY (`from_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_curr_rates_to_curr` FOREIGN KEY (`to_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Currency conversion rates register';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Currency conversion rates register';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,15 +306,15 @@ CREATE TABLE `curr_rates` (
 
 DROP TABLE IF EXISTS `currencies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `currencies` (
   `id` char(3) NOT NULL COMMENT 'ISO code',
   `name` varchar(32) NOT NULL COMMENT 'Currency full name',
   `symbol` varchar(3) NOT NULL COMMENT 'Currency symbol',
   `fraction` varchar(32) DEFAULT NULL COMMENT 'Fractional unit',
-  `basis` int(11) DEFAULT NULL COMMENT 'Basic amount or conversion',
+  `basis` int DEFAULT NULL COMMENT 'Basic amount or conversion',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Currencies register';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Currencies register';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +324,7 @@ CREATE TABLE `currencies` (
 DROP TABLE IF EXISTS `current_absences`;
 /*!50001 DROP VIEW IF EXISTS `current_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `current_absences` AS SELECT 
  1 AS `name`,
  1 AS `emp_name`,
@@ -343,17 +343,17 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `departments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `established` date DEFAULT NULL COMMENT 'Date on which the department was created',
   `closed` date DEFAULT NULL COMMENT 'Date on which the department was closed or disbanded',
-  `size` int(11) DEFAULT NULL COMMENT 'Current number of employees working in the department',
-  `manager_id` int(11) NOT NULL,
+  `size` int DEFAULT NULL COMMENT 'Current number of employees working in the department',
+  `manager_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_department_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,16 +362,16 @@ CREATE TABLE `departments` (
 
 DROP TABLE IF EXISTS `division_change`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `division_change` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `from_date` date NOT NULL,
-  `division_id` int(11) NOT NULL,
+  `division_id` int NOT NULL,
   `granted_on` date DEFAULT NULL,
-  `granted_by` int(11) DEFAULT NULL,
+  `granted_by` int DEFAULT NULL,
   `approved_on` date DEFAULT NULL,
-  `approved_by` int(11) DEFAULT NULL,
+  `approved_by` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_div_chng_emp_idx` (`employee_id`),
   KEY `fk_div_chng_div_idx` (`division_id`),
@@ -381,7 +381,7 @@ CREATE TABLE `division_change` (
   CONSTRAINT `fk_div_chng_div` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_div_chng_emp` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_div_chng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Employees division change register';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Employees division change register';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -390,19 +390,19 @@ CREATE TABLE `division_change` (
 
 DROP TABLE IF EXISTS `divisions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `divisions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `established` date DEFAULT NULL COMMENT 'Date on which the division was created',
   `closed` date DEFAULT NULL,
-  `size` int(11) DEFAULT NULL COMMENT 'Current number of employees in the division',
-  `location_id` int(11) NOT NULL,
+  `size` int DEFAULT NULL COMMENT 'Current number of employees in the division',
+  `location_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_division_name` (`name`),
   KEY `fk_division_location_idx` (`location_id`),
   CONSTRAINT `fk_division_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Company''s divisions';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Company''s divisions';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -412,7 +412,7 @@ CREATE TABLE `divisions` (
 DROP TABLE IF EXISTS `emp_absences`;
 /*!50001 DROP VIEW IF EXISTS `emp_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `emp_absences` AS SELECT 
  1 AS `emp_id`,
  1 AS `emp_name`,
@@ -433,7 +433,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `emp_fullname`;
 /*!50001 DROP VIEW IF EXISTS `emp_fullname`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `emp_fullname` AS SELECT 
  1 AS `full_name`,
  1 AS `emp_id`*/;
@@ -446,7 +446,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `emp_history`;
 /*!50001 DROP VIEW IF EXISTS `emp_history`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `emp_history` AS SELECT 
  1 AS `emp_id`,
  1 AS `name`,
@@ -465,7 +465,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `emp_resigned`;
 /*!50001 DROP VIEW IF EXISTS `emp_resigned`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `emp_resigned` AS SELECT 
  1 AS `fullname`,
  1 AS `last_position`,
@@ -485,7 +485,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `emp_summary`;
 /*!50001 DROP VIEW IF EXISTS `emp_summary`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `emp_summary` AS SELECT 
  1 AS `fullname`,
  1 AS `position`,
@@ -504,19 +504,19 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employees` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `person_id` int NOT NULL,
   `contract_date` date NOT NULL COMMENT 'Date when contract was signed',
   `hire_date` date NOT NULL COMMENT 'Date from which the employee started work',
-  `trial_period` int(1) DEFAULT NULL COMMENT 'Trial Periods in months',
+  `trial_period` int DEFAULT NULL COMMENT 'Trial Periods in months',
   `leave_date` date DEFAULT NULL COMMENT 'Date on which the employee left company',
   `leave_reason` text COMMENT 'Reason for leave',
-  `job_id` int(11) NOT NULL COMMENT 'Current job',
-  `manager_id` int(11) DEFAULT NULL COMMENT 'Current manager',
-  `department_id` int(11) DEFAULT NULL COMMENT 'Current department',
-  `division_id` int(11) NOT NULL COMMENT 'Current division',
+  `job_id` int NOT NULL COMMENT 'Current job',
+  `manager_id` int DEFAULT NULL COMMENT 'Current manager',
+  `department_id` int DEFAULT NULL COMMENT 'Current department',
+  `division_id` int NOT NULL COMMENT 'Current division',
   `salary` decimal(14,3) DEFAULT NULL COMMENT 'Current GROSS salary',
   `currency` char(3) DEFAULT NULL,
   `newcomer_issue_id` varchar(16) DEFAULT NULL COMMENT 'Related newcomer issue identifier (TTS key)',
@@ -533,7 +533,7 @@ CREATE TABLE `employees` (
   CONSTRAINT `fk_emp_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_emp_manager_id` FOREIGN KEY (`manager_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_emp_person_id` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Catalog of company''s most valuable resource';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Catalog of company''s most valuable resource';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -618,18 +618,18 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `job_candidates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_candidates` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `person_id` int NOT NULL,
   `cv_doc` blob COMMENT 'Curriculum Vitae document',
   `cl_doc` blob COMMENT 'Cover Letter document',
-  `job_id` int(11) NOT NULL,
+  `job_id` int NOT NULL,
   `first_interview` date NOT NULL,
   `second_interview` date DEFAULT NULL,
   `third_interview` date DEFAULT NULL,
   `status` enum('Approved','Rejected','Pending') DEFAULT NULL,
-  `employee_id` int(11) DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_candidate_interviewed` (`first_interview`),
   KEY `fk_candidate_employee_idx` (`employee_id`),
@@ -638,7 +638,7 @@ CREATE TABLE `job_candidates` (
   CONSTRAINT `fk_candidate_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_candidate_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Catalog of job candidates';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Catalog of job candidates';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -647,16 +647,16 @@ CREATE TABLE `job_candidates` (
 
 DROP TABLE IF EXISTS `job_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `from_date` date NOT NULL,
-  `job_id` int(11) NOT NULL,
+  `job_id` int NOT NULL,
   `granted_on` date DEFAULT NULL,
-  `granted_by` int(11) NOT NULL,
+  `granted_by` int NOT NULL,
   `approved_on` date DEFAULT NULL,
-  `approved_by` int(11) NOT NULL,
+  `approved_by` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_jobhist_employee_idx` (`employee_id`),
   KEY `fk_jobhist_job_idx` (`job_id`),
@@ -666,7 +666,7 @@ CREATE TABLE `job_history` (
   CONSTRAINT `fk_jobhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_jobhist_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -675,16 +675,16 @@ CREATE TABLE `job_history` (
 
 DROP TABLE IF EXISTS `job_offers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_offers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
   `description` blob NOT NULL,
-  `job_id` int(11) NOT NULL,
+  `job_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_job_offer_job_id_idx` (`job_id`),
   CONSTRAINT `fk_job_offer_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -693,16 +693,16 @@ CREATE TABLE `job_offers` (
 
 DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
   `description` blob,
   `min_salary` decimal(12,2) DEFAULT NULL,
   `max_salary` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_job_title` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of jobs within the company';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='List of jobs within the company';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -712,7 +712,7 @@ CREATE TABLE `jobs` (
 DROP TABLE IF EXISTS `leaves_plan`;
 /*!50001 DROP VIEW IF EXISTS `leaves_plan`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `leaves_plan` AS SELECT 
  1 AS `emp_name`,
  1 AS `for_year`,
@@ -728,16 +728,16 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `locations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `country_id` int(11) NOT NULL,
+  `country_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_location_name` (`name`),
   KEY `fk_loc_country_idx` (`country_id`),
   CONSTRAINT `fk_loc_country` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Locations of companys offices, wharehouses, etc.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Locations of companys offices, wharehouses, etc.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -746,21 +746,21 @@ CREATE TABLE `locations` (
 
 DROP TABLE IF EXISTS `memos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `memos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL COMMENT 'Related employee',
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL COMMENT 'Related employee',
   `comment` text NOT NULL,
   `from_date` date NOT NULL COMMENT 'Associative date',
   `type` enum('Behaviour','Casus','Problem','Etics','Personal','Note') NOT NULL COMMENT 'Defines the main subject of the memo',
-  `written_by` int(11) NOT NULL COMMENT 'The author of the memo/note',
+  `written_by` int NOT NULL COMMENT 'The author of the memo/note',
   PRIMARY KEY (`id`),
   KEY `idx_memo_from` (`from_date`),
   KEY `fk_memo_employee_idx` (`employee_id`),
   KEY `fk_memo_written_idx` (`written_by`),
   CONSTRAINT `fk_memo_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_memo_written` FOREIGN KEY (`written_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Notes on employees behviour, attitude, problematics, etc.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Notes on employees behviour, attitude, problematics, etc.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -770,7 +770,7 @@ CREATE TABLE `memos` (
 DROP TABLE IF EXISTS `pending_absences`;
 /*!50001 DROP VIEW IF EXISTS `pending_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `pending_absences` AS SELECT 
  1 AS `name`,
  1 AS `emp_name`,
@@ -790,7 +790,7 @@ SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `per_relations_list`;
 /*!50001 DROP VIEW IF EXISTS `per_relations_list`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `per_relations_list` AS SELECT 
  1 AS `p1_name`,
  1 AS `relation`,
@@ -804,7 +804,7 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `person_relation_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `person_relation_types` (
   `id` varchar(16) NOT NULL,
   `title` varchar(64) NOT NULL,
@@ -812,7 +812,7 @@ CREATE TABLE `person_relation_types` (
   PRIMARY KEY (`id`),
   KEY `fk_prel_type_rev_idx` (`id`),
   CONSTRAINT `fk_prel_type_rev` FOREIGN KEY (`id`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -821,12 +821,12 @@ CREATE TABLE `person_relation_types` (
 
 DROP TABLE IF EXISTS `person_relations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `person_relations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person1` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `person1` int NOT NULL,
   `type` varchar(16) NOT NULL,
-  `person2` int(11) NOT NULL,
+  `person2` int NOT NULL,
   `from_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_prel_person1_idx` (`person1`),
@@ -835,7 +835,7 @@ CREATE TABLE `person_relations` (
   CONSTRAINT `fk_prel_person1` FOREIGN KEY (`person1`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prel_person2` FOREIGN KEY (`person2`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prel_type` FOREIGN KEY (`type`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -844,9 +844,9 @@ CREATE TABLE `person_relations` (
 
 DROP TABLE IF EXISTS `persons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `persons` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(64) NOT NULL,
   `middle_name` varchar(64) DEFAULT NULL,
   `maiden_name` varchar(32) DEFAULT NULL,
@@ -861,13 +861,13 @@ CREATE TABLE `persons` (
   `short_bio` text,
   `cv_doc` longblob,
   `linkedin_profile` varchar(256) DEFAULT NULL COMMENT 'URL to LinkedIn profile',
-  `prior_internship_yrs` int(2) DEFAULT NULL COMMENT 'Prior internship in years',
-  `prior_internship_mns` int(2) DEFAULT NULL COMMENT 'Prior internship in months',
-  `prior_internship_dys` int(2) DEFAULT NULL COMMENT 'Prior internship in days',
+  `prior_internship_yrs` int DEFAULT NULL COMMENT 'Prior internship in years',
+  `prior_internship_mns` int DEFAULT NULL COMMENT 'Prior internship in months',
+  `prior_internship_dys` int DEFAULT NULL COMMENT 'Prior internship in days',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_person_names` (`first_name`,`middle_name`,`last_name`),
   KEY `idx_person_bd` (`birth_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -876,13 +876,13 @@ CREATE TABLE `persons` (
 
 DROP TABLE IF EXISTS `regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `regions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_reg_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of country regions where the company has activities';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='List of country regions where the company has activities';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -892,7 +892,7 @@ CREATE TABLE `regions` (
 DROP TABLE IF EXISTS `requested_absences`;
 /*!50001 DROP VIEW IF EXISTS `requested_absences`*/;
 SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8mb4;
+/*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `requested_absences` AS SELECT 
  1 AS `name`,
  1 AS `emp_name`,
@@ -911,17 +911,17 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `sal_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sal_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `from_date` date NOT NULL,
   `amount` decimal(14,3) NOT NULL,
   `currency` char(3) DEFAULT NULL,
   `granted_on` date DEFAULT NULL,
-  `granted_by` int(11) NOT NULL,
+  `granted_by` int NOT NULL,
   `approved_on` date DEFAULT NULL,
-  `approved_by` int(11) NOT NULL,
+  `approved_by` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_salhist_employee_idx` (`employee_id`),
   KEY `fk_salhist_approved_idx` (`approved_by`),
@@ -931,7 +931,7 @@ CREATE TABLE `sal_history` (
   CONSTRAINT `fk_salhist_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_salhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_salhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -940,16 +940,16 @@ CREATE TABLE `sal_history` (
 
 DROP TABLE IF EXISTS `team_change`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `team_change` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL,
   `from_date` date NOT NULL,
-  `department` int(11) NOT NULL,
+  `department` int NOT NULL,
   `granted_on` date DEFAULT NULL,
-  `granted_by` int(11) NOT NULL,
+  `granted_by` int NOT NULL,
   `approved_on` date DEFAULT NULL,
-  `approved_by` int(11) NOT NULL,
+  `approved_by` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_tmchng_employee_idx` (`employee_id`),
   KEY `fk_tmchng_department_idx` (`department`),
@@ -959,7 +959,7 @@ CREATE TABLE `team_change` (
   CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -975,7 +975,7 @@ CREATE TABLE `team_change` (
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -999,15 +999,15 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBG`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
     NO SQL
     DETERMINISTIC
 BEGIN
-  RETURN hr_schema.calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
+  RETURN calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1020,16 +1020,16 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dGrossSalary DECIMAL, yForYear YEAR) RETURNS decimal(10,2)
     NO SQL
     DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;;
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;
   /* Percent for State Public Insurance */ 
   DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
@@ -1130,9 +1130,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryTN`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
     NO SQL
@@ -1140,7 +1140,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryTN`(dGrossSalary DECIMA
 BEGIN
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Income-determination */
   /* See http://taxsummaries.pwc.com/uk/taxsummaries/wwts.nsf/ID/Tunisia-Individual-Taxes-on-personal-income */
-  DECLARE dAnnGrossSal  DECIMAL(10,2);   
+  DECLARE dAnnGrossSal  DECIMAL(10,2);
   DECLARE dAnnSocSec    DECIMAL(10,2);
   DECLARE dMthSocSec    DECIMAL(10,2);
   DECLARE dAnnProfExp   DECIMAL(10,2);
@@ -1183,13 +1183,13 @@ BEGIN
             SET dAnnTaxAmt = dAnnTaxAmt + ROUND((dAnnTaxSal - 20000) * 30 / 100, 2);
           ELSE
             SET dAnnTaxAmt = dAnnTaxAmt + ROUND((50000 - 20000) * 30 / 100, 2);
-            SET dAnnTaxAmt = dAnnTaxAmt + ROUND(dAnnTaxSal - 50000 * 35 / 100, 2);
+            SET dAnnTaxAmt = dAnnTaxAmt + ROUND((dAnnTaxSal - 50000) * 35 / 100, 2);
           END IF;
         END IF;
       END IF;
     END IF;
 
-	/* Calcualte monthly income tax */
+    /* Calcualte monthly income tax */
     SET dMthTaxAmt = ROUND(dAnnTaxAmt / 12, 2);
   END IF;
 
@@ -1209,9 +1209,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryVN`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
     NO SQL
@@ -1245,7 +1245,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1266,9 +1266,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `curr_conversion`(amount      DECIMAL(30,10),
                                 currency    CHAR(3),
@@ -1317,11 +1317,11 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `emp_calcSnrtyYrs`(EmpID INT) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_calcSnrtyYrs`(EmpID INT) RETURNS int
     DETERMINISTIC
 BEGIN
   DECLARE iTotalYrs INT DEFAULT 0;
@@ -1343,11 +1343,11 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getFullName`(EmpID INTEGER) RETURNS varchar(256) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getFullName`(EmpID INTEGER) RETURNS varchar(256) CHARSET utf8mb3
     READS SQL DATA
 BEGIN
   DECLARE vcResult   VARCHAR(256) DEFAULT NULL;
@@ -1399,11 +1399,11 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getServiceLength`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getServiceLength`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8mb3
     READS SQL DATA
 BEGIN
   DECLARE vcResult VARCHAR(20) DEFAULT NULL;
@@ -1435,11 +1435,11 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getTimeCurPosition`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `emp_getTimeCurPosition`(EmpID INTEGER) RETURNS varchar(20) CHARSET utf8mb3
     READS SQL DATA
 BEGIN
   DECLARE vcResult VARCHAR(20) DEFAULT NULL;
@@ -1486,9 +1486,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `getPositionEndDate`(iEmpID INTEGER,
                                    iJobID INTEGER) RETURNS date
@@ -1541,9 +1541,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `getPositionStartDate`(iEmpID INTEGER,
                                      iJobID INTEGER) RETURNS date
@@ -1592,9 +1592,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `getTeamExitDate`(iEmpID INTEGER,
                                 iDepID INTEGER) RETURNS date
@@ -1647,9 +1647,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `getTeamJoinDate`(iEmpID INTEGER,
                                 iDepID INTEGER) RETURNS date
@@ -1698,7 +1698,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1740,7 +1740,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1771,11 +1771,11 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `utl_getDateDiffStr`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET utf8
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_getDateDiffStr`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET utf8mb3
     NO SQL
     DETERMINISTIC
 BEGIN
@@ -1798,9 +1798,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `emp_calcTotalSnrty`(IN EmpID INT, OUT SenYrs INT, OUT SenMns INT, OUT SenDys INT)
     READS SQL DATA
@@ -1872,9 +1872,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `emp_transfer`(IN iEmpID     INTEGER,
                               IN dBeginDate DATE,
@@ -1980,7 +1980,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -2032,9 +2032,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `utl_getDateDiff`(IN date1 DATE, IN date2 DATE, OUT yrs INT, OUT mnths INT, OUT dys INT)
     NO SQL
@@ -2063,7 +2063,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `comp_balance` AS select `emp`.`id` AS `Number`,concat(`per`.`first_name`,' ',`per`.`last_name`) AS `Name`,date_format(max(`absn`.`from_date`),'%Y-%m') AS `Until`,sec_to_time(sum((case when (`absn`.`from_date` <= `absn`.`to_date`) then time_to_sec(timediff(`absn`.`to_date`,`absn`.`from_date`)) else 0 end))) AS `HPlus`,sec_to_time(sum((case when (`absn`.`from_date` > `absn`.`to_date`) then time_to_sec(timediff(`absn`.`from_date`,`absn`.`to_date`)) else 0 end))) AS `HMinus`,concat('',sec_to_time((sum((case when (`absn`.`from_date` <= `absn`.`to_date`) then time_to_sec(timediff(`absn`.`to_date`,`absn`.`from_date`)) else 0 end)) - sum((case when (`absn`.`from_date` > `absn`.`to_date`) then time_to_sec(timediff(`absn`.`from_date`,`absn`.`to_date`)) else 0 end))))) AS `Balance` from ((`absences` `absn` join `employees` `emp`) join `persons` `per`) where ((`absn`.`type` = 10) and (`emp`.`id` = `absn`.`employee_id`) and (`per`.`id` = `emp`.`person_id`)) group by `Name` order by `Name` */;
@@ -2081,7 +2081,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `comp_list` AS select concat(`per`.`first_name`,' ',`per`.`last_name`) AS `Name`,date_format(`ab`.`from_date`,'%d/%m/%Y') AS `Day`,time_format(`ab`.`from_date`,'%H:%i') AS `Start`,time_format(`ab`.`to_date`,'%H:%i') AS `End`,sec_to_time(time_to_sec(timediff(`ab`.`to_date`,`ab`.`from_date`))) AS `Total`,(case when (`ab`.`description` like 'Proj%') then replace(substr(`ab`.`description`,1,(locate(';',`ab`.`description`) - 1)),'Projects: ','') when (`ab`.`description` like 'Offline%') then ltrim(substr(`ab`.`description`,(locate(':',`ab`.`description`) + 1))) else `ab`.`description` end) AS `Projects`,(case when (`ab`.`description` like 'Proj%') then ltrim(replace(substr(`ab`.`description`,(locate(';',`ab`.`description`) + 1)),'Tasks: ','')) when (`ab`.`description` like 'Offline%') then '' else `ab`.`description` end) AS `Tasks` from ((`absences` `ab` join `employees` `emp`) join `persons` `per`) where ((`ab`.`employee_id` = `emp`.`id`) and (`emp`.`person_id` = `per`.`id`) and (`ab`.`type` = 10)) order by `ab`.`from_date` */;
@@ -2099,7 +2099,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `current_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,(to_days(`eab`.`to_date`) - to_days(curdate())) AS `days_left`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`from_date` <= curdate()) and (`eab`.`to_date` >= curdate()) and (`eab`.`status` = 'Authorized')) order by `eab`.`to_date`,`eab`.`dur_days` desc,`eab`.`emp_name` */;
@@ -2117,7 +2117,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `emp_absences` AS select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `emp_name`,`abt`.`title` AS `abs_type`,`abr`.`from_date` AS `from_date`,`abr`.`to_date` AS `to_date`,`abr`.`for_year` AS `for_year`,`utl_calcVacDaysId`(`abr`.`id`) AS `dur_days`,(case when (`dpty`.`id` is not null) then concat(`dpp`.`last_name`,', ',`dpp`.`first_name`) else 'n/a' end) AS `deputy`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `auth_by`,`abr`.`status` AS `status` from (((((`employees` `emp` join `persons` `per`) join ((`absences` `abr` left join `employees` `dpty` on((`abr`.`deputy_id` = `dpty`.`id`))) left join `persons` `dpp` on((`dpty`.`person_id` = `dpp`.`id`)))) join `absence_types` `abt`) join `employees` `auth`) join `persons` `app`) where ((`emp`.`id` = `abr`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`abr`.`type` = `abt`.`id`) and (`auth`.`id` = `abr`.`authorized_by`) and (`auth`.`person_id` = `app`.`id`) and (`abr`.`type` not in (10,11))) */;
@@ -2133,12 +2133,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_fullname` AS select `emp_getFullName`(`emp`.`id`) AS `full_name`,`emp`.`id` AS `emp_id` from (`employees` `emp` join `persons` `per`) where (`emp`.`person_id` = `per`.`id`) order by `emp_getFullName`(`emp`.`id`) */;
+/*!50001 VIEW `emp_fullname` AS select 1 AS `full_name`,1 AS `emp_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2151,12 +2151,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_history` AS select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`emp`.`contract_date` AS `date`,'Employment' AS `type`,`job`.`title` AS `what`,concat('Salary: ',convert(format(`sh`.`amount`,2) using utf8mb4)) AS `detail`,'Hired' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`job_history` `jh` join (`employees` `emp` left join `sal_history` `sh` on(((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`from_date` = `emp`.`hire_date`))))) join `persons` `per`) join `jobs` `job`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `jh`.`employee_id`) and (`job`.`id` = `jh`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and (`jh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`jh`.`from_date` = `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`tc`.`from_date` AS `date`,'Team' AS `type`,'Starts in' AS `what`,`dep`.`name` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`team_change` `tc` join `employees` `emp`) join `persons` `per`) join `departments` `dep`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `tc`.`employee_id`) and (`dep`.`id` = `tc`.`department`) and (`emp`.`person_id` = `per`.`id`) and (`tc`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`tc`.`from_date` = `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`jh`.`from_date` AS `date`,'Job' AS `type`,'Position change' AS `what`,`job`.`title` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`job_history` `jh` join `employees` `emp`) join `persons` `per`) join `jobs` `job`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `jh`.`employee_id`) and (`job`.`id` = `jh`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and (`jh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`jh`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`tc`.`from_date` AS `date`,'Team' AS `type`,'Department change' AS `what`,`dep`.`name` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`team_change` `tc` join `employees` `emp`) join `persons` `per`) join `departments` `dep`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `tc`.`employee_id`) and (`dep`.`id` = `tc`.`department`) and (`emp`.`person_id` = `per`.`id`) and (`tc`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`tc`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`sh`.`from_date` AS `date`,'Salary' AS `type`,'Adjustment' AS `what`,concat('Amount: ',convert(format(`sh`.`amount`,2) using utf8mb4)) AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from ((((`sal_history` `sh` join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `sh`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`sh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`sh`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`bd`.`approved_on` AS `date`,'Bonus' AS `type`,`b`.`title` AS `what`,concat('Amount: ',convert(format(`bd`.`amount`,2) using utf8mb4)) AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`bonus_distribution` `bd` join `bonuses` `b`) join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`b`.`id` = `bd`.`bonus_id`) and (`emp`.`id` = `bd`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`bd`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`apr`.`interview_date` AS `date`,'Appraisal' AS `type`,concat(`apt`.`title`,' ',`atp`.`title`) AS `what`,concat('Overal: ',convert(format(`apr`.`overall_eval`,1) using utf8mb4)) AS `detail`,NULL AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from ((((((`appraisals` `apr` join `appraisal_types` `atp`) join `appraisal_period_types` `apt`) join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `apr`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`apr`.`appriser` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`apr`.`type` = `atp`.`id`) and (`apr`.`period_type` = `apt`.`id`)) order by `name`,`date` desc */;
+/*!50001 VIEW `emp_history` AS select 1 AS `emp_id`,1 AS `name`,1 AS `date`,1 AS `type`,1 AS `what`,1 AS `detail`,1 AS `status`,1 AS `who` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2169,12 +2169,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_resigned` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `last_position`,`dep`.`name` AS `last_department`,`dvs`.`name` AS `last_division`,`emp`.`hire_date` AS `hired`,`emp`.`leave_date` AS `resigned`,(case when isnull(`emp`.`leave_reason`) then 'n/a' when (char_length(`emp`.`leave_reason`) > 32) then concat(substr(`emp`.`leave_reason`,1,32),'...') else `emp`.`leave_reason` end) AS `reason`,`utl_getDateDiffStr`(`emp`.`hire_date`,`emp`.`leave_date`) AS `service_length`,`utl_getDateDiffStr`(`per`.`birth_date`,`emp`.`leave_date`) AS `age_at_leave` from (`persons` `per` join (((`employees` `emp` left join `jobs` `pos` on((`pos`.`id` = `emp`.`job_id`))) left join `departments` `dep` on((`dep`.`id` = `emp`.`department_id`))) left join `divisions` `dvs` on((`dvs`.`id` = `emp`.`division_id`)))) where ((`emp`.`leave_date` is not null) and (`per`.`id` = `emp`.`person_id`)) order by `emp`.`leave_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
+/*!50001 VIEW `emp_resigned` AS select 1 AS `fullname`,1 AS `last_position`,1 AS `last_department`,1 AS `last_division`,1 AS `hired`,1 AS `resigned`,1 AS `reason`,1 AS `service_length`,1 AS `age_at_leave` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2187,12 +2187,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_summary` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `position`,`emp`.`contract_date` AS `contracted`,`emp`.`hire_date` AS `hired`,`utl_getDateDiffStr`(`emp`.`hire_date`,curdate()) AS `service_length`,`utl_getDateDiffStr`(`per`.`birth_date`,curdate()) AS `age`,(select max(`jh`.`from_date`) from `job_history` `jh` where ((`jh`.`employee_id` = `emp`.`id`) and (`jh`.`job_id` = `emp`.`job_id`))) AS `last_job_change`,(select max(`sh`.`from_date`) from `sal_history` `sh` where ((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`amount` = `emp`.`salary`))) AS `last_sal_change`,`emp`.`salary` AS `salary` from ((`employees` `emp` join `persons` `per`) join `jobs` `pos`) where ((`pos`.`id` = `emp`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and isnull(`emp`.`leave_date`)) order by `emp`.`hire_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
+/*!50001 VIEW `emp_summary` AS select 1 AS `fullname`,1 AS `position`,1 AS `contracted`,1 AS `hired`,1 AS `service_length`,1 AS `age`,1 AS `last_job_change`,1 AS `last_sal_change`,1 AS `salary` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2205,12 +2205,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `leaves_plan` AS select concat(`per`.`first_name`,' ',`per`.`last_name`) AS `emp_name`,`ab`.`for_year` AS `for_year`,month(`ab`.`from_date`) AS `MONTH(AB.from_date)`,`ab`.`from_date` AS `from_date`,`ab`.`to_date` AS `to_date`,((to_days(`ab`.`to_date`) - to_days(`ab`.`from_date`)) + 1) AS `dur_days` from ((`absences` `ab` join `employees` `emp`) join `persons` `per`) where ((`ab`.`status` = 'Requested') and (`ab`.`for_year` = year(curdate())) and (`emp`.`id` = `ab`.`employee_id`) and (`per`.`id` = `emp`.`person_id`)) order by concat(`per`.`first_name`,' ',`per`.`last_name`),`ab`.`from_date` */;
+/*!50001 VIEW `leaves_plan` AS select 1 AS `emp_name`,1 AS `for_year`,1 AS `MONTH(AB.from_date)`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2223,12 +2223,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `pending_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,`eab`.`dur_days` AS `dur_days`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`from_date` > curdate()) and (`eab`.`status` = 'Authorized')) order by `eab`.`from_date`,`eab`.`dur_days` desc,`eab`.`emp_name` */;
+/*!50001 VIEW `pending_absences` AS select 1 AS `name`,1 AS `emp_name`,1 AS `job_title`,1 AS `abs_type`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days`,1 AS `deputy`,1 AS `auth_by` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2241,12 +2241,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `per_relations_list` AS select concat(`p1`.`last_name`,', ',`p1`.`first_name`) AS `p1_name`,concat('is ',`prt`.`title`,' of') AS `relation`,concat(`p2`.`last_name`,', ',`p2`.`first_name`) AS `p2_name`,(case when (`pr`.`from_date` is not null) then concat('since ',convert(date_format(`pr`.`from_date`,'%Y-%m-%d') using utf8mb4)) end) AS `since` from (((`person_relations` `pr` join `person_relation_types` `prt`) join `persons` `p1`) join `persons` `p2`) where ((`pr`.`type` = `prt`.`id`) and (`pr`.`person1` = `p1`.`id`) and (`pr`.`person2` = `p2`.`id`)) */;
+/*!50001 VIEW `per_relations_list` AS select 1 AS `p1_name`,1 AS `relation`,1 AS `p2_name`,1 AS `since` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2259,12 +2259,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `requested_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,`eab`.`dur_days` AS `dur_days`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`status` = 'Requested')) order by `eab`.`to_date`,`eab`.`emp_name` */;
+/*!50001 VIEW `requested_absences` AS select 1 AS `name`,1 AS `emp_name`,1 AS `job_title`,1 AS `abs_type`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days`,1 AS `deputy`,1 AS `auth_by` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2278,4 +2278,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-31 11:46:22
+-- Dump completed on 2021-07-30 21:12:38
