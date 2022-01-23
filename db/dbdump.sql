@@ -1055,8 +1055,10 @@ BEGIN
       SET dMaxInsInc = 2400;
     WHEN yForYear BETWEEN 2015 AND 2018 THEN
       SET dMaxInsInc = 2600;
-    WHEN yForYear >= 2019 THEN
+    WHEN yForYear BETWEEN 2019 AND 2021 THEN
       SET dMaxInsInc = 3000;
+    WHEN yForYear >= 2022 THEN
+      SET dMaxInsInc = 3400;
   END CASE;
 
   CASE
@@ -2278,4 +2280,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-30 21:12:38
+-- Dump completed on 2022-01-23  9:37:40
