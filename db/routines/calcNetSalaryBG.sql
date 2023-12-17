@@ -1,10 +1,12 @@
 DELIMITER //
 
-CREATE FUNCTION calcNetSalaryBG(dGrossSalary DECIMAL) RETURNS DECIMAL(10,2)
+CREATE FUNCTION calcNetSalaryBG(dBaseSalary DECIMAL,
+                                dSeniorityYears DECIMAL)
+RETURNS DECIMAL(10,2)
   NO SQL
   DETERMINISTIC
 BEGIN
-  RETURN calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
+  RETURN calcNetSalaryBGForYear(dBaseSalary, IFNULL(dSeniorityYears, 0), YEAR(NOW()));
 END //
 
 DELIMITER ;

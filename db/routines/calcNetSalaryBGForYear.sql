@@ -1,6 +1,9 @@
 DELIMITER //
 
-CREATE FUNCTION calcNetSalaryBGForYear(dGrossSalary DECIMAL, yForYear YEAR) RETURNS DECIMAL(10,2)
+CREATE FUNCTION calcNetSalaryBGForYear(dBaseSalary DECIMAL,
+                                       dSeniorityYears DECIMAL,
+                                       yForYear YEAR)
+RETURNS DECIMAL(10,2)
   NO SQL
   DETERMINISTIC
 BEGIN
@@ -13,13 +16,16 @@ BEGIN
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
 
-  DECLARE dBaseSal    DECIMAL(10,2);
-  DECLARE dSPIAmt     DECIMAL(10,2);
-  DECLARE dAMPIAmt    DECIMAL(10,2);
-  DECLARE dHIAmt      DECIMAL(10,2);
-  DECLARE dTaxableAmt DECIMAL(10,2);
-  DECLARE dIncomeTax  DECIMAL(10,2);
-  DECLARE dNetSalary  DECIMAL(10,2);
+  DECLARE dInsAmt         DECIMAL(10,2) DEFAULT dBaseSalary;
+  DECLARE dSeniorityPerc  DECIMAL(4,2);
+  DECLARE dSeniorityAmt   DECIMAL(10,2);
+  DECLARE dGrossSalary    DECIMAL(10,2) DEFAULT dBaseSalary;
+  DECLARE dSPIAmt         DECIMAL(10,2);
+  DECLARE dAMPIAmt        DECIMAL(10,2);
+  DECLARE dHIAmt          DECIMAL(10,2);
+  DECLARE dTaxableAmt     DECIMAL(10,2);
+  DECLARE dIncomeTax      DECIMAL(10,2);
+  DECLARE dNetSalary      DECIMAL(10,2);
 
   /* Determine Maximal Social Insurance Income per year */
   CASE
@@ -58,21 +64,26 @@ BEGIN
       SET dHlthInPerc = 3.2;
   END CASE;
 
+  /* Calculate and add seniority to gross salary */
+  IF dSeniorityYears > 0 THEN
+    SET dSeniorityPerc  = dSeniorityYears * 0.6;
+    SET dSeniorityAmt   = ROUND(dBaseSalary * dSeniorityPerc / 100, 2);
+    SET dGrossSalary    = dGrossSalary + dSeniorityAmt;
+  END IF;
+
   /* Determine the base */
-  IF dGrossSalary > dMaxInsInc THEN
-    SET dBaseSal = dMaxInsInc;
-  ELSE
-    SET dBaseSal = dGrossSalary;
+  IF dBaseSalary > dMaxInsInc THEN
+    SET dInsAmt = dMaxInsInc;
   END IF;
 
   /* Calculate State Public Insurance */
-  SET dSPIAmt  = ROUND(dBaseSal * dPubInsPerc / 100, 2);
+  SET dSPIAmt  = ROUND(dInsAmt * dPubInsPerc / 100, 2);
 
   /* Calculate Additional Mandatory Pension Insurance */
-  SET dAMPIAmt = ROUND(dBaseSal * dAMPInsPerc / 100, 2);
+  SET dAMPIAmt = ROUND(dInsAmt * dAMPInsPerc / 100, 2);
 
   /* Calculate Health Insurance */
-  SET dHIAmt   = ROUND(dBaseSal * dHlthInPerc / 100, 2);
+  SET dHIAmt   = ROUND(dInsAmt * dHlthInPerc / 100, 2);
 
   /* Calculate Taxable Amount */
   SET dTaxableAmt = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt, 2);
@@ -95,7 +106,7 @@ BEGIN
   SET dIncomeTax = ROUND(dTaxableAmt * 10 / 100, 2);
 
   /* Calculate Net Salary */
-  SET dNetSalary = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt - dIncomeTax, 2);
+  SET dNetSalary = ROUND(dTaxableAmt - dIncomeTax, 2);
 
   RETURN dNetSalary;
 END //
