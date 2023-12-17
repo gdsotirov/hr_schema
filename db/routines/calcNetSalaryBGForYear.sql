@@ -17,7 +17,6 @@ BEGIN
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
 
   DECLARE dInsAmt         DECIMAL(10,2) DEFAULT dBaseSalary;
-  DECLARE dSeniorityPerc  DECIMAL(4,2);
   DECLARE dSeniorityAmt   DECIMAL(10,2);
   DECLARE dGrossSalary    DECIMAL(10,2) DEFAULT dBaseSalary;
   DECLARE dSPIAmt         DECIMAL(10,2);
@@ -66,8 +65,7 @@ BEGIN
 
   /* Calculate and add seniority to gross salary */
   IF dSeniorityYears > 0 THEN
-    SET dSeniorityPerc  = dSeniorityYears * 0.6;
-    SET dSeniorityAmt   = ROUND(dBaseSalary * dSeniorityPerc / 100, 2);
+    SET dSeniorityAmt   = ROUND(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
     SET dGrossSalary    = dGrossSalary + dSeniorityAmt;
   END IF;
 

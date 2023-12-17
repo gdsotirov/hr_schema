@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Linux (x86_64)
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	8.0.26
+-- Server version	8.0.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `hr_schema`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `hr_schema`;
 
 --
 -- Table structure for table `absence_totals`
@@ -34,9 +42,9 @@ CREATE TABLE `absence_totals` (
   KEY `fk_abstot_type_idx` (`type_id`),
   KEY `fk_abstot_user_idx` (`employee_id`),
   KEY `fk_abstot_division_idx` (`division_id`),
-  CONSTRAINT `fk_abstot_division` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_abstot_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_abstot_type` FOREIGN KEY (`type_id`) REFERENCES `absence_types` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_abstot_division` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_abstot_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_abstot_type` FOREIGN KEY (`type_id`) REFERENCES `absence_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Defines the maximum days per absence type, user or division to be used in a calendar year';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,10 +88,10 @@ CREATE TABLE `absences` (
   KEY `fk_absence_deputy_idx` (`deputy_id`),
   KEY `fk_absence_type_idx` (`type`),
   KEY `fk_absence_authorized_idx` (`authorized_by`),
-  CONSTRAINT `fk_absence_authorized` FOREIGN KEY (`authorized_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_absence_deputy` FOREIGN KEY (`deputy_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_absence_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_absence_type` FOREIGN KEY (`type`) REFERENCES `absence_types` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_absence_authorized` FOREIGN KEY (`authorized_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_absence_deputy` FOREIGN KEY (`deputy_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_absence_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_absence_type` FOREIGN KEY (`type`) REFERENCES `absence_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Emplooyees vacations registry';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,10 +149,10 @@ CREATE TABLE `appraisals` (
   KEY `fk_appraisal_appriser_idx` (`appriser`),
   KEY `fk_appraisal_period_type_idx` (`period_type`),
   KEY `fk_appraisal_type_idx` (`type`),
-  CONSTRAINT `fk_appraisal_appriser` FOREIGN KEY (`appriser`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_appraisal_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_appraisal_period_type` FOREIGN KEY (`period_type`) REFERENCES `appraisal_period_types` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_appraisal_type` FOREIGN KEY (`type`) REFERENCES `appraisal_types` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_appraisal_appriser` FOREIGN KEY (`appriser`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_appraisal_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_appraisal_period_type` FOREIGN KEY (`period_type`) REFERENCES `appraisal_period_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_appraisal_type` FOREIGN KEY (`type`) REFERENCES `appraisal_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Employees appraisls';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -174,11 +182,11 @@ CREATE TABLE `bonus_distribution` (
   KEY `fk_bondtl_approved_idx` (`approved_by`),
   KEY `fk_bondtl_bonus_idx` (`bonus_id`),
   KEY `fk_bondtl_currency_idx` (`currency`),
-  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bondtl_bonus` FOREIGN KEY (`bonus_id`) REFERENCES `bonuses` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bondtl_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bondtl_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_bondtl_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_bonus` FOREIGN KEY (`bonus_id`) REFERENCES `bonuses` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_bondtl_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Bonueses history';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -199,8 +207,8 @@ CREATE TABLE `bonuses` (
   PRIMARY KEY (`id`),
   KEY `fk_bonuses_granted_idx` (`granted_by`),
   KEY `fk_bonuses_currency_idx` (`currency`),
-  CONSTRAINT `fk_bonuses_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_bonuses_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_bonuses_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,7 +280,7 @@ CREATE TABLE `countries` (
   UNIQUE KEY `idx_tld` (`tld`),
   KEY `idx_name_en` (`name_en`),
   KEY `fk_ctry_region_idx` (`region_id`),
-  CONSTRAINT `fk_ctry_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_ctry_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='List of coutries where the company has activities';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -294,9 +302,9 @@ CREATE TABLE `curr_rates` (
   KEY `fk_curr_rates_country_idx` (`country`),
   KEY `fk_curr_rates_from_curr_idx` (`from_curr`),
   KEY `fk_curr_rates_to_curr_idx` (`to_curr`),
-  CONSTRAINT `fk_curr_rates_country` FOREIGN KEY (`country`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_curr_rates_from_curr` FOREIGN KEY (`from_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_curr_rates_to_curr` FOREIGN KEY (`to_curr`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_curr_rates_country` FOREIGN KEY (`country`) REFERENCES `countries` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_curr_rates_from_curr` FOREIGN KEY (`from_curr`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_curr_rates_to_curr` FOREIGN KEY (`to_curr`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Currency conversion rates register';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -377,10 +385,10 @@ CREATE TABLE `division_change` (
   KEY `fk_div_chng_div_idx` (`division_id`),
   KEY `fk_div_chng_granted_idx` (`granted_by`),
   KEY `fk_div_chng_approved_idx` (`approved_by`),
-  CONSTRAINT `fk_div_chng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_div_chng_div` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_div_chng_emp` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_div_chng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_div_chng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_div` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_emp` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_div_chng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Employees division change register';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -401,7 +409,7 @@ CREATE TABLE `divisions` (
   PRIMARY KEY (`id`),
   KEY `idx_division_name` (`name`),
   KEY `fk_division_location_idx` (`location_id`),
-  CONSTRAINT `fk_division_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_division_location` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Company''s divisions';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -527,20 +535,20 @@ CREATE TABLE `employees` (
   KEY `fk_emp_division_id_idx` (`division_id`),
   KEY `fk_emp_person_id_idx` (`person_id`),
   KEY `fk_emp_currency_idx` (`currency`),
-  CONSTRAINT `fk_emp_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_emp_department_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_emp_division_id` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_emp_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_emp_manager_id` FOREIGN KEY (`manager_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_emp_person_id` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_emp_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_department_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_division_id` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_manager_id` FOREIGN KEY (`manager_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_person_id` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Catalog of company''s most valuable resource';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -567,9 +575,9 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -635,9 +643,9 @@ CREATE TABLE `job_candidates` (
   KEY `fk_candidate_employee_idx` (`employee_id`),
   KEY `fk_candidate_job_idx` (`job_id`),
   KEY `fk_candidate_person_idx` (`person_id`),
-  CONSTRAINT `fk_candidate_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_candidate_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_candidate_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_candidate_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_candidate_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_candidate_person` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Catalog of job candidates';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -662,10 +670,10 @@ CREATE TABLE `job_history` (
   KEY `fk_jobhist_job_idx` (`job_id`),
   KEY `fk_jobhist_approved_idx` (`approved_by`),
   KEY `fk_jobhist_granted_idx` (`granted_by`),
-  CONSTRAINT `fk_jobhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_jobhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_jobhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_jobhist_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_jobhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_jobhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_jobhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_jobhist_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -683,7 +691,7 @@ CREATE TABLE `job_offers` (
   `job_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_job_offer_job_id_idx` (`job_id`),
-  CONSTRAINT `fk_job_offer_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_job_offer_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -736,7 +744,7 @@ CREATE TABLE `locations` (
   PRIMARY KEY (`id`),
   KEY `idx_location_name` (`name`),
   KEY `fk_loc_country_idx` (`country_id`),
-  CONSTRAINT `fk_loc_country` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_loc_country` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Locations of companys offices, wharehouses, etc.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -758,8 +766,8 @@ CREATE TABLE `memos` (
   KEY `idx_memo_from` (`from_date`),
   KEY `fk_memo_employee_idx` (`employee_id`),
   KEY `fk_memo_written_idx` (`written_by`),
-  CONSTRAINT `fk_memo_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_memo_written` FOREIGN KEY (`written_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_memo_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_memo_written` FOREIGN KEY (`written_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Notes on employees behviour, attitude, problematics, etc.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -811,7 +819,7 @@ CREATE TABLE `person_relation_types` (
   `reverse_id` varchar(16) DEFAULT NULL COMMENT 'Used to define the reverse relation',
   PRIMARY KEY (`id`),
   KEY `fk_prel_type_rev_idx` (`id`),
-  CONSTRAINT `fk_prel_type_rev` FOREIGN KEY (`id`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_prel_type_rev` FOREIGN KEY (`id`) REFERENCES `person_relation_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -832,9 +840,9 @@ CREATE TABLE `person_relations` (
   KEY `fk_prel_person1_idx` (`person1`),
   KEY `fk_prel_type_idx` (`type`),
   KEY `fk_prel_person2_idx` (`person2`),
-  CONSTRAINT `fk_prel_person1` FOREIGN KEY (`person1`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_prel_person2` FOREIGN KEY (`person2`) REFERENCES `persons` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_prel_type` FOREIGN KEY (`type`) REFERENCES `person_relation_types` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_prel_person1` FOREIGN KEY (`person1`) REFERENCES `persons` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_prel_person2` FOREIGN KEY (`person2`) REFERENCES `persons` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_prel_type` FOREIGN KEY (`type`) REFERENCES `person_relation_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -927,10 +935,10 @@ CREATE TABLE `sal_history` (
   KEY `fk_salhist_approved_idx` (`approved_by`),
   KEY `fk_salhist_granted_idx` (`granted_by`),
   KEY `fk_salhist_currency_idx` (`currency`),
-  CONSTRAINT `fk_salhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_salhist_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_salhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_salhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_salhist_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_salhist_currency` FOREIGN KEY (`currency`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_salhist_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_salhist_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -955,10 +963,10 @@ CREATE TABLE `team_change` (
   KEY `fk_tmchng_department_idx` (`department`),
   KEY `fk_tmchng_granted_idx` (`granted_by`),
   KEY `fk_tmchng_approved_idx` (`approved_by`),
-  CONSTRAINT `fk_tmchng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_tmchng_approved` FOREIGN KEY (`approved_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_department` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_tmchng_granted` FOREIGN KEY (`granted_by`) REFERENCES `employees` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -975,7 +983,7 @@ CREATE TABLE `team_change` (
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -999,15 +1007,16 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBG`(dGrossSalary DECIMAL) RETURNS decimal(10,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBG`(dBaseSalary     DECIMAL(10,2),
+                                dSeniorityYears DECIMAL(2)) RETURNS decimal(10,2)
     NO SQL
     DETERMINISTIC
 BEGIN
-  RETURN calcNetSalaryBGForYear(dGrossSalary, YEAR(NOW()));
+  RETURN calcNetSalaryBGForYear(dBaseSalary, IFNULL(dSeniorityYears, 0), YEAR(NOW()));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1020,11 +1029,13 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dGrossSalary DECIMAL, yForYear YEAR) RETURNS decimal(10,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary      DECIMAL(10,2),
+                                       dSeniorityYears  DECIMAL(2),
+                                       yForYear         YEAR) RETURNS decimal(10,2)
     NO SQL
     DETERMINISTIC
 BEGIN
@@ -1037,13 +1048,15 @@ BEGIN
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
 
-  DECLARE dBaseSal    DECIMAL(10,2);
-  DECLARE dSPIAmt     DECIMAL(10,2);
-  DECLARE dAMPIAmt    DECIMAL(10,2);
-  DECLARE dHIAmt      DECIMAL(10,2);
-  DECLARE dTaxableAmt DECIMAL(10,2);
-  DECLARE dIncomeTax  DECIMAL(10,2);
-  DECLARE dNetSalary  DECIMAL(10,2);
+  DECLARE dInsAmt         DECIMAL(10,2) DEFAULT dBaseSalary;
+  DECLARE dSeniorityAmt   DECIMAL(10,2);
+  DECLARE dGrossSalary    DECIMAL(10,2) DEFAULT dBaseSalary;
+  DECLARE dSPIAmt         DECIMAL(10,2);
+  DECLARE dAMPIAmt        DECIMAL(10,2);
+  DECLARE dHIAmt          DECIMAL(10,2);
+  DECLARE dTaxableAmt     DECIMAL(10,2);
+  DECLARE dIncomeTax      DECIMAL(10,2);
+  DECLARE dNetSalary      DECIMAL(10,2);
 
   /* Determine Maximal Social Insurance Income per year */
   CASE
@@ -1057,8 +1070,10 @@ BEGIN
       SET dMaxInsInc = 2600;
     WHEN yForYear BETWEEN 2019 AND 2021 THEN
       SET dMaxInsInc = 3000;
-    WHEN yForYear >= 2022 THEN
+    WHEN yForYear BETWEEN 2022 AND 2023 THEN
       SET dMaxInsInc = 3400;
+    WHEN yForYear >= 2024 THEN
+      SET dMaxInsInc = 3750;
   END CASE;
 
   CASE
@@ -1080,21 +1095,25 @@ BEGIN
       SET dHlthInPerc = 3.2;
   END CASE;
 
-  /* Determine the base */
-  IF dGrossSalary > dMaxInsInc THEN
-    SET dBaseSal = dMaxInsInc;
-  ELSE
-    SET dBaseSal = dGrossSalary;
+  /* Calculate and add seniority to gross salary */
+  IF dSeniorityYears > 0 THEN
+    SET dSeniorityAmt   = ROUND(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
+    SET dGrossSalary    = dGrossSalary + dSeniorityAmt;
   END IF;
 
-  /* Calcualte State Public Insurance */
-  SET dSPIAmt  = ROUND(dBaseSal * dPubInsPerc / 100, 2);
+  /* Determine the base */
+  IF dBaseSalary > dMaxInsInc THEN
+    SET dInsAmt = dMaxInsInc;
+  END IF;
+
+  /* Calculate State Public Insurance */
+  SET dSPIAmt  = ROUND(dInsAmt * dPubInsPerc / 100, 2);
 
   /* Calculate Additional Mandatory Pension Insurance */
-  SET dAMPIAmt = ROUND(dBaseSal * dAMPInsPerc / 100, 2);
+  SET dAMPIAmt = ROUND(dInsAmt * dAMPInsPerc / 100, 2);
 
   /* Calculate Health Insurance */
-  SET dHIAmt   = ROUND(dBaseSal * dHlthInPerc / 100, 2);
+  SET dHIAmt   = ROUND(dInsAmt * dHlthInPerc / 100, 2);
 
   /* Calculate Taxable Amount */
   SET dTaxableAmt = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt, 2);
@@ -1116,8 +1135,8 @@ BEGIN
   /* Flat Total Income Tax of 10% */
   SET dIncomeTax = ROUND(dTaxableAmt * 10 / 100, 2);
 
-  /* Calcualte Net Salary */
-  SET dNetSalary = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt - dIncomeTax, 2);
+  /* Calculate Net Salary */
+  SET dNetSalary = ROUND(dTaxableAmt - dIncomeTax, 2);
 
   RETURN dNetSalary;
 END ;;
@@ -1247,7 +1266,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1319,7 +1338,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1345,7 +1364,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1401,7 +1420,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1437,7 +1456,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1700,9 +1719,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `utl_calcVacDays`(dStartDate DATETIME, dEndDate DATETIME) RETURNS decimal(5,1)
     NO SQL
@@ -1742,7 +1761,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1773,7 +1792,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1982,9 +2001,9 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mgmt_promote`(IN iEmpID INTEGER,
                               IN dBeginDate DATE,
@@ -2056,6 +2075,12 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Current Database: `hr_schema`
+--
+
+USE `hr_schema`;
+
+--
 -- Final view structure for view `comp_balance`
 --
 
@@ -2065,7 +2090,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `comp_balance` AS select `emp`.`id` AS `Number`,concat(`per`.`first_name`,' ',`per`.`last_name`) AS `Name`,date_format(max(`absn`.`from_date`),'%Y-%m') AS `Until`,sec_to_time(sum((case when (`absn`.`from_date` <= `absn`.`to_date`) then time_to_sec(timediff(`absn`.`to_date`,`absn`.`from_date`)) else 0 end))) AS `HPlus`,sec_to_time(sum((case when (`absn`.`from_date` > `absn`.`to_date`) then time_to_sec(timediff(`absn`.`from_date`,`absn`.`to_date`)) else 0 end))) AS `HMinus`,concat('',sec_to_time((sum((case when (`absn`.`from_date` <= `absn`.`to_date`) then time_to_sec(timediff(`absn`.`to_date`,`absn`.`from_date`)) else 0 end)) - sum((case when (`absn`.`from_date` > `absn`.`to_date`) then time_to_sec(timediff(`absn`.`from_date`,`absn`.`to_date`)) else 0 end))))) AS `Balance` from ((`absences` `absn` join `employees` `emp`) join `persons` `per`) where ((`absn`.`type` = 10) and (`emp`.`id` = `absn`.`employee_id`) and (`per`.`id` = `emp`.`person_id`)) group by `Name` order by `Name` */;
@@ -2083,7 +2108,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `comp_list` AS select concat(`per`.`first_name`,' ',`per`.`last_name`) AS `Name`,date_format(`ab`.`from_date`,'%d/%m/%Y') AS `Day`,time_format(`ab`.`from_date`,'%H:%i') AS `Start`,time_format(`ab`.`to_date`,'%H:%i') AS `End`,sec_to_time(time_to_sec(timediff(`ab`.`to_date`,`ab`.`from_date`))) AS `Total`,(case when (`ab`.`description` like 'Proj%') then replace(substr(`ab`.`description`,1,(locate(';',`ab`.`description`) - 1)),'Projects: ','') when (`ab`.`description` like 'Offline%') then ltrim(substr(`ab`.`description`,(locate(':',`ab`.`description`) + 1))) else `ab`.`description` end) AS `Projects`,(case when (`ab`.`description` like 'Proj%') then ltrim(replace(substr(`ab`.`description`,(locate(';',`ab`.`description`) + 1)),'Tasks: ','')) when (`ab`.`description` like 'Offline%') then '' else `ab`.`description` end) AS `Tasks` from ((`absences` `ab` join `employees` `emp`) join `persons` `per`) where ((`ab`.`employee_id` = `emp`.`id`) and (`emp`.`person_id` = `per`.`id`) and (`ab`.`type` = 10)) order by `ab`.`from_date` */;
@@ -2101,7 +2126,7 @@ DELIMITER ;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
 /*!50001 SET character_set_client      = utf8mb4 */;
 /*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `current_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,(to_days(`eab`.`to_date`) - to_days(curdate())) AS `days_left`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`from_date` <= curdate()) and (`eab`.`to_date` >= curdate()) and (`eab`.`status` = 'Authorized')) order by `eab`.`to_date`,`eab`.`dur_days` desc,`eab`.`emp_name` */;
@@ -2122,7 +2147,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_absences` AS select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `emp_name`,`abt`.`title` AS `abs_type`,`abr`.`from_date` AS `from_date`,`abr`.`to_date` AS `to_date`,`abr`.`for_year` AS `for_year`,`utl_calcVacDaysId`(`abr`.`id`) AS `dur_days`,(case when (`dpty`.`id` is not null) then concat(`dpp`.`last_name`,', ',`dpp`.`first_name`) else 'n/a' end) AS `deputy`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `auth_by`,`abr`.`status` AS `status` from (((((`employees` `emp` join `persons` `per`) join ((`absences` `abr` left join `employees` `dpty` on((`abr`.`deputy_id` = `dpty`.`id`))) left join `persons` `dpp` on((`dpty`.`person_id` = `dpp`.`id`)))) join `absence_types` `abt`) join `employees` `auth`) join `persons` `app`) where ((`emp`.`id` = `abr`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`abr`.`type` = `abt`.`id`) and (`auth`.`id` = `abr`.`authorized_by`) and (`auth`.`person_id` = `app`.`id`) and (`abr`.`type` not in (10,11))) */;
+/*!50001 VIEW `emp_absences` AS select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `emp_name`,`abt`.`title` AS `abs_type`,`abr`.`from_date` AS `from_date`,`abr`.`to_date` AS `to_date`,`abr`.`for_year` AS `for_year`,`UTL_CALCVACDAYSID`(`abr`.`id`) AS `dur_days`,(case when (`dpty`.`id` is not null) then concat(`dpp`.`last_name`,', ',`dpp`.`first_name`) else 'n/a' end) AS `deputy`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `auth_by`,`abr`.`status` AS `status` from (((((`employees` `emp` join `persons` `per`) join ((`absences` `abr` left join `employees` `dpty` on((`abr`.`deputy_id` = `dpty`.`id`))) left join `persons` `dpp` on((`dpty`.`person_id` = `dpp`.`id`)))) join `absence_types` `abt`) join `employees` `auth`) join `persons` `app`) where ((`emp`.`id` = `abr`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`abr`.`type` = `abt`.`id`) and (`auth`.`id` = `abr`.`authorized_by`) and (`auth`.`person_id` = `app`.`id`) and (`abr`.`type` not in (10,11))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2135,12 +2160,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_fullname` AS select 1 AS `full_name`,1 AS `emp_id` */;
+/*!50001 VIEW `emp_fullname` AS select `emp_getFullName`(`emp`.`id`) AS `full_name`,`emp`.`id` AS `emp_id` from (`employees` `emp` join `persons` `per`) where (`emp`.`person_id` = `per`.`id`) order by `emp_getFullName`(`emp`.`id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2153,12 +2178,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_history` AS select 1 AS `emp_id`,1 AS `name`,1 AS `date`,1 AS `type`,1 AS `what`,1 AS `detail`,1 AS `status`,1 AS `who` */;
+/*!50001 VIEW `emp_history` AS select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`emp`.`contract_date` AS `date`,'Employment' AS `type`,`job`.`title` AS `what`,concat('Salary: ',convert(format(`sh`.`amount`,2) using utf8mb4)) AS `detail`,'Hired' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`job_history` `jh` join (`employees` `emp` left join `sal_history` `sh` on(((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`from_date` = `emp`.`hire_date`))))) join `persons` `per`) join `jobs` `job`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `jh`.`employee_id`) and (`job`.`id` = `jh`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and (`jh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`jh`.`from_date` = `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`tc`.`from_date` AS `date`,'Team' AS `type`,'Starts in' AS `what`,`dep`.`name` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`team_change` `tc` join `employees` `emp`) join `persons` `per`) join `departments` `dep`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `tc`.`employee_id`) and (`dep`.`id` = `tc`.`department`) and (`emp`.`person_id` = `per`.`id`) and (`tc`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`tc`.`from_date` = `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`jh`.`from_date` AS `date`,'Job' AS `type`,'Position change' AS `what`,`job`.`title` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`job_history` `jh` join `employees` `emp`) join `persons` `per`) join `jobs` `job`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `jh`.`employee_id`) and (`job`.`id` = `jh`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and (`jh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`jh`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`tc`.`from_date` AS `date`,'Team' AS `type`,'Department change' AS `what`,`dep`.`name` AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`team_change` `tc` join `employees` `emp`) join `persons` `per`) join `departments` `dep`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `tc`.`employee_id`) and (`dep`.`id` = `tc`.`department`) and (`emp`.`person_id` = `per`.`id`) and (`tc`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`tc`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`sh`.`from_date` AS `date`,'Salary' AS `type`,'Adjustment' AS `what`,concat('Amount: ',convert(format(`sh`.`amount`,2) using utf8mb4)) AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from ((((`sal_history` `sh` join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `sh`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`sh`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`sh`.`from_date` <> `emp`.`hire_date`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`bd`.`approved_on` AS `date`,'Bonus' AS `type`,`b`.`title` AS `what`,concat('Amount: ',convert(format(`bd`.`amount`,2) using utf8mb4)) AS `detail`,'Approved' AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from (((((`bonus_distribution` `bd` join `bonuses` `b`) join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`b`.`id` = `bd`.`bonus_id`) and (`emp`.`id` = `bd`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`bd`.`approved_by` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`)) union all select `emp`.`id` AS `emp_id`,concat(`per`.`last_name`,', ',`per`.`first_name`) AS `name`,`apr`.`interview_date` AS `date`,'Appraisal' AS `type`,concat(`apt`.`title`,' ',`atp`.`title`) AS `what`,concat('Overal: ',convert(format(`apr`.`overall_eval`,1) using utf8mb4)) AS `detail`,NULL AS `status`,concat(`app`.`last_name`,', ',`app`.`first_name`) AS `who` from ((((((`appraisals` `apr` join `appraisal_types` `atp`) join `appraisal_period_types` `apt`) join `employees` `emp`) join `persons` `per`) join `employees` `apb`) join `persons` `app`) where ((`emp`.`id` = `apr`.`employee_id`) and (`emp`.`person_id` = `per`.`id`) and (`apr`.`appriser` = `apb`.`id`) and (`apb`.`person_id` = `app`.`id`) and (`apr`.`type` = `atp`.`id`) and (`apr`.`period_type` = `apt`.`id`)) order by `name`,`date` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2171,12 +2196,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_resigned` AS select 1 AS `fullname`,1 AS `last_position`,1 AS `last_department`,1 AS `last_division`,1 AS `hired`,1 AS `resigned`,1 AS `reason`,1 AS `service_length`,1 AS `age_at_leave` */;
+/*!50001 VIEW `emp_resigned` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `last_position`,`dep`.`name` AS `last_department`,`dvs`.`name` AS `last_division`,`emp`.`hire_date` AS `hired`,`emp`.`leave_date` AS `resigned`,(case when (`emp`.`leave_reason` is null) then 'n/a' when (char_length(`emp`.`leave_reason`) > 32) then concat(substr(`emp`.`leave_reason`,1,32),'...') else `emp`.`leave_reason` end) AS `reason`,`utl_getDateDiffStr`(`emp`.`hire_date`,`emp`.`leave_date`) AS `service_length`,`utl_getDateDiffStr`(`per`.`birth_date`,`emp`.`leave_date`) AS `age_at_leave` from (`persons` `per` join (((`employees` `emp` left join `jobs` `pos` on((`pos`.`id` = `emp`.`job_id`))) left join `departments` `dep` on((`dep`.`id` = `emp`.`department_id`))) left join `divisions` `dvs` on((`dvs`.`id` = `emp`.`division_id`)))) where ((`emp`.`leave_date` is not null) and (`per`.`id` = `emp`.`person_id`)) order by `emp`.`leave_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2189,12 +2214,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `emp_summary` AS select 1 AS `fullname`,1 AS `position`,1 AS `contracted`,1 AS `hired`,1 AS `service_length`,1 AS `age`,1 AS `last_job_change`,1 AS `last_sal_change`,1 AS `salary` */;
+/*!50001 VIEW `emp_summary` AS select concat(`per`.`last_name`,', ',`per`.`first_name`) AS `fullname`,`pos`.`title` AS `position`,`emp`.`contract_date` AS `contracted`,`emp`.`hire_date` AS `hired`,`utl_getDateDiffStr`(`emp`.`hire_date`,curdate()) AS `service_length`,`utl_getDateDiffStr`(`per`.`birth_date`,curdate()) AS `age`,(select max(`jh`.`from_date`) from `job_history` `jh` where ((`jh`.`employee_id` = `emp`.`id`) and (`jh`.`job_id` = `emp`.`job_id`))) AS `last_job_change`,(select max(`sh`.`from_date`) from `sal_history` `sh` where ((`sh`.`employee_id` = `emp`.`id`) and (`sh`.`amount` = `emp`.`salary`))) AS `last_sal_change`,`emp`.`salary` AS `salary` from ((`employees` `emp` join `persons` `per`) join `jobs` `pos`) where ((`pos`.`id` = `emp`.`job_id`) and (`emp`.`person_id` = `per`.`id`) and (`emp`.`leave_date` is null)) order by `emp`.`hire_date` desc,concat(`per`.`last_name`,', ',`per`.`first_name`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2207,12 +2232,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `leaves_plan` AS select 1 AS `emp_name`,1 AS `for_year`,1 AS `MONTH(AB.from_date)`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days` */;
+/*!50001 VIEW `leaves_plan` AS select concat(`per`.`first_name`,' ',`per`.`last_name`) AS `emp_name`,`ab`.`for_year` AS `for_year`,month(`ab`.`from_date`) AS `MONTH(AB.from_date)`,`ab`.`from_date` AS `from_date`,`ab`.`to_date` AS `to_date`,((to_days(`ab`.`to_date`) - to_days(`ab`.`from_date`)) + 1) AS `dur_days` from ((`absences` `ab` join `employees` `emp`) join `persons` `per`) where ((`ab`.`status` = 'Requested') and (`ab`.`for_year` = year(curdate())) and (`emp`.`id` = `ab`.`employee_id`) and (`per`.`id` = `emp`.`person_id`)) order by concat(`per`.`first_name`,' ',`per`.`last_name`),`ab`.`from_date` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2225,12 +2250,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `pending_absences` AS select 1 AS `name`,1 AS `emp_name`,1 AS `job_title`,1 AS `abs_type`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days`,1 AS `deputy`,1 AS `auth_by` */;
+/*!50001 VIEW `pending_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,`eab`.`dur_days` AS `dur_days`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`from_date` > curdate()) and (`eab`.`status` = 'Authorized')) order by `eab`.`from_date`,`eab`.`dur_days` desc,`eab`.`emp_name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2243,12 +2268,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `per_relations_list` AS select 1 AS `p1_name`,1 AS `relation`,1 AS `p2_name`,1 AS `since` */;
+/*!50001 VIEW `per_relations_list` AS select concat(`p1`.`last_name`,', ',`p1`.`first_name`) AS `p1_name`,concat('is ',`prt`.`title`,' of') AS `relation`,concat(`p2`.`last_name`,', ',`p2`.`first_name`) AS `p2_name`,(case when (`pr`.`from_date` is not null) then concat('since ',convert(date_format(`pr`.`from_date`,'%Y-%m-%d') using utf8mb4)) end) AS `since` from (((`person_relations` `pr` join `person_relation_types` `prt`) join `persons` `p1`) join `persons` `p2`) where ((`pr`.`type` = `prt`.`id`) and (`pr`.`person1` = `p1`.`id`) and (`pr`.`person2` = `p2`.`id`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2261,12 +2286,12 @@ DELIMITER ;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `requested_absences` AS select 1 AS `name`,1 AS `emp_name`,1 AS `job_title`,1 AS `abs_type`,1 AS `from_date`,1 AS `to_date`,1 AS `dur_days`,1 AS `deputy`,1 AS `auth_by` */;
+/*!50001 VIEW `requested_absences` AS select `dep`.`name` AS `name`,`eab`.`emp_name` AS `emp_name`,`job`.`title` AS `job_title`,`eab`.`abs_type` AS `abs_type`,`eab`.`from_date` AS `from_date`,`eab`.`to_date` AS `to_date`,`eab`.`dur_days` AS `dur_days`,`eab`.`deputy` AS `deputy`,`eab`.`auth_by` AS `auth_by` from (((`emp_absences` `eab` join `employees` `emp`) join `departments` `dep`) join `jobs` `job`) where ((`emp`.`id` = `eab`.`emp_id`) and (`dep`.`id` = `emp`.`department_id`) and (`job`.`id` = `emp`.`job_id`) and (`eab`.`status` = 'Requested')) order by `eab`.`to_date`,`eab`.`emp_name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2280,4 +2305,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-23  9:37:40
+-- Dump completed on 2023-12-17 16:00:51
