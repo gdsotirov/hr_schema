@@ -1,8 +1,8 @@
 DELIMITER //
 
-CREATE FUNCTION calcNetSalaryBGForYear(dBaseSalary DECIMAL,
-                                       dSeniorityYears DECIMAL,
-                                       yForYear YEAR)
+CREATE FUNCTION calcNetSalaryBGForYear(dBaseSalary      DECIMAL(10,2),
+                                       dSeniorityYears  DECIMAL(2),
+                                       yForYear         YEAR)
 RETURNS DECIMAL(10,2)
   NO SQL
   DETERMINISTIC
