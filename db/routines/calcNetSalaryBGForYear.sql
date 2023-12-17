@@ -65,7 +65,7 @@ BEGIN
     SET dBaseSal = dGrossSalary;
   END IF;
 
-  /* Calcualte State Public Insurance */
+  /* Calculate State Public Insurance */
   SET dSPIAmt  = ROUND(dBaseSal * dPubInsPerc / 100, 2);
 
   /* Calculate Additional Mandatory Pension Insurance */
@@ -94,7 +94,7 @@ BEGIN
   /* Flat Total Income Tax of 10% */
   SET dIncomeTax = ROUND(dTaxableAmt * 10 / 100, 2);
 
-  /* Calcualte Net Salary */
+  /* Calculate Net Salary */
   SET dNetSalary = ROUND(dGrossSalary - dSPIAmt - dAMPIAmt - dHIAmt - dIncomeTax, 2);
 
   RETURN dNetSalary;
