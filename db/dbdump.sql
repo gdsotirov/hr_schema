@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Linux (x86_64)
 --
 -- Host: localhost    Database: hr_schema
 -- ------------------------------------------------------
--- Server version	8.0.34
+-- Server version	8.0.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1031,7 +1031,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary      DECIMAL(10,2),
                                        dSeniorityYears  DECIMAL(2),
@@ -1072,8 +1072,16 @@ BEGIN
       SET dMaxInsInc = 3000;
     WHEN yForYear BETWEEN 2022 AND 2023 THEN
       SET dMaxInsInc = 3400;
-    WHEN yForYear >= 2024 THEN
+    WHEN yForYear = 2024 THEN
       SET dMaxInsInc = 3750;
+    WHEN yForYear = 2025 THEN
+      SET dMaxInsInc = 4130;
+    WHEN yForYear = 2026 THEN
+      SET dMaxInsInc = 4430;
+    WHEN yForYear = 2027 THEN
+      SET dMaxInsInc = 4730;
+    WHEN yForYear >= 2028 THEN
+      SET dMaxInsInc = 5030;
   END CASE;
 
   CASE
@@ -2305,4 +2313,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-17 16:00:51
+-- Dump completed on 2024-12-09 20:51:08
