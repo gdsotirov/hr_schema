@@ -10,11 +10,11 @@ BEGIN
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;
   /* Percent for State Public Insurance */ 
-  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2009 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
   DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
   /* Percent for Health Insurance */
-  DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
+  DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2009 onwards */;
 
   DECLARE dInsAmt         DECIMAL(10,2) DEFAULT dBaseSalary;
   DECLARE dSeniorityAmt   DECIMAL(10,2);
@@ -53,6 +53,10 @@ BEGIN
   END CASE;
 
   CASE
+    WHEN yForYear = 2009 THEN
+      SET dAMPInsPerc = 7.6; /* pension - 5.8, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
+      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2010 THEN
       SET dPubInsPerc = 2.2;
       SET dAMPInsPerc = 6.7;
