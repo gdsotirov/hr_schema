@@ -8,11 +8,11 @@ RETURNS DECIMAL(10,2)
   DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;
-  /* Percent for State Public Insurance */ 
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 4130 /* 2025 onwards */;
+  /* Percent for State Public Insurance */
   DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2009 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
-  DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
+  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 8.38 /* 2018 onwards */;
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2009 onwards */;
 
@@ -58,20 +58,28 @@ BEGIN
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
     WHEN yForYear = 2010 THEN
+      SET dAMPInsPerc = 6.7; /* pension - 4.9, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 6.7;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2011 AND yForYear <= 2016 THEN
+    WHEN yForYear BETWEEN 2011 AND 2016 THEN
+      SET dAMPInsPerc = 7.5; /* pension - 5.7, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 7.5;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2017 AND yForYear < 2018 THEN
+    WHEN yForYear = 2017 THEN
+      SET dAMPInsPerc = 7.94; /* pension - 6.14, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 7.94;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2018 THEN
+    WHEN yForYear BETWEEN 2018 AND 2025 THEN
+      SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 8.38;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear = 2026 THEN
+      SET dAMPInsPerc = 9.71; /* pension - 7.91, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear >= 2027 THEN
+      SET dAMPInsPerc = 10.6; /* pension - 8.80, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
   END CASE;
 
