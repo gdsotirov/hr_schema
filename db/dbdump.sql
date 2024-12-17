@@ -1031,7 +1031,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary      DECIMAL(10,2),
                                        dSeniorityYears  DECIMAL(2),
@@ -1040,13 +1040,13 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary 
     DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 3000 /* 2019 onwards */;
-  /* Percent for State Public Insurance */ 
-  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2010 onwards */;
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 4130 /* 2025 onwards */;
+  /* Percent for State Public Insurance */
+  DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2009 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
-  DECLARE dAMPInsPerc DECIMAL(3,2)  DEFAULT 8.38 /* 2018 onwards */;
+  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 8.38 /* 2018 onwards */;
   /* Percent for Health Insurance */
-  DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2010 onwards */;
+  DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2009 onwards */;
 
   DECLARE dInsAmt         DECIMAL(10,2) DEFAULT dBaseSalary;
   DECLARE dSeniorityAmt   DECIMAL(10,2);
@@ -1085,21 +1085,33 @@ BEGIN
   END CASE;
 
   CASE
+    WHEN yForYear = 2009 THEN
+      SET dAMPInsPerc = 7.6; /* pension - 5.8, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
+      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2010 THEN
+      SET dAMPInsPerc = 6.7; /* pension - 4.9, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 6.7;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2011 AND yForYear <= 2016 THEN
+    WHEN yForYear BETWEEN 2011 AND 2016 THEN
+      SET dAMPInsPerc = 7.5; /* pension - 5.7, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 7.5;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2017 AND yForYear < 2018 THEN
+    WHEN yForYear = 2017 THEN
+      SET dAMPInsPerc = 7.94; /* pension - 6.14, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 7.94;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2018 THEN
+    WHEN yForYear BETWEEN 2018 AND 2025 THEN
+      SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
-      SET dAMPInsPerc = 8.38;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear = 2026 THEN
+      SET dAMPInsPerc = 9.71; /* pension - 7.91, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
+      SET dHlthInPerc = 3.2;
+    WHEN yForYear >= 2027 THEN
+      SET dAMPInsPerc = 10.6; /* pension - 8.80, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
   END CASE;
 
@@ -2313,4 +2325,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-09 20:51:08
+-- Dump completed on 2024-12-17 21:05:01
