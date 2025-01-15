@@ -818,7 +818,7 @@ CREATE TABLE `person_relation_types` (
   `title` varchar(64) NOT NULL,
   `reverse_id` varchar(16) DEFAULT NULL COMMENT 'Used to define the reverse relation',
   PRIMARY KEY (`id`),
-  KEY `fk_prel_type_rev_idx` (`id`),
+  UNIQUE KEY `fk_prel_type_rev_idx` (`id`),
   CONSTRAINT `fk_prel_type_rev` FOREIGN KEY (`id`) REFERENCES `person_relation_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2325,4 +2325,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-17 21:05:01
+-- Dump completed on 2025-01-15 19:48:58

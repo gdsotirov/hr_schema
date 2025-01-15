@@ -5,7 +5,7 @@
 
   PRIMARY KEY (`id`),
 
-  KEY `fk_prel_type_rev_idx` (`id`),
+  UNIQUE KEY `fk_prel_type_rev_idx` (`id`),
 
   CONSTRAINT `fk_prel_type_rev`
     FOREIGN KEY (`id`)
