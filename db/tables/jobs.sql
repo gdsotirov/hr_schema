@@ -10,6 +10,6 @@
   KEY `idx_job_title` (`title`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+DEFAULT CHARSET=utf8mb4
 COMMENT='List of jobs within the company with salary range';
 

@@ -29,5 +29,5 @@
     ON UPDATE CASCADE
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+DEFAULT CHARSET=utf8mb4
 COMMENT='Currency conversion rates register';

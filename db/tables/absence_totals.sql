@@ -30,4 +30,5 @@
     ON UPDATE CASCADE
 )
 ENGINE = InnoDB
+DEFAULT CHARSET=utf8m4
 COMMENT = 'Defines the maximum days per absence type, user or division to be used in a calendar year';

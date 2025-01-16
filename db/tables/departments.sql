@@ -11,6 +11,6 @@
   KEY `idx_department_name` (`name`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+DEFAULT CHARSET=utf8mb4
 COMMENT='Departments register';
 

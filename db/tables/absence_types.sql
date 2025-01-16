@@ -7,6 +7,6 @@
   PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+DEFAULT CHARSET=utf8m4
 COMMENT='Types of possible absences';
 

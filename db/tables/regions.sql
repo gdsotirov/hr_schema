@@ -7,5 +7,5 @@
   KEY `idx_reg_name` (`name`)
 )
 ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+DEFAULT CHARSET=utf8mb4
 COMMENT='List of country regions where the company has activities';
