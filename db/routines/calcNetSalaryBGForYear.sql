@@ -45,11 +45,11 @@ BEGIN
     WHEN yForYear = 2025 THEN
       SET dMaxInsInc = 4130;
     WHEN yForYear = 2026 THEN
-      SET dMaxInsInc = 4430;
+      SET dMaxInsInc = 4600; /* i.e. 2352 EUR */
     WHEN yForYear = 2027 THEN
-      SET dMaxInsInc = 4730;
+      SET dMaxInsInc = 4730; /* so would be higher */
     WHEN yForYear >= 2028 THEN
-      SET dMaxInsInc = 5030;
+      SET dMaxInsInc = 5030; /* so would be higher */
   END CASE;
 
   CASE
