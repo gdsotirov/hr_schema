@@ -1,0 +1,11 @@
+DELIMITER //
+
+CREATE FUNCTION utl_roundUp(num DECIMAL(65,30), places INTEGER)
+RETURNS DECIMAL(65,30)
+  NO SQL
+  DETERMINISTIC
+BEGIN
+    return CEIL(num * POW(10, places)) / POW(10, places);
+END //
+
+DELIMITER ;

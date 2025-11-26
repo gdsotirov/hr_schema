@@ -45,11 +45,11 @@ BEGIN
     WHEN yForYear = 2025 THEN
       SET dMaxInsInc = 4130;
     WHEN yForYear = 2026 THEN
-      SET dMaxInsInc = 4600; /* i.e. 2352 EUR */
+      SET dMaxInsInc = 2352;
     WHEN yForYear = 2027 THEN
-      SET dMaxInsInc = 4730; /* so would be higher */
+      SET dMaxInsInc = 2500; /* speculation */
     WHEN yForYear >= 2028 THEN
-      SET dMaxInsInc = 5030; /* so would be higher */
+      SET dMaxInsInc = 2650; /* speculation */
   END CASE;
 
   CASE
@@ -73,20 +73,26 @@ BEGIN
       SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear = 2026 THEN
-      SET dAMPInsPerc = 9.71; /* pension - 7.91, illness - 1.4, unemployment - 0.4 */
+    WHEN yForYear BETWEEN 2026 AND 2027 THEN
+      SET dAMPInsPerc = 9.26; /* pension - 7.46, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2027 THEN
-      SET dAMPInsPerc = 10.6; /* pension - 8.80, illness - 1.4, unemployment - 0.4 */
+    WHEN yForYear >= 2028 THEN
+      SET dAMPInsPerc = 9.7; /* pension - 7.9, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
   END CASE;
 
+  /* Bulgaria adopts Euro as of 2026-01-01 */
+  IF yForYear >= 2026 THEN
+    SET dBaseSalary   = utl_roundUp(dBaseSalary / 1.95583, 2);
+    SET dGrossSalary  = utl_roundUp(dGrossSalary / 1.95583, 2);
+  END IF;
+
   /* Calculate and add seniority to gross salary */
   IF dSeniorityYears > 0 THEN
-    SET dSeniorityAmt   = ROUND(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
-    SET dGrossSalary    = dGrossSalary + dSeniorityAmt;
+    SET dSeniorityAmt = utl_roundUp(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
+    SET dGrossSalary  = dGrossSalary + dSeniorityAmt;
   END IF;
 
   /* Determine the base */

@@ -19,7 +19,7 @@
 -- Current Database: `hr_schema`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hr_schema` /*!40100 DEFAULT CHARACTER SET utf8mb4 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `hr_schema`;
 
@@ -1077,11 +1077,11 @@ BEGIN
     WHEN yForYear = 2025 THEN
       SET dMaxInsInc = 4130;
     WHEN yForYear = 2026 THEN
-      SET dMaxInsInc = 4600; /* i.e. 2352 EUR */
+      SET dMaxInsInc = 2352;
     WHEN yForYear = 2027 THEN
-      SET dMaxInsInc = 4730; /* so would be higher */
+      SET dMaxInsInc = 2500; /* speculation */
     WHEN yForYear >= 2028 THEN
-      SET dMaxInsInc = 5030; /* so would be higher */
+      SET dMaxInsInc = 2650; /* speculation */
   END CASE;
 
   CASE
@@ -1105,20 +1105,26 @@ BEGIN
       SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear = 2026 THEN
-      SET dAMPInsPerc = 9.71; /* pension - 7.91, illness - 1.4, unemployment - 0.4 */
+    WHEN yForYear BETWEEN 2026 AND 2027 THEN
+      SET dAMPInsPerc = 9.26; /* pension - 7.46, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
-    WHEN yForYear >= 2027 THEN
-      SET dAMPInsPerc = 10.6; /* pension - 8.80, illness - 1.4, unemployment - 0.4 */
+    WHEN yForYear >= 2028 THEN
+      SET dAMPInsPerc = 9.7; /* pension - 7.9, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
       SET dHlthInPerc = 3.2;
   END CASE;
 
+  /* Bulgaria adopts Euro as of 2026-01-01 */
+  IF yForYear >= 2026 THEN
+    SET dBaseSalary   = utl_roundUp(dBaseSalary / 1.95583, 2);
+    SET dGrossSalary  = utl_roundUp(dGrossSalary / 1.95583, 2);
+  END IF;
+
   /* Calculate and add seniority to gross salary */
   IF dSeniorityYears > 0 THEN
-    SET dSeniorityAmt   = ROUND(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
-    SET dGrossSalary    = dGrossSalary + dSeniorityAmt;
+    SET dSeniorityAmt = utl_roundUp(dBaseSalary * calcSnrtyPrcnt(IFNULL(dSeniorityYears, 0)) / 100, 2);
+    SET dGrossSalary  = dGrossSalary + dSeniorityAmt;
   END IF;
 
   /* Determine the base */
@@ -1833,6 +1839,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `utl_roundUp` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_roundUp`(num DECIMAL(65,30), places INTEGER) RETURNS decimal(65,30)
+    NO SQL
+    DETERMINISTIC
+BEGIN
+    return CEIL(num * POW(10, places)) / POW(10, places);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `emp_calcTotalSnrty` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2325,4 +2352,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 19:50:26
+-- Dump completed on 2025-11-26 21:37:34
