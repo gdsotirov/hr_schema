@@ -7,6 +7,7 @@ RETURNS DECIMAL(10,2)
   NO SQL
   DETERMINISTIC
 BEGIN
+  DECLARE yr_bf_2008  CONDITION FOR SQLSTATE '92008';
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2352 /* 2026 onwards in EUR */;
   /* Percent for State Public Insurance */
@@ -25,6 +26,11 @@ BEGIN
   DECLARE dTaxableAmt     DECIMAL(10,2);
   DECLARE dIncomeTax      DECIMAL(10,2);
   DECLARE dNetSalary      DECIMAL(10,2);
+
+  IF yForYear < 2008 THEN
+    SIGNAL yr_bf_2008
+      SET MESSAGE_TEXT = 'Calculation is defined since year 2008 onwards only!';
+  END IF;
 
   /* Determine Maximal Social Insurance Income per year */
   CASE
