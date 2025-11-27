@@ -65,32 +65,18 @@ BEGIN
       SET dHlthInPerc = 2.4;
     WHEN yForYear = 2009 THEN
       SET dAMPInsPerc = 7.6; /* pension - 5.8, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2010 THEN
       SET dAMPInsPerc = 6.7; /* pension - 4.9, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2011 AND 2016 THEN
       SET dAMPInsPerc = 7.5; /* pension - 5.7, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2017 THEN
       SET dAMPInsPerc = 7.94; /* pension - 6.14, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2018 AND 2025 THEN
       SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2026 AND 2027 THEN
       SET dAMPInsPerc = 9.26; /* pension - 7.46, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear >= 2028 THEN
       SET dAMPInsPerc = 9.7; /* pension - 7.9, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
   END CASE;
 
   /* Bulgaria adopts Euro as of 2026-01-01 */
