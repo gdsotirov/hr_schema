@@ -8,11 +8,11 @@ RETURNS DECIMAL(10,2)
   DETERMINISTIC
 BEGIN
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 4130 /* 2025 onwards */;
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2352 /* 2026 onwards in EUR */;
   /* Percent for State Public Insurance */
   DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2009 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
-  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 8.38 /* 2018 onwards */;
+  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 9.26 /* 2026 onwards */;
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2009 onwards */;
 
@@ -29,23 +29,23 @@ BEGIN
   /* Determine Maximal Social Insurance Income per year */
   CASE
     WHEN yForYear BETWEEN 2008 AND 2012 THEN
-      SET dMaxInsInc = 2000;
+      SET dMaxInsInc = 2000; /* BGN */
     WHEN yForYear = 2013 THEN
-      SET dMaxInsInc = 2200;
+      SET dMaxInsInc = 2200; /* BGN */
     WHEN yForYear = 2014 THEN
-      SET dMaxInsInc = 2400;
+      SET dMaxInsInc = 2400; /* BGN */
     WHEN yForYear BETWEEN 2015 AND 2018 THEN
-      SET dMaxInsInc = 2600;
+      SET dMaxInsInc = 2600; /* BGN */
     WHEN yForYear BETWEEN 2019 AND 2021 THEN
-      SET dMaxInsInc = 3000;
+      SET dMaxInsInc = 3000; /* BGN */
     WHEN yForYear BETWEEN 2022 AND 2023 THEN
-      SET dMaxInsInc = 3400;
+      SET dMaxInsInc = 3400; /* BGN */
     WHEN yForYear = 2024 THEN
-      SET dMaxInsInc = 3750;
+      SET dMaxInsInc = 3750; /* BGN */
     WHEN yForYear = 2025 THEN
-      SET dMaxInsInc = 4130;
+      SET dMaxInsInc = 4130; /* BGN */
     WHEN yForYear = 2026 THEN
-      SET dMaxInsInc = 2352;
+      SET dMaxInsInc = 2352; /* EUR */
     WHEN yForYear = 2027 THEN
       SET dMaxInsInc = 2500; /* speculation */
     WHEN yForYear >= 2028 THEN
