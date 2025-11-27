@@ -28,7 +28,7 @@ BEGIN
 
   /* Determine Maximal Social Insurance Income per year */
   CASE
-    WHEN yForYear BETWEEN 2010 AND 2012 THEN
+    WHEN yForYear BETWEEN 2008 AND 2012 THEN
       SET dMaxInsInc = 2000;
     WHEN yForYear = 2013 THEN
       SET dMaxInsInc = 2200;
@@ -53,6 +53,10 @@ BEGIN
   END CASE;
 
   CASE
+    WHEN yForYear = 2008 THEN
+      SET dAMPInsPerc = 8.6; /* pension - 6.8, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2;
+      SET dHlthInPerc = 2.4;
     WHEN yForYear = 2009 THEN
       SET dAMPInsPerc = 7.6; /* pension - 5.8, illness - 1.4, unemployment - 0.4 */
       SET dPubInsPerc = 2.2;
