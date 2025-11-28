@@ -1039,12 +1039,13 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary 
     NO SQL
     DETERMINISTIC
 BEGIN
+  DECLARE yr_bf_2008  CONDITION FOR SQLSTATE '92008';
   /* Maximal Social Insurance Income */
-  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 4130 /* 2025 onwards */;
+  DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2352 /* 2026 onwards in EUR */;
   /* Percent for State Public Insurance */
   DECLARE dPubInsPerc DECIMAL(3,2)  DEFAULT 2.2  /* 2009 onwards */;
   /* Percent for Additional Mandatory Pension Insurance */
-  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 8.38 /* 2018 onwards */;
+  DECLARE dAMPInsPerc DECIMAL(4,2)  DEFAULT 9.26 /* 2026 onwards */;
   /* Percent for Health Insurance */
   DECLARE dHlthInPerc DECIMAL(3,2)  DEFAULT 3.2  /* 2009 onwards */;
 
@@ -1058,26 +1059,31 @@ BEGIN
   DECLARE dIncomeTax      DECIMAL(10,2);
   DECLARE dNetSalary      DECIMAL(10,2);
 
+  IF yForYear < 2008 THEN
+    SIGNAL yr_bf_2008
+      SET MESSAGE_TEXT = 'Calculation is defined since year 2008 onwards only!';
+  END IF;
+
   /* Determine Maximal Social Insurance Income per year */
   CASE
-    WHEN yForYear BETWEEN 2010 AND 2012 THEN
-      SET dMaxInsInc = 2000;
+    WHEN yForYear BETWEEN 2008 AND 2012 THEN
+      SET dMaxInsInc = 2000; /* BGN */
     WHEN yForYear = 2013 THEN
-      SET dMaxInsInc = 2200;
+      SET dMaxInsInc = 2200; /* BGN */
     WHEN yForYear = 2014 THEN
-      SET dMaxInsInc = 2400;
+      SET dMaxInsInc = 2400; /* BGN */
     WHEN yForYear BETWEEN 2015 AND 2018 THEN
-      SET dMaxInsInc = 2600;
+      SET dMaxInsInc = 2600; /* BGN */
     WHEN yForYear BETWEEN 2019 AND 2021 THEN
-      SET dMaxInsInc = 3000;
+      SET dMaxInsInc = 3000; /* BGN */
     WHEN yForYear BETWEEN 2022 AND 2023 THEN
-      SET dMaxInsInc = 3400;
+      SET dMaxInsInc = 3400; /* BGN */
     WHEN yForYear = 2024 THEN
-      SET dMaxInsInc = 3750;
+      SET dMaxInsInc = 3750; /* BGN */
     WHEN yForYear = 2025 THEN
-      SET dMaxInsInc = 4130;
+      SET dMaxInsInc = 4130; /* BGN */
     WHEN yForYear = 2026 THEN
-      SET dMaxInsInc = 2352;
+      SET dMaxInsInc = 2352; /* EUR */
     WHEN yForYear = 2027 THEN
       SET dMaxInsInc = 2500; /* speculation */
     WHEN yForYear >= 2028 THEN
@@ -1085,34 +1091,24 @@ BEGIN
   END CASE;
 
   CASE
+    WHEN yForYear = 2008 THEN
+      SET dAMPInsPerc = 8.6; /* pension - 6.8, illness - 1.4, unemployment - 0.4 */
+      SET dPubInsPerc = 2;
+      SET dHlthInPerc = 2.4;
     WHEN yForYear = 2009 THEN
       SET dAMPInsPerc = 7.6; /* pension - 5.8, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2010 THEN
       SET dAMPInsPerc = 6.7; /* pension - 4.9, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2011 AND 2016 THEN
       SET dAMPInsPerc = 7.5; /* pension - 5.7, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear = 2017 THEN
       SET dAMPInsPerc = 7.94; /* pension - 6.14, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2018 AND 2025 THEN
       SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear BETWEEN 2026 AND 2027 THEN
       SET dAMPInsPerc = 9.26; /* pension - 7.46, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
     WHEN yForYear >= 2028 THEN
       SET dAMPInsPerc = 9.7; /* pension - 7.9, illness - 1.4, unemployment - 0.4 */
-      SET dPubInsPerc = 2.2;
-      SET dHlthInPerc = 3.2;
   END CASE;
 
   /* Bulgaria adopts Euro as of 2026-01-01 */
@@ -1860,6 +1856,93 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `utl_transliterate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `utl_transliterate`(original VARCHAR(512)) RETURNS varchar(512) CHARSET utf8mb3
+    NO SQL
+    DETERMINISTIC
+    COMMENT 'Transliterate between cyrillic and latin scripts'
+BEGIN
+  /* Based on https://github.com/igstan/sql-utils/blob/master/transliterate.sql */
+  DECLARE is_lower  BIT;
+  DECLARE part      CHAR(8);
+  DECLARE pos       INTEGER       DEFAULT 1;
+  DECLARE result    VARCHAR(512)  DEFAULT '';
+
+  WHILE (pos <= CHAR_LENGTH(original)) DO
+    SET part      = SUBSTRING(original, pos, 1);
+    SET is_lower  = IF(LOWER(part) COLLATE utf8_bin = part COLLATE utf8_bin, 1, 0);
+
+    /* See https://lex.bg/laws/ldoc/2135623667#i_5 */
+    IF part = 'б' AND SUBSTRING(original, pos, 8) = 'България' THEN
+      /* art. 6 България is Bulgaria, not Balgaria */
+      SET part= 'Bulgaria';
+      SET pos = pos + 7;
+    ELSEIF part = 'и'
+      /* art. 5, pt. 2 the combination 'ия' at the end of word is 'ia', not 'iya' */
+      AND SUBSTRING(original, pos + 1, 1) = 'я'
+      AND REGEXP_LIKE(SUBSTRING(original, pos + 2, 1), '[[:space:]]')
+    THEN
+      SET part= 'ia';
+      SET pos = pos + 1;
+    ELSE
+      /* art 4 letter by letter */
+      CASE
+        WHEN part = 'а' THEN SET part = IF(is_lower, 'a'  , 'A');
+        WHEN part = 'б' THEN SET part = IF(is_lower, 'b'  , 'B');
+        WHEN part = 'в' THEN SET part = IF(is_lower, 'v'  , 'V');
+        WHEN part = 'г' THEN SET part = IF(is_lower, 'g'  , 'G');
+        WHEN part = 'д' THEN SET part = IF(is_lower, 'd'  , 'D');
+        WHEN part = 'е' THEN SET part = IF(is_lower, 'e'  , 'E');
+        WHEN part = 'ж' THEN SET part = IF(is_lower, 'zh' , 'Zh');
+        WHEN part = 'з' THEN SET part = IF(is_lower, 'z'  , 'Z');
+        WHEN part = 'и' THEN SET part = IF(is_lower, 'i'  , 'I');
+        WHEN part = 'й' THEN SET part = IF(is_lower, 'y'  , 'Y');
+        WHEN part = 'к' THEN SET part = IF(is_lower, 'k'  , 'K');
+        WHEN part = 'л' THEN SET part = IF(is_lower, 'l'  , 'L');
+        WHEN part = 'м' THEN SET part = IF(is_lower, 'm'  , 'M');
+        WHEN part = 'н' THEN SET part = IF(is_lower, 'n'  , 'N');
+        WHEN part = 'о' THEN SET part = IF(is_lower, 'o'  , 'O');
+        WHEN part = 'п' THEN SET part = IF(is_lower, 'p'  , 'P');
+        WHEN part = 'р' THEN SET part = IF(is_lower, 'r'  , 'R');
+        WHEN part = 'с' THEN SET part = IF(is_lower, 's'  , 'S');
+        WHEN part = 'т' THEN SET part = IF(is_lower, 't'  , 't');
+        WHEN part = 'у' THEN SET part = IF(is_lower, 'u'  , 'U');
+        WHEN part = 'ф' THEN SET part = IF(is_lower, 'f'  , 'F');
+        WHEN part = 'х' THEN SET part = IF(is_lower, 'h'  , 'H');
+        WHEN part = 'ц' THEN SET part = IF(is_lower, 'ts' , 'Ts');
+        WHEN part = 'ч' THEN SET part = IF(is_lower, 'ch' , 'Ch');
+        WHEN part = 'ш' THEN SET part = IF(is_lower, 'sh' , 'Sh');
+        WHEN part = 'щ' THEN SET part = IF(is_lower, 'sht', 'Sht');
+        WHEN part = 'ъ' THEN SET part = IF(is_lower, 'a'  , 'A');
+        WHEN part = 'ь' THEN SET part = IF(is_lower, 'y'  , 'Y');
+        WHEN part = 'ю' THEN SET part = IF(is_lower, 'yu' , 'Yu');
+        WHEN part = 'я' THEN SET part = IF(is_lower, 'ya' , 'Ya');
+        ELSE
+          BEGIN
+          END;
+      END CASE;
+    END IF;
+
+    SET pos   = pos + 1;
+    SET result= CONCAT_WS(IF(part = ' ', ' ', ''), result, part);
+  END WHILE;
+
+  RETURN result;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `emp_calcTotalSnrty` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2352,4 +2435,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 21:37:34
+-- Dump completed on 2025-11-28 15:58:16
