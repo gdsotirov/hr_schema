@@ -1023,6 +1023,34 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `calcNetSalaryBGBegin` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGBegin`( dBaseSalary DECIMAL(10,2),
+                                      dStartDate  DATE) RETURNS decimal(10,2)
+    NO SQL
+    DETERMINISTIC
+BEGIN
+  DECLARE dSeniorityYears INTEGER DEFAULT 0;
+
+  IF dStartDate IS NOT NULL THEN
+    SET dSeniorityYears = TIMESTAMPDIFF(YEAR, dStartDate, NOW());
+  END IF;
+
+  RETURN calcNetSalaryBGForYear(dBaseSalary, dSeniorityYears, YEAR(NOW()));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `calcNetSalaryBGForYear` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1033,13 +1061,41 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`(dBaseSalary      DECIMAL(10,2),
-                                       dSeniorityYears  DECIMAL(2),
-                                       yForYear         YEAR) RETURNS decimal(10,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYear`( dBaseSalary     DECIMAL(10,2),
+                                        dSeniorityYears DECIMAL(2),
+                                        yForYear        YEAR) RETURNS decimal(10,2)
+    NO SQL
+    DETERMINISTIC
+BEGIN
+  RETURN calcNetSalaryBGForYearMonth(dBaseSalary,
+    CASE WHEN dSeniorityYears IS NULL THEN 0            ELSE dSeniorityYears END,
+    CASE WHEN yForYear        IS NULL THEN YEAR(NOW())  ELSE yForYear END,
+    MONTH(NOW()));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `calcNetSalaryBGForYearMonth` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `calcNetSalaryBGForYearMonth`(dBaseSalary      DECIMAL(10,2),
+                                            dSeniorityYears  DECIMAL(2),
+                                            yForYear         YEAR,
+                                            yForMonth        INTEGER) RETURNS decimal(10,2)
     NO SQL
     DETERMINISTIC
 BEGIN
   DECLARE yr_bf_2008  CONDITION FOR SQLSTATE '92008';
+  DECLARE wrong_month CONDITION FOR SQLSTATE '91012';
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2352 /* 2026 onwards in EUR */;
   /* Percent for State Public Insurance */
@@ -1058,35 +1114,47 @@ BEGIN
   DECLARE dTaxableAmt     DECIMAL(10,2);
   DECLARE dIncomeTax      DECIMAL(10,2);
   DECLARE dNetSalary      DECIMAL(10,2);
+  DECLARE dYrMonth        INTEGER;
 
-  IF yForYear < 2008 THEN
+  IF yForYear IS NULL THEN
+    SET yForYear = YEAR(NOW());
+  ELSEIF yForYear < 2008 THEN
     SIGNAL yr_bf_2008
       SET MESSAGE_TEXT = 'Calculation is defined since year 2008 onwards only!';
   END IF;
 
+  IF yForMonth IS NULL THEN
+    SET yForMonth = MONTH(NOW());
+  ELSEIF yForMonth < 1 OR yForMonth > 12 THEN
+    SIGNAL wrong_month
+      SET MESSAGE_TEXT = 'Wrong month! Only integer numbers between 1 and 12 allowed.';
+  END IF;
+
+  SET dYrMonth = yForYear * 100 + yForMonth;
+
   /* Determine Maximal Social Insurance Income per year */
   CASE
-    WHEN yForYear BETWEEN 2008 AND 2012 THEN
+    WHEN dYrMonth BETWEEN 200801 AND 201212 THEN
       SET dMaxInsInc = 2000; /* BGN */
-    WHEN yForYear = 2013 THEN
+    WHEN dYrMonth BETWEEN 201301 AND 201312 THEN
       SET dMaxInsInc = 2200; /* BGN */
-    WHEN yForYear = 2014 THEN
+    WHEN dYrMonth BETWEEN 201401 AND 201412 THEN
       SET dMaxInsInc = 2400; /* BGN */
-    WHEN yForYear BETWEEN 2015 AND 2018 THEN
+    WHEN dYrMonth BETWEEN 201501 AND 201812 THEN
       SET dMaxInsInc = 2600; /* BGN */
-    WHEN yForYear BETWEEN 2019 AND 2021 THEN
+    WHEN dYrMonth BETWEEN 201901 AND 202203 THEN
       SET dMaxInsInc = 3000; /* BGN */
-    WHEN yForYear BETWEEN 2022 AND 2023 THEN
+    WHEN dYrMonth BETWEEN 202204 AND 202312 THEN
       SET dMaxInsInc = 3400; /* BGN */
-    WHEN yForYear = 2024 THEN
+    WHEN dYrMonth BETWEEN 202401 AND 202503 THEN
       SET dMaxInsInc = 3750; /* BGN */
-    WHEN yForYear = 2025 THEN
+    WHEN dYrMonth BETWEEN 202504 AND 202512 THEN
       SET dMaxInsInc = 4130; /* BGN */
-    WHEN yForYear = 2026 THEN
+    WHEN dYrMonth BETWEEN 202601 AND 202612 THEN
       SET dMaxInsInc = 2352; /* EUR */
-    WHEN yForYear = 2027 THEN
+    WHEN dYrMonth BETWEEN 202701 AND 202712 THEN
       SET dMaxInsInc = 2500; /* speculation */
-    WHEN yForYear >= 2028 THEN
+    WHEN dYrMonth >= 202801 THEN
       SET dMaxInsInc = 2650; /* speculation */
   END CASE;
 
@@ -2435,4 +2503,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-28 15:58:16
+-- Dump completed on 2025-12-02 20:05:38
