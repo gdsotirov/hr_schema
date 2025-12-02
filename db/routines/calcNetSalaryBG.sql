@@ -6,7 +6,9 @@ RETURNS DECIMAL(10,2)
   NO SQL
   DETERMINISTIC
 BEGIN
-  RETURN calcNetSalaryBGForYear(dBaseSalary, IFNULL(dSeniorityYears, 0), YEAR(NOW()));
+  RETURN calcNetSalaryBGForYear(dBaseSalary,
+    CASE WHEN dSeniorityYears IS NULL THEN 0  ELSE dSeniorityYears END,
+    YEAR(NOW()));
 END //
 
 DELIMITER ;
