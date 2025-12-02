@@ -9,6 +9,7 @@ RETURNS DECIMAL(10,2)
   DETERMINISTIC
 BEGIN
   DECLARE yr_bf_2008  CONDITION FOR SQLSTATE '92008';
+  DECLARE wrong_month CONDITION FOR SQLSTATE '91012';
   /* Maximal Social Insurance Income */
   DECLARE dMaxInsInc  DECIMAL(10,2) DEFAULT 2352 /* 2026 onwards in EUR */;
   /* Percent for State Public Insurance */
@@ -27,35 +28,47 @@ BEGIN
   DECLARE dTaxableAmt     DECIMAL(10,2);
   DECLARE dIncomeTax      DECIMAL(10,2);
   DECLARE dNetSalary      DECIMAL(10,2);
+  DECLARE dYrMonth        INTEGER;
 
-  IF yForYear < 2008 THEN
+  IF yForYear IS NULL THEN
+    SET yForYear = YEAR(NOW());
+  ELSEIF yForYear < 2008 THEN
     SIGNAL yr_bf_2008
       SET MESSAGE_TEXT = 'Calculation is defined since year 2008 onwards only!';
   END IF;
 
+  IF yForMonth IS NULL THEN
+    SET yForMonth = MONTH(NOW());
+  ELSEIF yForMonth < 1 OR yForMonth > 12 THEN
+    SIGNAL wrong_month
+      SET MESSAGE_TEXT = 'Wrong month! Only integer numbers between 1 and 12 allowed.';
+  END IF;
+
+  SET dYrMonth = yForYear * 100 + yForMonth;
+
   /* Determine Maximal Social Insurance Income per year */
   CASE
-    WHEN yForYear BETWEEN 2008 AND 2012 THEN
+    WHEN dYrMonth BETWEEN 200801 AND 201212 THEN
       SET dMaxInsInc = 2000; /* BGN */
-    WHEN yForYear = 2013 THEN
+    WHEN dYrMonth BETWEEN 201301 AND 201312 THEN
       SET dMaxInsInc = 2200; /* BGN */
-    WHEN yForYear = 2014 THEN
+    WHEN dYrMonth BETWEEN 201401 AND 201412 THEN
       SET dMaxInsInc = 2400; /* BGN */
-    WHEN yForYear BETWEEN 2015 AND 2018 THEN
+    WHEN dYrMonth BETWEEN 201501 AND 201812 THEN
       SET dMaxInsInc = 2600; /* BGN */
-    WHEN yForYear BETWEEN 2019 AND 2021 THEN
+    WHEN dYrMonth BETWEEN 201901 AND 202203 THEN
       SET dMaxInsInc = 3000; /* BGN */
-    WHEN yForYear BETWEEN 2022 AND 2023 THEN
+    WHEN dYrMonth BETWEEN 202204 AND 202312 THEN
       SET dMaxInsInc = 3400; /* BGN */
-    WHEN yForYear = 2024 THEN
+    WHEN dYrMonth BETWEEN 202401 AND 202503 THEN
       SET dMaxInsInc = 3750; /* BGN */
-    WHEN yForYear = 2025 THEN
+    WHEN dYrMonth BETWEEN 202504 AND 202512 THEN
       SET dMaxInsInc = 4130; /* BGN */
-    WHEN yForYear = 2026 THEN
+    WHEN dYrMonth BETWEEN 202601 AND 202612 THEN
       SET dMaxInsInc = 2352; /* EUR */
-    WHEN yForYear = 2027 THEN
+    WHEN dYrMonth BETWEEN 202701 AND 202712 THEN
       SET dMaxInsInc = 2500; /* speculation */
-    WHEN yForYear >= 2028 THEN
+    WHEN dYrMonth >= 202801 THEN
       SET dMaxInsInc = 2650; /* speculation */
   END CASE;
 
