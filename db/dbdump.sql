@@ -1152,12 +1152,8 @@ BEGIN
       SET dMaxInsInc = 3750; /* BGN */
     WHEN dYrMonth BETWEEN 202504 AND 202512 THEN
       SET dMaxInsInc = 4130; /* BGN */
-    WHEN dYrMonth BETWEEN 202601 AND 202612 THEN
-      SET dMaxInsInc = 2300; /* EUR */
-    WHEN dYrMonth BETWEEN 202701 AND 202712 THEN
-      SET dMaxInsInc = 2505; /* EUR */
-    WHEN dYrMonth >= 202801 THEN
-      SET dMaxInsInc = 2659; /* EUR */
+    WHEN dYrMonth >= 202601 THEN
+      SET dMaxInsInc = 4130 / 1.95583; /* EUR */
   END CASE;
 
   CASE
@@ -1173,12 +1169,8 @@ BEGIN
       SET dAMPInsPerc = 7.5; /* pension - 5.7, illness - 1.4, unemployment - 0.4 */
     WHEN yForYear = 2017 THEN
       SET dAMPInsPerc = 7.94; /* pension - 6.14, illness - 1.4, unemployment - 0.4 */
-    WHEN yForYear BETWEEN 2018 AND 2026 THEN
+    WHEN yForYear >= 2018 THEN
       SET dAMPInsPerc = 8.38; /* pension - 6.58, illness - 1.4, unemployment - 0.4 */
-    WHEN yForYear = 2027 THEN
-      SET dAMPInsPerc = 8.82; /* pension - 7.02, illness - 1.4, unemployment - 0.4 */
-    WHEN yForYear >= 2028 THEN
-      SET dAMPInsPerc = 9.7; /* pension - 7.9, illness - 1.4, unemployment - 0.4 */
   END CASE;
 
   /* Bulgaria adopts Euro as of 2026-01-01 */
@@ -2505,4 +2497,4 @@ USE `hr_schema`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-06 10:11:20
+-- Dump completed on 2025-12-11 20:41:46
